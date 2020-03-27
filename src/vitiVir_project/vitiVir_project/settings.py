@@ -80,6 +80,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'HOST': 'localhost',
+        'ENFORCE_SCHEMA': False,
         'PORT': 27017,
         'NAME': 'test',
     }
@@ -123,3 +124,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+AUTH_USER_MODEL = 'vitiVir_app.UserProfile'
