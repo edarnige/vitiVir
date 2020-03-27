@@ -2,6 +2,7 @@
 # Create your models here.
 from djongo import models
 from django import forms
+import uuid
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import BaseUserManager
@@ -11,7 +12,7 @@ from django.contrib.auth.models import BaseUserManager
 
 # Create your models here.
 
-class UserProfileManager(BaseUserManager): #inherit from BaseUserManager
+class MyUserManager(BaseUserManager): #inherit from BaseUserManager
     '''
     Helps Django work with custom user model
     '''
@@ -49,20 +50,20 @@ class UserProfileManager(BaseUserManager): #inherit from BaseUserManager
 
     
 
-class UserProfile(AbstractBaseUser, PermissionsMixin):
+class MyUser(AbstractBaseUser, PermissionsMixin):
     '''
     Custom user model
     Represents a "user profile" inside the system
     '''
 
-    email = models.EmailField(max_length=255, unique=True, primary_key=True) #No wannnnnt
-    #valueerror at /admin/login/ cannot force an update in save() with no primary key
-    can_verify = models.BooleanField(default=False) # flag active vs guest user
+    user_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    email = models.EmailField(max_length=255, unique=True)
 
-    is_active = models.BooleanField(default=True) # not sure if will use
+    can_verify = models.BooleanField(default=False) # flag active vs guest user
+    is_active = models.BooleanField(default=True) 
     is_staff = models.BooleanField(default=False)
     
-    objects = UserProfileManager()
+    objects = MyUserManager()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = [] #email is username field, by default set to required, password too

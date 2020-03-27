@@ -125,4 +125,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-AUTH_USER_MODEL = 'vitiVir_app.UserProfile'
+AUTH_USER_MODEL = 'vitiVir_app.MyUser'
