@@ -1,3 +1,9 @@
+'''
+Custom user model containing 3 user levels
+Admins can CRUD as determined by is_staff flag
+Active users can R and U specific fields, identified by can_verify flag
+Guest users are in R only mode
+'''
 
 # Create your models here.
 from djongo import models
@@ -70,7 +76,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 
     # Helper fxns 
     def get_email(self):
-        ''' Used to get a user's first name '''
+        ''' Used to get a user's email '''
         return self.email
 
     def __str__(self):
