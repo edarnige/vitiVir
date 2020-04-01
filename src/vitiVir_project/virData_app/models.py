@@ -42,6 +42,7 @@ class Blastx(models.Model):
     score = models.FloatField()
     tax_id = models.IntegerField()
     algo = models.CharField(max_length=100)
+    sequence = models.TextField()
 
 
 class SRAMetadata(models.Model):
