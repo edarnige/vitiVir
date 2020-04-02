@@ -89,7 +89,7 @@ class INVMetadata(models.Model):
     pass
 
 
-class Entries(models.Model):
+class Entry(models.Model):
     '''
     Entry document
     '''
