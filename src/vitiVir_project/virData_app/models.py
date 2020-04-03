@@ -1,6 +1,6 @@
 from djongo import models
+import uuid
 
-#import user from vitiVir app? 
 
 # Create your models here.
 class Blastrps(models.Model):
@@ -13,8 +13,8 @@ class Blastrps(models.Model):
     hit_id = models.CharField(max_length=255)
     evalue = models.FloatField()
     startQ = models.IntegerField()
-    endQ = models.IntegerField
-    frame = models.IntegerField
+    endQ = models.IntegerField()
+    frame = models.IntegerField()
     description = models.TextField()
     superkingdom = models.CharField(max_length=255)
     no_rank = models.CharField(max_length=255)
@@ -94,8 +94,9 @@ class Entry(models.Model):
     Entry document
     '''
 
-    #id auto created?
     query_id = models.CharField(max_length=255)
+    entry_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
     sample = models.CharField(max_length=255)
 
     blastrps = models.EmbeddedField(
@@ -111,8 +112,6 @@ class Entry(models.Model):
         model_container=INVMetadata
     )
 
-
-    #objects = models.DjangoManager()
 
     def __str__(self):
         ''' Convert object to string '''
