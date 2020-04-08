@@ -1,8 +1,9 @@
 from djongo import models
 import uuid
+from django import forms
 
 
-# Create your models here.
+
 class Blastrps(models.Model):
     '''
     RPS-BLAST embedded document from rps_results.csv
@@ -84,21 +85,16 @@ class SRAMetadata(models.Model):
     RunHash = models.CharField(max_length=250) #hash?
     ReadHash = models.CharField(max_length=250) #hash?
 
-class INVMetadata(models.Model):
-    ''' InViCeb metadata '''
-    pass
+
+#class INVMetadata(models.Model):#
+ #   ''' InViCeb metadata '''
+ #   pass
 
 
 class Entry(models.Model):
     '''
     Entry document
     '''
-
-    query_id = models.CharField(max_length=255)
-    entry_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-
-    sample = models.CharField(max_length=255)
-
     blastrps = models.EmbeddedField(
         model_container=Blastrps
     )
@@ -108,11 +104,16 @@ class Entry(models.Model):
     sra_metadata= models.EmbeddedField(
         model_container=SRAMetadata
     )
-    inv_metadata = models.EmbeddedField(
-        model_container=INVMetadata
-    )
+    #inv_metadata = models.EmbeddedField(
+    #    model_container=INVMetadata
+    #)
 
+    query_id = models.CharField(max_length=255)
+    entry_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    sample = models.CharField(max_length=255)
 
+    objects = models.DjongoManager()
+    
     def __str__(self):
         ''' Convert object to string '''
         return self.query_id
