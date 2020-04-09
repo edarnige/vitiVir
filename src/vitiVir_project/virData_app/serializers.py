@@ -44,7 +44,8 @@ class EntrySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Entry
-        fields = ('entry_id','query_id','sample','blastrps','blastx','sra_metadata')#,inv_metadata 
+        #fields = ('entry_id','query_id','sample','blastrps','blastx','sra_metadata')#,inv_metadata 
+        fields = '__all__'
         depth = 2
 
 

@@ -51,7 +51,7 @@ class SRAMetadata(models.Model):
     Metadata embedded document from SRA_metadata.csv
     '''
 
-    ReleaseDate = models.CharField(max_length=250) #date and time?
+    ReleaseDate = models.DateTimeField() #date and time?
     LoadDate = models.CharField(max_length=250)
     spots = models.IntegerField()
     bases = models.IntegerField() #numberlong?
@@ -87,7 +87,7 @@ class SRAMetadata(models.Model):
 
 
 #class INVMetadata(models.Model):#
- #   ''' InViCeb metadata '''
+ #   ''' InViCeb embedded document from INV_metadata '''
  #   pass
 
 
@@ -104,7 +104,7 @@ class Entry(models.Model):
     sra_metadata= models.EmbeddedField(
         model_container=SRAMetadata
     )
-    #inv_metadata = models.EmbeddedField(
+    #inv_metadata = models.EmbeddedField( #add when available
     #    model_container=INVMetadata
     #)
 
@@ -112,8 +112,17 @@ class Entry(models.Model):
     entry_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     sample = models.CharField(max_length=255)
 
+    verified = models.BooleanField(default=False) #update many by query_id
+    virus_type = models.CharField(max_length=255) #update many by query_id
+    host_organism = models.CharField(max_length=255) #update many by sample
+    
     objects = models.DjongoManager()
+
+    class Meta:
+        verbose_name_plural = "Entries"
     
     def __str__(self):
         ''' Convert object to string '''
         return self.query_id
+
+    
