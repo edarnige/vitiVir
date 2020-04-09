@@ -40,7 +40,7 @@ class EntrySerializer(serializers.ModelSerializer):
     blastrps = BlastrpsSerializer()
     blastx = BlastxSerializer()
     sra_metadata = SRAMetadataSerializer()
-    #inv_metadata = INVMetadataSerializer(source='*')
+    #inv_metadata = INVMetadataSerializer()
 
     class Meta:
         model = models.Entry

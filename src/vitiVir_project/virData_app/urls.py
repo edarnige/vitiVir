@@ -8,8 +8,8 @@ from . import views
 
 urlpatterns = [
     path('data/entries/',views.EntryListView.as_view()),
-    path('data/entry/<str:sample>',views.SampleView.as_view()), #remove /entry?
-    path('data/entry/<str:sample>/<str:entry_id>',views.EntryView.as_view()), #remove /entry?
+    path('data/<str:sample>',views.SampleListView.as_view()), #remove /entry?
+    path('data/<str:sample>/<str:entry_id>',views.EntryView.as_view()), #remove /entry?
 ]
 
 # /api/data/<sample>
@@ -23,3 +23,30 @@ urlpatterns = [
 #   rpsblast:
 #   metadata:
 
+# /api/data/entry/<sample>?balststrps.evalue=-2
+
+# sample= 1
+# sample2
+# sample 3
+
+# post query
+# request
+# {
+#     "filters": [
+#       {
+#         "field_names": “balsxtrpx.evalue”,
+#         "value": “1233”
+#       },
+#  {
+#         "field_names": “balsxtrpx.frame”,
+#         "value": “-2”
+#       }
+    
+#     ]
+#   }
+
+#   ordering_fields = [‘ballstx.epx’, ‘query_id’]
+
+#test
+#SRR10518885
+#12a3732d-65ae-4e59-9364-7d7c2848e77c
