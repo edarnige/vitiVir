@@ -15,8 +15,9 @@ Vagrant.configure("2") do |config|
   config.vm.box = "bento/ubuntu-18.04"
   config.vm.hostname = "vitiBox"
 
-  config.vm.network "forwarded_port", host_ip: "127.0.0.1", guest: 8080, host: 8080
+  config.vm.network "forwarded_port", host_ip: "127.0.0.1", guest: 8080, host: 8080 #Django backend
   config.vm.network "forwarded_port", host_ip: "127.0.0.1", guest: 27017, host: 27017 #mongo
+  config.vm.network "forwarded_port", host_ip: "127.0.0.1", guest: 9000, host: 9000 #Vue frontend
 
   config.vm.provision "shell", inline: <<-SHELL
     
@@ -40,7 +41,7 @@ Vagrant.configure("2") do |config|
     
     # Packages
     MONGO="mongodb-org"
-    # MongoDB
+    # MongoDB shell v4.2.5
     MONGO_INSTALLED=$(dpkg-query -W --showformat='${Status}\n' $MONGO | grep "install ok installed")
     echo "Checking for $MONGO: $MONGO_INSTALLED"
     if [ "" == "$MONGO_INSTALLED" ]; then
@@ -49,6 +50,12 @@ Vagrant.configure("2") do |config|
       sudo apt-get update
       sudo apt-get install -y mongodb-org
     fi
+
+    #Node v10.20.0, npm v6.14.4, Vue CLI v4.3.1
+    sudo apt-get install curl
+    curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash - #12
+    sudo apt-get install -y nodejs
+    sudo npm install -g @vue/cli@4.2.2 
 
 
   SHELL
