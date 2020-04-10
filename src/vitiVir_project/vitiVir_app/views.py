@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, generics
 from rest_framework.authentication import TokenAuthentication
+from django.shortcuts import get_object_or_404
 
 from . import serializers
 from . import models
@@ -27,15 +28,15 @@ class UserListView(generics.ListAPIView):
 
 
 class UserView(APIView):
-    ''' Handles creating, reading, and updating users '''
+    ''' Handles creating, reading, and updating users ar /api/user/<user_id> '''
 
 
-    def get(self, request):
-        users = models.MyUser.objects.all()
-        serializer = serializers.MyUserSerializer(users, many=True)
+    def get(self, request, user_id):
+        user = get_object_or_404(models.MyUser, user_id=user_id)
+        serializer = serializers.MyUserSerializer(user)
         user_data = serializer.data 
 
-        return Response({"users":user_data}) 
+        return Response(user_data) 
 
     def post(self, request):
         ''' Create a user '''

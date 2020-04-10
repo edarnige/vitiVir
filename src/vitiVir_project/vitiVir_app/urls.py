@@ -10,5 +10,5 @@ from . import views
 
 urlpatterns = [
     path('users/',views.UserListView.as_view()),
-    path('user/',views.UserView.as_view()),
+    path('user/<str:user_id>',views.UserView.as_view()),
 ]
