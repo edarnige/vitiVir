@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'django_filters',
+    'rest_framework_filters',
     'rest_framework.authtoken',
     'vitiVir_app',
     'virData_app',
@@ -126,3 +128,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'vitiVir_app.MyUser'
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+        #'rest_framework_filters.backends.RestFrameworkFilterBackend',
+    ),
+}

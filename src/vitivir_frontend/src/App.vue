@@ -1,4 +1,16 @@
 <template>
+  <div id="material-kit">
+    <div :class="{ 'nav-open': NavbarStore.showNavbar }">
+      <router-view name="header" />
+      <div>
+        <router-view />
+      </div>
+      <router-view name="footer" />
+    </div>
+  </div>
+</template>
+<!--
+<template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png" />
     <HelloWorld msg="Welcome to Your Vue.js App" />
@@ -26,3 +38,5 @@ export default {
   margin-top: 60px;
 }
 </style>
+-->
+

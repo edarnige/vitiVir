@@ -1,69 +1,92 @@
 from django.shortcuts import render
+from django.shortcuts import get_object_or_404
+
 from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
-from django.shortcuts import get_object_or_404
+#from rest_framework.filters import SearchFilter, OrderingFilter
 
-from . import serializers
-from . import models
+from django_filters import rest_framework as filters
+#from django_filters.rest_framework import FilterSet, filters 
+#import rest_framework_filters as filters
+#import django_filters
+
+
+from virData_app.serializers import EntrySerializer
+from virData_app.models import Entry
+from virData_app.filters import EntrySearchFilter
 
 
 class EntryListView(generics.ListAPIView):
-    ''' Entry API view '''
+    ''' Entry API list view '''
+    queryset = Entry.objects.all()
+    serializer_class = EntrySerializer
+    #print("\n>>>>>>",queryset[0].blastx.organism,"\n")
 
-    queryset = models.Entry.objects.all()
+    # def get_queryset(self):
+    #     queryset = Entry.objects.all()
+    #     return queryset
+
+    #filter_backends = (filters.OrderingFilter)
+    #filter_backends = (filters.DjangoFilterBackend,)
+    #filter_fields = ('virus_type','blastx__organism',)
+    #ordering_fields = ['blastx__.query_length',]# 'blastx__percent_identity', 'blastx__evalue']
+    #filterset_fields = ['sample','verified','host_organism','virus_type',] #'blastx__organism'
+
+    #paginate_by = 5
     
-    serializer_class = serializers.EntrySerializer
+    filterset_class = EntrySearchFilter #from filters.py
 
-    def list(self, request):
-        queryset = self.get_queryset()
-        print("\n",queryset[1000],"\n") #ok 
-        print("\n>>>>>>",self.queryset[0].blastx.query_length,"\n")
-        serializer = serializers.EntrySerializer(queryset, many=True)
+    #No need for list method... 
+    # def list(self, request):
+    #     queryset = self.get_queryset()
+    #     serializer = EntrySerializer(self.queryset, many=True)
+    #     return Response(serializer.data)
 
-        return Response(serializer.data)
+    #post
+
+
 
 
 
 class SampleListView(generics.ListAPIView): 
     ''' Handles sample view at /api/data/<sample> '''
     
-    serializer_class = serializers.EntrySerializer
+    serializer_class = EntrySerializer
 
     def get_queryset(self):
-        queryset = models.Entry.objects.filter(sample=self.sample)
+        queryset = Entry.objects.filter(sample=self.sample)
         return queryset
 
     def list(self, request, sample, format=None):
         ''' Show list of entries from same sample  '''
         self.sample =sample
         queryset = self.get_queryset()
-        serializer = serializers.EntrySerializer(queryset, many=True)
-        return Response(serializer.data) #stock.data?
-    
-    def post(self, request):
-        print(">>>>>",request)
-        pass
+        serializer = EntrySerializer(queryset, many=True)
+        return Response(serializer.data) 
 
 
-
-class EntryView(APIView):
+class EntryDetailView(APIView):
     ''' Handles single entry view at /api/data/<sample>/<entry_id> '''
 
     def get(self, request, sample, entry_id, format=None):
         ''' Show entry detail '''
         print(">>>",sample, entry_id) #ok
-        entry = get_object_or_404(models.Entry, sample=sample, entry_id=entry_id) #filter? sample is not pk
-        serializer = serializers.EntrySerializer(entry)
+        entry = get_object_or_404(Entry, sample=sample, entry_id=entry_id) #filter? sample is not pk
+        serializer = EntrySerializer(entry)
         entry_data = serializer.data
-        
-        return Response(serializer.data) #stock.data?
+
+        return Response(entry_data)  # serializer.data
+
+    def put(self, request):
+        pass
+
 
     def post(self, request):
         ''' Create an entry '''
 
-        serializer = serializers.EntrySerializer(data=request.data)
+        serializer = EntrySerializer(data=request.data)
 
         if serializer.is_valid():
             entry = serializer.data.get()

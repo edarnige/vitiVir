@@ -7,13 +7,12 @@ from django.conf.urls import include
 from . import views
 
 urlpatterns = [
-    path('data/entries/',views.EntryListView.as_view()),
-    path('data/<str:sample>',views.SampleListView.as_view()), #remove /entry?
-    path('data/<str:sample>/<str:entry_id>',views.EntryView.as_view()), #remove /entry?
+    path('data/entries',views.EntryListView.as_view()),
+    #path('data/<str:sample>',views.SampleListView.as_view()), #remove ?
+    path('data/<str:sample>/<str:entry_id>',views.EntryDetailView.as_view()),
 ]
 
-# /api/data/<sample>
-# SRR1051000_1
+# /api/data/<sa1
 # SRR1051000_2
 # SRR1051000_2
 
