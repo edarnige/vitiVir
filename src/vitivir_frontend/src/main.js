@@ -4,6 +4,7 @@ import router from './router'
 import BootstrapVue from "bootstrap-vue";
 
 import MaterialKit from "./plugins/material-kit";
+// import 'vue-material-design-icons/styles.css';
 
 Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
