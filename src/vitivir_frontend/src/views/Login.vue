@@ -37,8 +37,8 @@
 <script>
 import { LoginCard } from "@/components";
 import axios from 'axios'; //backend server needs to be running
-axios.defaults.xsrfCookieName = 'csrftoken';
-axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+// axios.defaults.xsrfCookieName = 'csrftoken';
+// axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 export default {
   components: {
@@ -48,8 +48,8 @@ export default {
 
   data() {
     return {
-      email: null,
-      password: null
+      email: '',
+      password: ''
     };
   },
 
@@ -71,7 +71,7 @@ export default {
   methods:{
     login(){
       axios.post("http://0.0.0.0:9000/users/login/",{
-        email: this.email,
+        username: this.email,
         password: this.password,
       })
       .then(res => console.log("logged in",res))
