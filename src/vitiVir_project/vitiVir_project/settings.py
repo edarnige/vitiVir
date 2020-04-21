@@ -42,9 +42,11 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'vitiVir_app',
     'virData_app',
+    'corsheaders', #vue external HTTP requests
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware', #external HTTP, must go first
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -73,6 +75,11 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'vitiVir_project.wsgi.application'
+
+CORS_ORIGIN_ALLOW_ALL = True #domain, anyone can access
+CORS_ORIGIN_WHITE_LIST = [ #website address, allow request front to back
+    'http://localhost:8080'
+]
 
 
 # Database
@@ -130,8 +137,14 @@ STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'vitiVir_app.MyUser'
 
 REST_FRAMEWORK = {
-    'DEFAULT_FILTER_BACKENDS': (
-        'django_filters.rest_framework.DjangoFilterBackend',
-        #'rest_framework_filters.backends.RestFrameworkFilterBackend',
+
+    'DEFAULT_PERMISSION_CLASSES':(
+                'rest_framework.permissions.IsAuthenticated',
     ),
+
 }
+
+#     # 'DEFAULT_FILTER_BACKENDS': (
+#     #     #'django_filters.rest_framework.DjangoFilterBackend',
+#     #     'rest_framework_filters.backends.RestFrameworkFilterBackend',
+

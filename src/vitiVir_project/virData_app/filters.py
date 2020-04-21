@@ -1,12 +1,12 @@
 from virData_app.models import Entry, Blastx, Blastrps, SRAMetadata#, INVMetadata
 
-from django_filters import rest_framework as filters
+#from django_filters import rest_framework as filters
 
-
-"""
 import rest_framework_filters as filters
 import django_filters
 
+
+"""
 class SRAMetaFilter(filters.FilterSet):
     class Meta:
         model = SRAMetadata
@@ -55,12 +55,15 @@ from djongo import models
 class EntrySearchFilter(filters.FilterSet):
     #sample = filters.CharFilter(lookup_expr="iexact")
     #inv_metadata = filters.RelatedFilter('INVMetaFilter', queryset=Blastx.objects.all())
-
+    blastx = filters.RelatedFilter('BlastxFilter', queryset=Blastx.objects.all())
     class Meta:
         model = Entry
         #fields = ("sample","blastx")
         fields ={
             'sample': ['icontains',],
+            'host_organism':['icontains'],
+            'virus_type':['icontains'],
+            'verified':['exact'],
 
         }
 

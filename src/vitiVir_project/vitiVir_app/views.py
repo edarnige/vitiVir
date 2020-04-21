@@ -1,51 +1,30 @@
-from django.shortcuts import render
-
 from rest_framework import viewsets
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status, generics
-from rest_framework.authentication import TokenAuthentication
-from django.shortcuts import get_object_or_404
 
-from . import serializers
-from . import models
-from . import permissions 
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.authtoken.serializers import AuthTokenSerializer
+from rest_framework.authtoken.views import ObtainAuthToken
 
-
-class UserListView(generics.ListAPIView):
-    ''' List all users '''
-
-    serializer = serializers.MyUserSerializer
-    queryset = models.MyUser.objects.all()
-    #authentication_classes = (TokenAuthentication,) #session authentication cookies? 
-    #permission_classes = (permissions.UpdateUser,) #can add multiple classes to viewset
-
-    def list(self, request):
-        queryset = self.get_queryset()
-        serializer = serializers.MyUserSerializer(queryset, many=True)
-
-        return Response(serializer.data)
+from .serializers import MyUserSerializer
+from .models import MyUser
+from virData_app.views import EntryListView
 
 
-class UserView(APIView):
-    ''' Handles creating, reading, and updating users ar /api/user/<user_id> '''
+class UserViewSet(viewsets.ModelViewSet):
+    ''' List all users /api/users '''
+    
+    queryset = MyUser.objects.all()
+    serializer_class = MyUserSerializer
+    permission_classes = (AllowAny,) #(permissions.UpdateUser,) #can add multiple classes to viewset
 
 
-    def get(self, request, user_id):
-        user = get_object_or_404(models.MyUser, user_id=user_id)
-        serializer = serializers.MyUserSerializer(user)
-        user_data = serializer.data 
+class LoginViewSet(viewsets.ViewSet):
+    '''Checks email and password, returns authtoken'''
 
-        return Response(user_data) 
+    serializer_class = AuthTokenSerializer
+    permission_classes = (AllowAny,)
 
-    def post(self, request):
-        ''' Create a user '''
-  
-        serializer = serializers.MyUserSerializer(data=request.data)
-
-        if serializer.is_valid():
-            user_saved = serializer.save()
-            return Response({'Success new user': user_saved})
-        else:
-            return Response(
-                serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def create(self, request):
+        '''Use the ObtainAuthToken APIView to validate and create token'''
+        
+        token = ObtainAuthToken().post(request)
+        return token

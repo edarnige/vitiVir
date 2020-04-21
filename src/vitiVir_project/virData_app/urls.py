@@ -2,25 +2,24 @@ from django.urls import path
 from django.conf.urls import include 
 
 # from rest_framework.routers import DefaultRouter
-# from rest_framework import routers
+from rest_framework import routers
 
-from . import views
+from .views import EntryListView
+
+router= routers.DefaultRouter()
+router.register('entries', EntryListView)
 
 urlpatterns = [
-    path('data/entries',views.EntryListView.as_view()),
-    #path('data/<str:sample>',views.SampleListView.as_view()), #remove ?
-    path('data/<str:sample>/<str:entry_id>',views.EntryDetailView.as_view()),
+    path('', include(router.urls)),
 ]
 
-# /api/data/<sa1
-# SRR1051000_2
-# SRR1051000_2
 
-# /api/data/<sample>/<entry_id>
-# SRR1051000_1:
-#   blastx:
-#   rpsblast:
-#   metadata:
+
+
+
+
+
+
 
 # /api/data/entry/<sample>?balststrps.evalue=-2
 
