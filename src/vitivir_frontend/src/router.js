@@ -5,8 +5,10 @@ import Landing from "./views/Landing.vue";
 import Login from "./views/Login.vue";
 import Signup from "./views/Signup";
 import Search from "./views/Search.vue";
+import EntryDetail from"./views/EntryDetail.vue";
 import MainNavbar from "./layout/MainNavbar.vue";
 import MainFooter from "./layout/MainFooter.vue";
+
 
 Vue.use(Router);
 
@@ -26,7 +28,6 @@ export default new Router({
       name: "landing",
       components: { default: Landing, header: MainNavbar, footer: MainFooter },
       props: {
-        header: { colorOnScroll: 400 },
         footer: { backgroundColor: "black" }
       }
     },
@@ -35,7 +36,7 @@ export default new Router({
       name: "login",
       components: { default: Login, header: MainNavbar, footer: MainFooter },
       props: {
-        header: { colorOnScroll: 400 }
+
       }
     },
     {
@@ -43,7 +44,7 @@ export default new Router({
       name: "signup",
       components: { default: Signup, header: MainNavbar, footer: MainFooter },
       props: {
-        header: { colorOnScroll: 400 },
+
       }
     },
     {
@@ -51,9 +52,17 @@ export default new Router({
       name: "search",
       components: { default: Search, header: MainNavbar, footer: MainFooter },
       props: {
-        header: { colorOnScroll: 400 },
+
       }
-    }
+    },
+    {
+      path: "/detail", // /search/:entry_id
+      name: "entrydetail",
+      components: { default: EntryDetail, header: MainNavbar, footer: MainFooter }, 
+      props: { //props: true,
+
+      }
+    },
   ],
   scrollBehavior: to => {
     if (to.hash) {

@@ -8,13 +8,15 @@
         <md-table-head>evalue</md-table-head>
         <md-table-head>query length</md-table-head>
         <md-table-head>percent id</md-table-head>
+        <md-table-head>verified</md-table-head>
       </md-table-row>
 
-      <md-table-row @click="$router.push('/landing');" v-for="entry in entries" v-bind:key="entry.entry_id">
+      <md-table-row @click="$router.push('/detail');" v-for="entry in entries" v-bind:key="entry.entry_id">
         <md-table-cell>{{ entry.query_id }}</md-table-cell>
         <md-table-cell>{{ entry.blastrps.evalue}}</md-table-cell>
         <md-table-cell>{{ entry.blastx.query_length }}</md-table-cell>
         <md-table-cell>{{ entry.blastx.percent_identity }}</md-table-cell>
+        <md-table-cell> <i class="fas fa-check-circle"></i></md-table-cell>
       </md-table-row>
 
     </md-table>
@@ -79,6 +81,10 @@ export default {
     display: inline-block;
     width: 25%;
 } */
+
+.fa-check-circle{
+  color:  #4caf50;
+}
 
 
 

@@ -14,7 +14,7 @@
             <br />
             <md-button
               class="md-primary md-lg"
-              target="/search"
+              @click="$router.push('/search');"
               >Search</md-button>
             <p>
               <br/>

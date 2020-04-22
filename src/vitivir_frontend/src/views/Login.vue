@@ -23,7 +23,7 @@
               <md-button slot="footer" class="md-simple md-success md-lg" v-on:click="login"> 
                 Login
               </md-button>
-              <md-button slot="footer" class="md-simple md-primary md-lg" target="/signup"> 
+              <md-button slot="footer" class="md-simple md-primary md-lg" @click="$router.push('/signup');"> 
                 Request account
               </md-button>
             </login-card>

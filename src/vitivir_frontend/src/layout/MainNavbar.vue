@@ -37,7 +37,7 @@
                       <md-button
                         slot="title"
                         class="md-button md-button-link md-white md-simple "
-                        target="/landing"
+                        @click="$router.push('/landing');"
                       >
                         <p>Home</p>
                       </md-button>
@@ -54,7 +54,7 @@
                       <md-button
                         slot="title"
                         class="md-button md-button-link md-white md-simple "
-                        target="/login"
+                        @click="$router.push('/login');"
                       >
                         <p>Login</p>
                       </md-button>
@@ -71,7 +71,7 @@
                       <md-button
                         slot="title"
                         class="md-button md-button-link md-white md-simple "
-                        target="/signup"
+                        @click="$router.push('/signup');"
                       >
                         <p>Request account</p>
                       </md-button>
@@ -136,7 +136,7 @@ export default {
   },
   computed: {
     showDownload() {
-      const excludedRoutes = ["login", "landing", "search", "signup"];
+      const excludedRoutes = ["login", "landing", "search", "signup","entrydetail"];
       return excludedRoutes.every(r => r !== this.$route.name);
     }
   },
