@@ -13,9 +13,8 @@
             </h4>
             <br />
             <md-button
-              href="http://0.0.0.0:8080/#/search"
               class="md-primary md-lg"
-              target="_blank"
+              target="/search"
               >Search</md-button>
             <p>
               <br/>

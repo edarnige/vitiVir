@@ -24,7 +24,7 @@
       type="primary"
       no-arrows
       v-model="defaultPagination"
-      :per-page=5>
+      :per-page="5">
     </pagination>
 
    </div>

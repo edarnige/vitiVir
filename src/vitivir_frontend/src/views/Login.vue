@@ -20,10 +20,10 @@
                 <label>Password...</label>
                 <md-input id="password" v-model="password" type="password" required></md-input>
               </md-field>
-              <md-button slot="footer" class="md-simple md-success md-lg" v-on:click="login"> <!--href="http://0.0.0.0:8080/#/landing"-->
+              <md-button slot="footer" class="md-simple md-success md-lg" v-on:click="login"> 
                 Login
               </md-button>
-              <md-button slot="footer" class="md-simple md-primary md-lg" href="http://0.0.0.0:8080/#/signup"> 
+              <md-button slot="footer" class="md-simple md-primary md-lg" target="/signup"> 
                 Request account
               </md-button>
             </login-card>
@@ -74,7 +74,10 @@ export default {
         username: this.email,
         password: this.password,
       })
-      .then(res => console.log("logged in",res))
+      .then(res => {
+        console.log("logged in",res),
+        this.$router.push('/search');
+      })
       .catch(err => console.log(err));
     }
   }

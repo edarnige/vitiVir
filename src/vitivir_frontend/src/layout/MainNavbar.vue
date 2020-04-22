@@ -37,7 +37,7 @@
                       <md-button
                         slot="title"
                         class="md-button md-button-link md-white md-simple "
-                        href="http://0.0.0.0:8080/#/landing"
+                        target="/landing"
                       >
                         <p>Home</p>
                       </md-button>
@@ -54,7 +54,7 @@
                       <md-button
                         slot="title"
                         class="md-button md-button-link md-white md-simple "
-                        href="http://0.0.0.0:8080/#/login"
+                        target="/login"
                       >
                         <p>Login</p>
                       </md-button>
@@ -71,7 +71,7 @@
                       <md-button
                         slot="title"
                         class="md-button md-button-link md-white md-simple "
-                        href="http://0.0.0.0:8080/#/signup"
+                        target="/signup"
                       >
                         <p>Request account</p>
                       </md-button>

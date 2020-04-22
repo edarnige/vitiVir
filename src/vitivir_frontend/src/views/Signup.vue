@@ -25,7 +25,7 @@
               <md-field class="md-form-group" slot="inputs">
                 <!-- <md-icon>face</md-icon> -->
                 <label>Confirm password...</label>
-                <md-input id="password" v-model="confirmed_password" type="password" required></md-input>
+                <md-input id="passwordConfirmed" v-model="confirmed_password" type="password" required></md-input>
               </md-field>
               <md-button slot="footer" class="md-simple md-primary md-lg" v-on:click="signup"> <!-- redirect to landing -->
                 Request account
