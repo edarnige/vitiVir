@@ -56,7 +56,7 @@ export default new Router({
       }
     },
     {
-      path: "/detail", // /search/:entry_id
+      path: "/search/:entry_id", 
       name: "entrydetail",
       components: { default: EntryDetail, header: MainNavbar, footer: MainFooter }, 
       props: { //props: true,

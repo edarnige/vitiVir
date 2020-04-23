@@ -37,8 +37,7 @@
 <script>
 import { LoginCard } from "@/components";
 import axios from 'axios'; //backend server needs to be running
-// axios.defaults.xsrfCookieName = 'csrftoken';
-// axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+//import Vue from "vue";
 
 export default {
   components: {
@@ -74,9 +73,15 @@ export default {
         username: this.email,
         password: this.password,
       })
+
       .then(res => {
-        console.log("logged in",res),
-        this.$router.push('/search');
+        console.log("logged in", res.data.token)
+        const token = res.data.token
+        //localStorage.setItem('user-token', token)
+        //Vue.prototype.$http.defaults.headers.common['Authorization'] = res.data.token,
+        //this.http.headers.common['Authorization']="Basic " + token;
+        console.log("logged in", 'Token' + token)
+        this.$router.push({path:'/search', header: {'Authorization': 'Token '+token}});
       })
       .catch(err => console.log(err));
     }

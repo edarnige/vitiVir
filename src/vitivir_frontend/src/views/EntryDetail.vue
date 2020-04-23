@@ -10,27 +10,27 @@
 
             <md-table-row>
                 <md-table-head >Query ID</md-table-head>
-                <md-table-cell >SRR10518885_0</md-table-cell>
+                <md-table-cell >{{ entry.query_id }}</md-table-cell>
             </md-table-row>
             
             <md-table-row>
                 <md-table-head >Sample</md-table-head>
-                <md-table-cell >SRR10518885</md-table-cell>
+                <md-table-cell >{{ entry.sample }}</md-table-cell>
             </md-table-row>
 
             <md-table-row>
                 <md-table-head>Verified</md-table-head>
-                <md-table-cell>False</md-table-cell>
+                <md-table-cell>{{ entry.verified }}</md-table-cell>
             </md-table-row>
 
             <md-table-row>
                 <md-table-head>Virus type</md-table-head>
-                <md-table-cell>-</md-table-cell>
+                <md-table-cell>{{ entry.virus_type }}</md-table-cell>
             </md-table-row>
 
             <md-table-row>
                 <md-table-head>Host organism</md-table-head>
-                <md-table-cell>-</md-table-cell>
+                <md-table-cell>{{ entry.host_organism }}</md-table-cell>
             </md-table-row>
 
         </md-table>
@@ -43,47 +43,47 @@
 
             <md-table-row>
                 <md-table-head>Relsease Date</md-table-head>
-                <md-table-cell>11/23/19 10:55</md-table-cell>
+                <md-table-cell>{{ entry.sra_metadata.ReleaseDate }}</md-table-cell>
             </md-table-row>
             
             <md-table-row>
                 <md-table-head>Spots</md-table-head>
-                <md-table-cell>23900218</md-table-cell>
+                <md-table-cell>{{ entry.sra_metadata.spots }}</md-table-cell>
             </md-table-row>
 
             <md-table-row>
                 <md-table-head>Experiment</md-table-head>
-                <md-table-cell>SRX7203860</md-table-cell>
+                <md-table-cell>{{ entry.sra_metadata.Experiment }}</md-table-cell>
             </md-table-row>
 
             <md-table-row>
-                <md-table-head>LibraryName</md-table-head>
-                <md-table-cell>berry_EE_4.1</md-table-cell>
+                <md-table-head>Library Name</md-table-head>
+                <md-table-cell>{{ entry.sra_metadata.LibraryName }}.1</md-table-cell>
             </md-table-row>
 
             <md-table-row>
-                <md-table-head>LibraryStrategy</md-table-head>
-                <md-table-cell>RNA-Seq</md-table-cell>
+                <md-table-head>Library Strategy</md-table-head>
+                <md-table-cell>{{ entry.sra_metadata.LibraryStrategy }}</md-table-cell>
             </md-table-row>
 
             <md-table-row>
                 <md-table-head>Platform</md-table-head>
-                <md-table-cell>ILLUMINA</md-table-cell>
+                <md-table-cell>{{ entry.sra_metadata.Platform }}</md-table-cell>
             </md-table-row>
 
             <md-table-row>
-                <md-table-head>SRAStudy</md-table-head>
-                <md-table-cell>SRP231551</md-table-cell>
+                <md-table-head>SRA Study</md-table-head>
+                <md-table-cell>{{ entry.sra_metadata.SRAStudy }}</md-table-cell>
             </md-table-row>
 
             <md-table-row>
-                <md-table-head>RunHash</md-table-head>
-                <md-table-cell>0515A8E804B22D0DD3DB2E54624CE5F6</md-table-cell>
+                <md-table-head>Run Hash</md-table-head>
+                <md-table-cell>{{ entry.sra_metadata.RunHash }}</md-table-cell>
             </md-table-row>
 
             <md-table-row>
-                <md-table-head>LibraryLayout</md-table-head>
-                <md-table-cell>PAIRED</md-table-cell>
+                <md-table-head>Library Layout</md-table-head>
+                <md-table-cell>{{ entry.sra_metadata.LibraryLayout }}</md-table-cell>
             </md-table-row>
 
         </md-table>
@@ -92,28 +92,38 @@
         <md-table >           
 
             <md-table-row>
-                <md-table-head>Number of reads</md-table-head>
-                <md-table-cell >2548</md-table-cell>
+                <md-table-head>Taxonomy</md-table-head>
+                <md-table-cell >{{ entry.blastx.taxonomy }}</md-table-cell>
             </md-table-row>
-            
+
             <md-table-row>
-                <md-table-head >Query length</md-table-head>
-                <md-table-cell >7005</md-table-cell>
+                <md-table-head>Organism</md-table-head>
+                <md-table-cell >{{ entry.blastx.organism }}</md-table-cell>
+            </md-table-row>
+
+            <md-table-row>
+                <md-table-head>Percent ID</md-table-head>
+                <md-table-cell >{{ entry.blastx.percent_idenentity }}</md-table-cell>
+            </md-table-row>
+
+            <md-table-row>
+                <md-table-head>Number of reads</md-table-head>
+                <md-table-cell >{{ entry.blastx.nb_reads }}</md-table-cell>
             </md-table-row>
 
             <md-table-row>
                 <md-table-head>Algorithm</md-table-head>
-                <md-table-cell>BLASTX</md-table-cell>
+                <md-table-cell>{{ entry.blastx.algo }}</md-table-cell>
             </md-table-row>
 
             <md-table-row>
                 <md-table-head>Accession</md-table-head>
-                <md-table-cell>KDP44557</md-table-cell>
+                <md-table-cell>{{ entry.blastx.accession }}</md-table-cell>
             </md-table-row>
 
             <md-table-row>
                 <md-table-head>Sequence</md-table-head>
-                <md-table-cell>ATGCGGGGGGTATATTAGATGATGTACGTCGCTGACTGATACGCTCAGCTAGCATCAGTCAGACTGCATCAGTCAGACTGCAGCAGCAGTTCGATCAGCAGTTACGTCGTCAGTCAGGCGACTGCATCATGCAGTCAGTCATGACTGTCAGTCATGCAGTCATGACTGTTGCGT</md-table-cell>
+                <md-table-cell>{{ entry.blastx.sequence }}</md-table-cell>
             </md-table-row>
 
         </md-table>
@@ -122,33 +132,38 @@
         <md-table >
 
             <md-table-row>
-                <md-table-head >Number of reads</md-table-head>
-                <md-table-cell >2548</md-table-cell>
+                <md-table-head >Cdd ID</md-table-head>
+                <md-table-cell >{{ entry.blastrps.cdd_id }}</md-table-cell>
             </md-table-row>
             
             <md-table-row>
                 <md-table-head >Query length</md-table-head>
-                <md-table-cell >7005</md-table-cell>
+                <md-table-cell >{{ entry.blastrps.query_length }}</md-table-cell>
             </md-table-row>
 
             <md-table-row>
-                <md-table-head>Algorithm</md-table-head>
-                <md-table-cell>BLASTX</md-table-cell>
-            </md-table-row>
-
-            <md-table-row>
-                <md-table-head>Accession</md-table-head>
-                <md-table-cell>KDP44557</md-table-cell>
-            </md-table-row>
-
-            <md-table-row>
-                <md-table-head>Evalue</md-table-head>
-                <md-table-cell>3.1e-89</md-table-cell>
+                <md-table-head>Hit ID</md-table-head>
+                <md-table-cell>{{ entry.blastrps.hit_id }}</md-table-cell>
             </md-table-row>
 
             <md-table-row>
                 <md-table-head>Description</md-table-head>
-                <md-table-cell>hypothetical protein JCGZ_16390 [Jatropha curcas]</md-table-cell>
+                <md-table-cell class="text-left">{{ entry.blastrps.description }}</md-table-cell>
+            </md-table-row>
+
+            <md-table-row>
+                <md-table-head>Evalue</md-table-head>
+                <md-table-cell>{{ entry.blastrps.evalue }}</md-table-cell>
+            </md-table-row>
+
+            <md-table-row>
+                <md-table-head>Family</md-table-head>
+                <md-table-cell>{{ entry.blastrps.family }}</md-table-cell>
+            </md-table-row>
+
+            <md-table-row>
+                <md-table-head>Genus</md-table-head>
+                <md-table-cell>{{ entry.blastrps.genus }}</md-table-cell>
             </md-table-row>
             
         </md-table>
@@ -171,6 +186,7 @@
 
 
 <script>
+import axios from 'axios';
 
 export default {
   components: {
@@ -194,12 +210,22 @@ export default {
 
   data() {
     return {
+        entry: Object,
+        //entry_id: 
 
     };
   },
   methods: {
-
+      getDetail(entry_id) {
+      axios.get("http://0.0.0.0:9000/api/data/entries/" + entry_id)
+      .then(res => (this.entry = res.data))
+      .catch(err => console.log(err));
+    },
+        //get user
   },
+  created(){
+      this.getDetail(this.$route.params.entry_id);
+  }
   
 };
 </script>

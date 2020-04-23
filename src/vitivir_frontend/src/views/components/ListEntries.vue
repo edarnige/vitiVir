@@ -11,7 +11,7 @@
         <md-table-head>verified</md-table-head>
       </md-table-row>
 
-      <md-table-row @click="$router.push('/detail');" v-for="entry in entries" v-bind:key="entry.entry_id">
+      <md-table-row @click="toDetail(entry)" v-for="entry in entries" v-bind:key="entry.entry_id">
         <md-table-cell>{{ entry.query_id }}</md-table-cell>
         <md-table-cell>{{ entry.blastrps.evalue}}</md-table-cell>
         <md-table-cell>{{ entry.blastx.query_length }}</md-table-cell>
@@ -59,6 +59,11 @@ export default {
       .then(res => (this.entries = res.data))
       .catch(err => console.log(err));
     },
+    toDetail(entry){
+      //this.$router.push("/search/" + entry.entry_id)
+      const entry_id = entry.entry_id
+      this.$router.push({name: 'entrydetail', params: {entry_id}})
+    }
   },
     created() { //calls methods
     this.getEntries();
