@@ -48,7 +48,8 @@ export default {
   data() {
     return {
       email: '',
-      password: ''
+      password: '',
+      token: localStorage.getItem('user-token') || null,
     };
   },
 
@@ -58,6 +59,7 @@ export default {
       default: require("@/assets/img/vineyard.jpeg")
     }
   },
+
   computed: {
     headerStyle() {
       return {
@@ -66,30 +68,30 @@ export default {
     }
   },
 
-
   methods:{
     login(){
-      axios.post("http://0.0.0.0:9000/users/login/",{
+      axios.post("http://0.0.0.0:9000/users/login/", {
         username: this.email,
         password: this.password,
       })
-
       .then(res => {
-        console.log("logged in", res.data.token)
-        const token = res.data.token
-        //localStorage.setItem('user-token', token)
-        //Vue.prototype.$http.defaults.headers.common['Authorization'] = res.data.token,
-        //this.http.headers.common['Authorization']="Basic " + token;
-        console.log("logged in", 'Token' + token)
-        this.$router.push({path:'/search', header: {'Authorization': 'Token '+token}});
+        this.token = res.data.token;
+        console.log("logged in", res);
+        localStorage.setItem('user-token', this.token);
+        this.$router.push('/search')
+        //this.$router.push({path:'/search', header: {'Authorization': 'Token '+ this.token}});
       })
-      .catch(err => console.log(err));
-    }
+      .catch(err => {
+        console.log(err);
+        localStorage.removeItem('user-token');
+    })
+  },
+
   }
+}
 
-  // button v-on:click="doSomething."
-
-};
 </script>
 
-<style lang="css"></style>
+<style lang="css">
+
+</style>

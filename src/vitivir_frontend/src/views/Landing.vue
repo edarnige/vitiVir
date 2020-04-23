@@ -14,7 +14,7 @@
             <br />
             <md-button
               class="md-primary md-lg"
-              @click="$router.push('/search');"
+              @click="canSearch()"
               >Search</md-button>
             <p>
               <br/>
@@ -119,6 +119,8 @@
 </template>
 
 <script>
+import { TokenService } from '@/storage/service.js'
+
 export default {
   bodyClass: "landing-page",
   props: {
@@ -139,19 +141,33 @@ export default {
       default: require("@/assets/img/faces/kendall.jpg")
     }
   },
+
   data() {
     return {
       name: null,
       email: null,
-      message: null
+      message: null,
+      token: TokenService.getToken() || null,
     };
   },
+
   computed: {
     headerStyle() {
       return {
         backgroundImage: `url(${this.header})`
       };
     }
+  },
+
+  methods: {
+    canSearch(){
+      if(this.token != null){
+        this.$router.push('/search')
+      }
+      else{
+        this.$router.push('/login')
+      }
+    },
   }
 };
 </script>

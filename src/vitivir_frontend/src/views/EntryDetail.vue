@@ -170,13 +170,6 @@
 
 
 
- 
-            
-        
-
-
-
-
     </div>
     </div>
   </div>
@@ -187,13 +180,13 @@
 
 <script>
 import axios from 'axios';
+import { TokenService } from '@/storage/service.js'
 
 export default {
   components: {
 
   },
   name: "entrydetail",
-  //bodyClass: "index-page",
   props: {
     header: {
       type: String,
@@ -211,17 +204,25 @@ export default {
   data() {
     return {
         entry: Object,
-        //entry_id: 
-
+        user: Object,
+        token: TokenService.getToken() || null,
     };
   },
   methods: {
-      getDetail(entry_id) {
-      axios.get("http://0.0.0.0:9000/api/data/entries/" + entry_id)
-      .then(res => (this.entry = res.data))
-      .catch(err => console.log(err));
+        getDetail(entry_id) {
+            axios.get("http://0.0.0.0:9000/api/data/entries/" + entry_id,{
+                headers: {
+                    'Authorization': 'Token ' + this.token
+                }
+            })
+            .then(res => (this.entry = res.data))
+            .catch(err => console.log(err));
     },
-        //get user
+        getUser(){
+            axios.get("http://0.0.0.0:9000/users/createuser")
+            .then(res => (this.user = res.data))
+            .catch(err => console.log(err));
+        }
   },
   created(){
       this.getDetail(this.$route.params.entry_id);

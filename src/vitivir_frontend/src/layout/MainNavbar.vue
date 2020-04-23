@@ -50,7 +50,7 @@
                   href="javascript:void(0)"
                   class="md-list-item-router md-list-item-container md-button-clean dropdown"
                 >
-                  <div class="md-list-item-content">
+                  <div class="md-list-item-content" v-if="token==null">
                       <md-button
                         slot="title"
                         class="md-button md-button-link md-white md-simple "
@@ -67,13 +67,30 @@
                   href="javascript:void(0)"
                   class="md-list-item-router md-list-item-container md-button-clean dropdown"
                 >
-                  <div class="md-list-item-content">
+                  <div class="md-list-item-content" v-if="token==null">
                       <md-button
                         slot="title"
                         class="md-button md-button-link md-white md-simple "
                         @click="$router.push('/signup');"
                       >
                         <p>Request account</p>
+                      </md-button>
+                  </div>
+                </a>
+              </li>
+
+              <li class="md-list-item" v-if="!showDownload">
+                <a
+                  href="javascript:void(0)"
+                  class="md-list-item-router md-list-item-container md-button-clean dropdown"
+                >
+                  <div class="md-list-item-content" v-if="token!=null">
+                      <md-button
+                        slot="title"
+                        class="md-button md-button-link md-white md-simple "
+                        @click="logout()"
+                      >
+                        <p>Logout</p>
                       </md-button>
                   </div>
                 </a>
@@ -102,7 +119,10 @@ function resizeThrottler(actualResizeHandler) {
   }
 }
 
+
+import { TokenService } from '@/storage/service.js'
 import MobileMenu from "@/layout/MobileMenu";
+
 export default {
   components: {
     MobileMenu
@@ -131,7 +151,8 @@ export default {
   data() {
     return {
       extraNavClasses: "",
-      toggledClass: false
+      toggledClass: false,
+      token: TokenService.getToken() || null,//localStorage.getItem('user-token') || null,
     };
   },
   computed: {
@@ -184,7 +205,15 @@ export default {
       if (element_id) {
         element_id.scrollIntoView({ block: "end", behavior: "smooth" });
       }
-    }
+    },
+    
+    logout(){
+      localStorage.removeItem('user-token');
+      this.token = null;
+      this.$router.push('/landing');
+    },
+
+
   },
   mounted() {
     document.addEventListener("scroll", this.scrollListener);

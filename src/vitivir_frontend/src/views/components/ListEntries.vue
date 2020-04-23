@@ -39,7 +39,7 @@
 <script>
 import axios from 'axios';
 import {Pagination} from '@/components'
-
+import { TokenService } from '@/storage/service.js'
 
 export default {
   name: 'entries',
@@ -51,11 +51,16 @@ export default {
     return {
       entries : [],
       defaultPagination: 1,
+      token: TokenService.getToken() || null,
     }
   },
   methods: {
     getEntries() {
-      axios.get("http://0.0.0.0:9000/api/data/entries/")
+      axios.get("http://0.0.0.0:9000/api/data/entries/", {
+        headers: {
+          'Authorization': 'Token ' + this.token
+        }
+      })
       .then(res => (this.entries = res.data))
       .catch(err => console.log(err));
     },
