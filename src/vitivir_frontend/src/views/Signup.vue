@@ -25,7 +25,7 @@
               <md-field class="md-form-group" slot="inputs">
                 <!-- <md-icon>face</md-icon> -->
                 <label>Confirm password...</label>
-                <md-input id="passwordConfirmed" v-model="confirmed_password" type="password" required></md-input>
+                <md-input id="passwordConfirmed" v-model="passwordConfirmed" type="password" required></md-input>
               </md-field>
               <md-button slot="footer" class="md-simple md-primary md-lg" v-on:click="signup"> <!-- redirect to landing -->
                 Request account
@@ -52,7 +52,8 @@ export default {
   data() {
     return {
       email: null,
-      password: null
+      password: null,
+      passwordConfirmed: null,
     };
   },
 
@@ -72,12 +73,17 @@ export default {
 
   methods:{
     signup(){
-      axios.post("http://0.0.0.0:9000/users/createuser/",{
-        email: this.email,
-        password: this.password,
-      })
-      .then(res => console.log("signed up", res))
-      .catch(err => console.log(err));
+      if(this.password == this.passwordConfirmed){
+        axios.post("http://0.0.0.0:9000/users/createuser/",{
+          email: this.email,
+          password: this.password,
+        })
+        .then(res => console.log("signed up", res))
+        .catch(err => console.log(err));
+      }
+      else{
+        console.log("Passwords do not match")
+      }
     }
 
   }
