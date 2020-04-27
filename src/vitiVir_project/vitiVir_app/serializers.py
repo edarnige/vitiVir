@@ -15,8 +15,16 @@ class MyUserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         ''' Create and return a new user ''' 
 
-        user =MyUser.objects.create(**validated_data)
-        Token.objects.create(user=user)
+        user = MyUser(
+            email=validated_data['email']
+        )
+
+        user.set_password(validated_data['password'])
+        user.save()
+
+        #user =MyUser.objects.create(**validated_data)
+
+        #Token.objects.create(user=user)
         #print(">>>>>>",user.auth_token, dir(user)) #debug
 
         return user
