@@ -51,9 +51,9 @@ export default {
 
   data() {
     return {
-      email: null,
-      password: null,
-      passwordConfirmed: null,
+      email: '',
+      password: '',
+      passwordConfirmed: '',
     };
   },
 

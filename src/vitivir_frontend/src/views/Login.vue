@@ -79,6 +79,7 @@ export default {
         console.log("logged in", res);
         localStorage.setItem('user-token', this.token);
         this.$router.push('/search')
+        location.reload(); //to show correct navbar buttons...
         //this.$router.push({path:'/search', header: {'Authorization': 'Token '+ this.token}});
       })
       .catch(err => {

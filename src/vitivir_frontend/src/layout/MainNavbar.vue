@@ -1,13 +1,14 @@
-<template>
+<template >
   <md-toolbar
     id="toolbar"
     md-elevation="0"
     class="md-primary md-absolute"
     :class="extraNavClasses"
     :color-on-scroll="colorOnScroll"
+    
   >
-    <div class="md-toolbar-row md-collapse-lateral">
-      <div class="md-toolbar-section-start">
+    <div class="md-toolbar-row md-collapse-lateral" >
+      <div class="md-toolbar-section-start" >
         <h3 class="md-title">VitiVir</h3>
       </div>
       <div class="md-toolbar-section-end">
@@ -23,7 +24,7 @@
 
         <div class="md-collapse">
           <div class="md-collapse-wrapper">
-            <mobile-menu nav-mobile-section-start="false">
+            <mobile-menu nav-mobile-section-start="false" >
               <!-- Here you can add your items from the section-start of your toolbar -->
             </mobile-menu>
             <md-list>
@@ -50,7 +51,7 @@
                   href="javascript:void(0)"
                   class="md-list-item-router md-list-item-container md-button-clean dropdown"
                 >
-                  <div class="md-list-item-content" v-if="token==null">
+                  <div class="md-list-item-content" v-if="token==null" >
                       <md-button
                         slot="title"
                         class="md-button md-button-link md-white md-simple "
@@ -67,7 +68,7 @@
                   href="javascript:void(0)"
                   class="md-list-item-router md-list-item-container md-button-clean dropdown"
                 >
-                  <div class="md-list-item-content" v-if="token==null">
+                  <div class="md-list-item-content" v-if="token==null" >
                       <md-button
                         slot="title"
                         class="md-button md-button-link md-white md-simple "
@@ -79,7 +80,7 @@
                 </a>
               </li>
 
-              <li class="md-list-item" v-if="!showDownload">
+              <li class="md-list-item" v-if="!showDownload" >
                 <a
                   href="javascript:void(0)"
                   class="md-list-item-router md-list-item-container md-button-clean dropdown"
@@ -153,6 +154,7 @@ export default {
       extraNavClasses: "",
       toggledClass: false,
       token: TokenService.getToken() || null,//localStorage.getItem('user-token') || null,
+      //loggedIn: token
     };
   },
   computed: {
@@ -211,6 +213,7 @@ export default {
       localStorage.removeItem('user-token');
       this.token = null;
       this.$router.push('/landing');
+      location.reload();
     },
 
 
@@ -220,6 +223,9 @@ export default {
   },
   beforeDestroy() {
     document.removeEventListener("scroll", this.scrollListener);
+  },
+  created() { //calls methods
+    this.getEntries();
   }
 };
 </script>
