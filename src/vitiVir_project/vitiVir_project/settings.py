@@ -148,3 +148,5 @@ REST_FRAMEWORK = {
 #     #     #'django_filters.rest_framework.DjangoFilterBackend',
 #     #     'rest_framework_filters.backends.RestFrameworkFilterBackend',
 
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
