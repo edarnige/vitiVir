@@ -26,12 +26,12 @@ class SRAMetadataSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-# class INVMetadataSerializer(serializers.ModelSerializer):
-#     ''' Serializer for INV metadata '''
+class INVMetadataSerializer(serializers.ModelSerializer):
+    ''' Serializer for INV metadata '''
 
-#     class Meta:
-#         model = models.INVMetadata
-#         fields = '__all__'
+    class Meta:
+        model = models.INVMetadata
+        fields = '__all__'
 
 
 class EntrySerializer(serializers.ModelSerializer):
@@ -40,11 +40,10 @@ class EntrySerializer(serializers.ModelSerializer):
     blastrps = BlastrpsSerializer()
     blastx = BlastxSerializer()
     sra_metadata = SRAMetadataSerializer()
-    #inv_metadata = INVMetadataSerializer()
+    inv_metadata = INVMetadataSerializer()
 
     class Meta:
         model = models.Entry
-        #fields = ('entry_id','query_id','sample','blastrps','blastx','sra_metadata')#,inv_metadata 
         fields = '__all__'
         depth = 2
 

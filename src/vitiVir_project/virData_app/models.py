@@ -86,9 +86,29 @@ class SRAMetadata(models.Model):
     ReadHash = models.CharField(max_length=250) #hash?
 
 
-#class INVMetadata(models.Model):#
- #   ''' InViCeb embedded document from INV_metadata '''
- #   pass
+class INVMetadata(models.Model):
+    ''' 
+    InViCeb embedded document from INV_metadata
+    '''
+
+    project = models.CharField(max_length=250)
+    grapevine_cultivar = models.CharField(max_length=250)
+    rootstock = models.CharField(max_length=250)
+    plantation_year = models.CharField(max_length=250)
+    location = models.CharField(max_length=250)
+    substrate = models.CharField(max_length=250)
+    extraction_method = models.CharField(max_length=250 )
+    organ = models.CharField(max_length=250 )
+    mid_sequence = models.CharField(max_length=250)
+    mid_id = models.CharField(max_length=250)
+    run_name = models.CharField(max_length=250)
+    technology = models.CharField(max_length=250)
+    run_id = models.CharField(max_length=250)
+    date = models.DateTimeField()
+    seq_location = models.CharField(max_length=250)
+    rna = models.CharField(max_length=250)
+
+
 
 
 class Entry(models.Model):
@@ -102,11 +122,15 @@ class Entry(models.Model):
         model_container=Blastx
     )
     sra_metadata= models.EmbeddedField(
-        model_container=SRAMetadata
+        model_container=SRAMetadata,
+        blank=True,
+        null=True
     )
-    #inv_metadata = models.EmbeddedField( #add when available
-    #    model_container=INVMetadata
-    #)
+    inv_metadata = models.EmbeddedField( 
+        model_container=INVMetadata,
+        blank=True,
+        null=True
+    )
 
     query_id = models.CharField(max_length=255)
     entry_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -126,3 +150,69 @@ class Entry(models.Model):
         return self.query_id
 
     
+
+
+
+
+
+# class SRAMetadata(models.Model):
+#     '''
+#     Metadata embedded document from SRA_metadata.csv
+#     '''
+
+#     ReleaseDate = models.DateTimeField(default=None) #date and time?
+#     LoadDate = models.CharField(max_length=250, default=None)
+#     spots = models.IntegerField(default=None)
+#     bases = models.IntegerField(default=None) #numberlong?
+#     spots_with_mates = models.IntegerField(default=None)
+#     avgLength = models.IntegerField(default=None)
+#     size_MB = models.IntegerField(default=None)
+#     download_path = models.CharField(max_length=500,default=None)
+#     Experiment = models.CharField(max_length=250,default=None)
+#     LibraryName = models.CharField(max_length=250,default=None)
+#     LibraryStrategy = models.CharField(max_length=250,default=None)
+#     LibrarySelection = models.CharField(max_length=250,default=None)
+#     LibrarySource = models.CharField(max_length=250,default=None)
+#     LibraryLayout = models.CharField(max_length=250,default=None)
+#     InsertSize = models.IntegerField(default=None)
+#     InsertDev = models.IntegerField(default=None)
+#     Platform = models.CharField(max_length=250,default=None)
+#     Model = models.CharField(max_length=250,default=None)
+#     SRAStudy = models.CharField(max_length=250,default=None)
+#     BioProject = models.CharField(max_length=250,default=None)
+#     ProjectID= models.CharField(max_length=250,default=None) #int?
+#     Sample = models.CharField(max_length=250,default=None)
+#     BioSample = models.CharField(max_length=250,default=None)
+#     SampleType = models.CharField(max_length=250,default=None)
+#     TaxID = models.CharField(max_length=250,default=None) #int?
+#     ScientificName = models.CharField(max_length=250,default=None)
+#     SampleName = models.CharField(max_length=250,default=None)
+#     Tumor = models.CharField(max_length=250,default=None)
+#     CenterName = models.CharField(max_length=250,default=None)
+#     Submission = models.CharField(max_length=250,default=None)
+#     Consent = models.CharField(max_length=250,default=None)
+#     RunHash = models.CharField(max_length=250,default=None) #hash?
+#     ReadHash = models.CharField(max_length=250,default=None) #hash?
+
+
+# class INVMetadata(models.Model):
+#     ''' 
+#     InViCeb embedded document from INV_metadata
+#     '''
+
+#     project = models.CharField(max_length=250,default=None)
+#     grapevine_cultivar = models.CharField(max_length=250,default=None)
+#     rootstock = models.CharField(max_length=250,default=None)
+#     plantation_year = models.CharField(max_length=250,default=None)
+#     location = models.CharField(max_length=250,default=None)
+#     substrate = models.CharField(max_length=250,default=None)
+#     extraction_method = models.CharField(max_length=250, default=None)
+#     organ = models.CharField(max_length=250, default=None)
+#     mid_sequence = models.CharField(max_length=250,default=None)
+#     mid_id = models.CharField(max_length=250,default=None)
+#     run_name = models.CharField(max_length=250,default=None)
+#     technology = models.CharField(max_length=250,default=None)
+#     run_id = models.CharField(max_length=250,default=None)
+#     date = models.DateTimeField(default=None)
+#     seq_location = models.CharField(max_length=250,default=None)
+#     rna = models.CharField(max_length=250,default=None)

@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.authentication import TokenAuthentication
 
 #from rest_framework.filters import SearchFilter, OrderingFilter
-#from django_filters import rest_framework as filters
+from django_filters import rest_framework as filters
 #from django_filters.rest_framework import FilterSet, filters
 #import rest_framework_filters as filters
 #import django_filters
@@ -23,3 +23,7 @@ class EntryListView(viewsets.ModelViewSet):
     serializer_class = EntrySerializer
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
+
+
+    filter_backends = (filters.DjangoFilterBackend,)
+    filter_fields = ('virus_type','sample')
