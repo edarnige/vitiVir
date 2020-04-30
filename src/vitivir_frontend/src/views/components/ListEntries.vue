@@ -18,15 +18,13 @@
         <md-table-cell>{{ entry.blastx.percent_identity }}</md-table-cell>
         <md-table-cell> <i class="fas fa-check-circle"></i></md-table-cell>
       </md-table-row>
-
     </md-table>
-        <!-- <md-list-item to="/components/list/router">Router <code>/router/**</code></md-list-item> -->
    
     <pagination
       type="primary"
-      no-arrows
       v-model="defaultPagination"
-      :per-page="5">
+      :page-count=totalPages
+      >
     </pagination>
 
    </div>
@@ -51,19 +49,21 @@ export default {
     return {
       entries : [],
       defaultPagination: 1,
+      totalPages: 1,
       token: TokenService.getToken() || null,
     }
   },
   methods: {
     getEntries() {
-      axios.get("http://0.0.0.0:9000/api/data/entries/", {
+      axios.get("http://0.0.0.0:9000/api/data/entries/?page=2", {
         headers: {
           'Authorization': 'Token ' + this.token
         }
       })
       .then(res => {
         this.entries = res.data.results
-        console.log(this.entries)
+        console.log(res.data)
+        this.totalPages = Math.ceil(res.data.count/25)
         })
       .catch(err => console.log(err));
     },
@@ -80,25 +80,8 @@ export default {
 </script>
 
 <style >
-/* #entriesList li:nth-child(odd){
- background-color:#4a148c30;
-}
-#entriesList{
-  list-style-type: none;
-} */
-
-/* .head {
-    font-weight: bold;
-} */
-/* span.col {
-    display: inline-block;
-    width: 25%;
-} */
-
 .fa-check-circle{
   color:  #4caf50;
 }
-
-
 
 </style>

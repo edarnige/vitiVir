@@ -28,7 +28,10 @@
     </li>
   </ul>
 </template>
+
 <script>
+import axios from 'axios';
+
 export default {
   name: "pagination",
   props: {
@@ -124,6 +127,16 @@ export default {
     },
     changePage(item) {
       this.$emit("input", item);
+      console.log(item)
+      axios.get("http://0.0.0.0:9000/api/data/entries/"+"?page="+item, {
+        headers: {
+          'Authorization': 'Token ' + this.token
+        }
+      })
+      .then(res => {
+        this.entries = res.data.results //send to List entries and reload??
+        })
+      .catch(err => console.log(err));
     },
     nextPage() {
       if (this.value < this.totalPages) {
