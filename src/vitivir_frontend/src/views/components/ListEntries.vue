@@ -61,7 +61,10 @@ export default {
           'Authorization': 'Token ' + this.token
         }
       })
-      .then(res => (this.entries = res.data))
+      .then(res => {
+        this.entries = res.data.results
+        console.log(this.entries)
+        })
       .catch(err => console.log(err));
     },
     toDetail(entry){

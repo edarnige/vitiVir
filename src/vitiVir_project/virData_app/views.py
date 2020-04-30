@@ -14,6 +14,9 @@ from django_filters import rest_framework as filters
 from .serializers import EntrySerializer
 from .models import Entry
 from .filters import EntrySearchFilter
+# from .pagination import CustomPagination
+
+from rest_framework import pagination
 
 
 class EntryListView(viewsets.ModelViewSet):
@@ -24,6 +27,8 @@ class EntryListView(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
 
+    #pagination_class = CustomPagination
+    pagination_calss= pagination.PageNumberPagination
 
     filter_backends = (filters.DjangoFilterBackend,)
     filter_fields = ('virus_type','sample')
