@@ -35,11 +35,11 @@
 
         </md-table>
 
-        <md-button class="md-primary">Update</md-button>
+        <md-button class="md-primary" v-if="verify==true">Update</md-button>
 
 
         <h2 class="title text-center">Metadata</h2>
-        <md-table >
+        <md-table v-if="type=='sra'">
 
             <md-table-row>
                 <md-table-head>Relsease Date</md-table-head>
@@ -86,6 +86,42 @@
                 <md-table-cell>{{ entry.sra_metadata.LibraryLayout }}</md-table-cell>
             </md-table-row>
 
+        </md-table>
+
+
+        <md-table v-if="type=='inv'">
+
+            <md-table-row>
+                <md-table-head>Project</md-table-head>
+                <md-table-cell>{{ entry.inv_metadata.project }}</md-table-cell>
+            </md-table-row>
+
+            <md-table-row>
+                <md-table-head>Grapevine cultivar</md-table-head>
+                <md-table-cell>{{ entry.inv_metadata.grapevine_cultivar }}</md-table-cell>
+            </md-table-row>
+
+            <md-table-row>
+                <md-table-head>Rootstock</md-table-head>
+                <md-table-cell>{{ entry.inv_metadata.rootstock }}</md-table-cell>
+            </md-table-row>
+
+            <md-table-row>
+                <md-table-head>Plantation year</md-table-head>
+                <md-table-cell>{{ entry.inv_metadata.plantation_year}}</md-table-cell>
+            </md-table-row>
+
+            <md-table-row>
+                <md-table-head>Location</md-table-head>
+                <md-table-cell>{{ entry.inv_metadata.location}}</md-table-cell>
+            </md-table-row>
+
+            <md-table-row>
+                <md-table-head>Substrate</md-table-head>
+                <md-table-cell>{{ entry.inv_metadata.substrate}}</md-table-cell>
+            </md-table-row>
+            
+           
         </md-table>
 
         <h2 class="title text-center">BLASTX results</h2>
@@ -168,8 +204,6 @@
             
         </md-table>
 
-
-
     </div>
     </div>
   </div>
@@ -204,8 +238,11 @@ export default {
   data() {
     return {
         entry: Object,
-        user: Object,
+        //user: Object,
+        //username: ,
         token: TokenService.getToken() || null,
+        verify: false,
+        type: '',
     };
   },
   methods: {
@@ -215,17 +252,35 @@ export default {
                     'Authorization': 'Token ' + this.token
                 }
             })
-            .then(res => (this.entry = res.data))
+            .then(res => {
+                this.entry = res.data
+                console.log(this.entry)
+                if(this.entry.sra_metadata != null){
+                    this.type = 'sra'
+                }else{
+                    this.type = 'inv'
+                }
+                })
             .catch(err => console.log(err));
     },
         getUser(){
             axios.get("http://0.0.0.0:9000/users/createuser")
-            .then(res => (this.user = res.data))
+            .then(res => {
+                this.users = res.data; //all users
+                console.log(this.users[0].email)
+                for(let u=0; u < this.users.length; u++) {
+                    if (this.users[u].email==this.email){
+                        console.log(this.users[u].email, this.users[u].can_verify);
+                        this.verify=true;
+                    }
+                }
+                })
             .catch(err => console.log(err));
         }
   },
   created(){
       this.getDetail(this.$route.params.entry_id);
+      //this.getUser();
   }
   
 };
