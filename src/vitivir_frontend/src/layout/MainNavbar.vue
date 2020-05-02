@@ -51,7 +51,7 @@
                   href="javascript:void(0)"
                   class="md-list-item-router md-list-item-container md-button-clean dropdown"
                 >
-                  <div class="md-list-item-content" v-if="token==null" >
+                  <div class="md-list-item-content" v-if="this.$store.state.token==null" >
                       <md-button
                         slot="title"
                         class="md-button md-button-link md-white md-simple "
@@ -68,7 +68,7 @@
                   href="javascript:void(0)"
                   class="md-list-item-router md-list-item-container md-button-clean dropdown"
                 >
-                  <div class="md-list-item-content" v-if="token==null" >
+                  <div class="md-list-item-content" v-if="this.$store.state.token==null" >
                       <md-button
                         slot="title"
                         class="md-button md-button-link md-white md-simple "
@@ -85,7 +85,7 @@
                   href="javascript:void(0)"
                   class="md-list-item-router md-list-item-container md-button-clean dropdown"
                 >
-                  <div class="md-list-item-content" v-if="token!=null">
+                  <div class="md-list-item-content" v-if="this.$store.state.token!=null">
                       <md-button
                         slot="title"
                         class="md-button md-button-link md-white md-simple "
@@ -121,7 +121,6 @@ function resizeThrottler(actualResizeHandler) {
 }
 
 
-import { TokenService } from '@/storage/service.js'
 import MobileMenu from "@/layout/MobileMenu";
 
 export default {
@@ -153,8 +152,6 @@ export default {
     return {
       extraNavClasses: "",
       toggledClass: false,
-      token: TokenService.getToken() || null,//localStorage.getItem('user-token') || null,
-      //loggedIn: token
     };
   },
   computed: {
@@ -210,10 +207,10 @@ export default {
     },
     
     logout(){
-      localStorage.removeItem('user-token');
-      this.token = null;
+      this.$store.state.token = null;
       this.$router.push('/landing');
-      location.reload();
+      console.log(this.$store.state.token)
+      //location.reload();
     },
 
 
@@ -225,7 +222,7 @@ export default {
     document.removeEventListener("scroll", this.scrollListener);
   },
   created() { //calls methods
-    this.getEntries();
+
   }
 };
 </script>

@@ -214,7 +214,6 @@
 
 <script>
 import axios from 'axios';
-import { TokenService } from '@/storage/service.js'
 
 export default {
   components: {
@@ -240,7 +239,6 @@ export default {
         entry: Object,
         //user: Object,
         //username: ,
-        token: TokenService.getToken() || null,
         verify: false,
         type: '',
     };
@@ -249,7 +247,7 @@ export default {
         getDetail(entry_id) {
             axios.get("http://0.0.0.0:9000/api/data/entries/" + entry_id,{
                 headers: {
-                    'Authorization': 'Token ' + this.token
+                    'Authorization': 'Token ' + this.$store.state.token
                 }
             })
             .then(res => {

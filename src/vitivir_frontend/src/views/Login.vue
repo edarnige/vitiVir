@@ -6,7 +6,7 @@
           <div
             class="md-layout-item md-size-33 md-small-size-66 md-xsmall-size-100 md-medium-size-40 mx-auto"
           >
-            <!-- <login-card header-color="green"> -->
+
             <login-card>
               <h4 slot="title" class="card-title">Login</h4>
               <p slot="description" class="description"></p>
@@ -27,6 +27,7 @@
                 Request account
               </md-button>
             </login-card>
+
           </div>
         </div>
       </div>
@@ -37,7 +38,6 @@
 <script>
 import { LoginCard } from "@/components";
 import axios from 'axios'; //backend server needs to be running
-//import Vue from "vue";
 
 export default {
   components: {
@@ -49,7 +49,6 @@ export default {
     return {
       email: '',
       password: '',
-      token: localStorage.getItem('user-token') || null,
     };
   },
 
@@ -75,16 +74,16 @@ export default {
         password: this.password,
       })
       .then(res => {
-        this.token = res.data.token;
+        let token = res.data.token;
         console.log("logged in", res);
-        localStorage.setItem('user-token', this.token);
-        this.$router.push('/search')
-        location.reload(); //to show correct navbar buttons...
-        //this.$router.push({path:'/search', header: {'Authorization': 'Token '+ this.token}});
+        this.$store.commit('setToken',token) //change token value
+        this.$router.push('/search');
+        //location.reload(); //to show correct navbar buttons...
+        console.log(this.$store.state.token)
       })
       .catch(err => {
         console.log(err);
-        localStorage.removeItem('user-token');
+        this.$store.state.token = null;
     })
   },
 

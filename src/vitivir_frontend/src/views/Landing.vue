@@ -119,7 +119,6 @@
 </template>
 
 <script>
-import { TokenService } from '@/storage/service.js'
 
 export default {
   bodyClass: "landing-page",
@@ -147,7 +146,6 @@ export default {
       name: null,
       email: null,
       message: null,
-      token: TokenService.getToken() || null,
     };
   },
 
@@ -161,7 +159,7 @@ export default {
 
   methods: {
     canSearch(){
-      if(this.token != null){
+      if(this.$store.state.token != null){
         this.$router.push('/search')
       }
       else{

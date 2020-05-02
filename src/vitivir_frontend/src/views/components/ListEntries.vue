@@ -37,7 +37,7 @@
 <script>
 import axios from 'axios';
 import {Pagination} from '@/components'
-import { TokenService } from '@/storage/service.js'
+
 
 export default {
   name: 'entries',
@@ -50,14 +50,13 @@ export default {
       entries : [],
       defaultPagination: 1,
       totalPages: 1,
-      token: TokenService.getToken() || null,
     }
   },
   methods: {
     getEntries() {
       axios.get("http://0.0.0.0:9000/api/data/entries/?page=2", {
         headers: {
-          'Authorization': 'Token ' + this.token
+          'Authorization': 'Token ' + this.$store.state.token //this.token
         }
       })
       .then(res => {
@@ -68,13 +67,13 @@ export default {
       .catch(err => console.log(err));
     },
     toDetail(entry){
-      //this.$router.push("/search/" + entry.entry_id)
       const entry_id = entry.entry_id
       this.$router.push({name: 'entrydetail', params: {entry_id}})
     }
   },
     created() { //calls methods
     this.getEntries();
+    console.log("Is token passed?",this.$store.state.token)
   }
 };
 </script>

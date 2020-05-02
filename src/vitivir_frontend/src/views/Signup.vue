@@ -78,7 +78,10 @@ export default {
           email: this.email,
           password: this.password,
         })
-        .then(res => console.log("signed up", res))
+        .then(res => {
+          console.log("signed up", res),
+          this.$router.push('/login')
+        })
         .catch(err => console.log(err));
       }
       else{
