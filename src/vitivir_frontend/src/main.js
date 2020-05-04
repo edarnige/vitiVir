@@ -18,10 +18,14 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     token: null,
+    can_verify: false,
   },
   mutations: {
     setToken (state, token) {
       state.token = token
+    },
+    setVerify(state, can_verify){
+      state.can_verify = can_verify //reset at logout
     }
   }
 })

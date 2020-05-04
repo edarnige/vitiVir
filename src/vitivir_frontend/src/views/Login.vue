@@ -20,7 +20,7 @@
                 <label>Password...</label>
                 <md-input id="password" v-model="password" type="password" required></md-input>
               </md-field>
-              <md-button slot="footer" class="md-simple md-success md-lg" v-on:click="login"> 
+              <md-button slot="footer" class="md-simple md-success md-lg" v-on:click="login()"> 
                 Login
               </md-button>
               <md-button slot="footer" class="md-simple md-primary md-lg" @click="$router.push('/signup');"> 
@@ -77,6 +77,7 @@ export default {
         let token = res.data.token;
         console.log("logged in", res);
         this.$store.commit('setToken',token) //change token value
+        this.getUser(this.email)
         this.$router.push('/search');
         //location.reload(); //to show correct navbar buttons...
         console.log(this.$store.state.token)
@@ -84,8 +85,18 @@ export default {
       .catch(err => {
         console.log(err);
         this.$store.state.token = null;
-    })
-  },
+      })
+    },
+
+    getUser(email){
+      axios.get("http://0.0.0.0:9000/users/manageusers/"+"?email="+email)
+      .then(res=> {
+        console.log(res.data.results[0].email,res.data.results[0].can_verify)
+        let can_verify = res.data.results[0].can_verify
+        this.$store.commit('setVerify', can_verify)
+      })
+
+  }
 
   }
 }

@@ -8,17 +8,22 @@ from .serializers import MyUserSerializer
 from .models import MyUser
 from virData_app.views import EntryListView
 
+from django_filters import rest_framework as filters
+
 
 class UserViewSet(viewsets.ModelViewSet):
-    ''' List all users /api/users '''
+    ''' Manage and create users at /users/manageusers/'''
     
     queryset = MyUser.objects.all()
     serializer_class = MyUserSerializer
     permission_classes = (AllowAny,) #(permissions.UpdateUser,) #can add multiple classes to viewset
 
+    filter_backends = (filters.DjangoFilterBackend,)
+    filter_fields = ('email',)
+
 
 class LoginViewSet(viewsets.ViewSet):
-    '''Checks email and password, returns authtoken'''
+    '''Checks email and password, returns authtoken at /users/login/'''
 
     serializer_class = AuthTokenSerializer
     permission_classes = (AllowAny,)

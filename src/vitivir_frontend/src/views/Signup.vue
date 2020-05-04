@@ -74,7 +74,7 @@ export default {
   methods:{
     signup(){
       if(this.password == this.passwordConfirmed){
-        axios.post("http://0.0.0.0:9000/users/createuser/",{
+        axios.post("http://0.0.0.0:9000/users/manageusers/",{
           email: this.email,
           password: this.password,
         })

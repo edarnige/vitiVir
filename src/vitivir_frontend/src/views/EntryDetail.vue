@@ -35,7 +35,7 @@
 
         </md-table>
 
-        <md-button class="md-primary" v-if="verify==true">Update</md-button>
+        <md-button class="md-primary" v-if="this.$store.state.can_verify==true">Update</md-button>
 
 
         <h2 class="title text-center">Metadata</h2>
@@ -239,7 +239,6 @@ export default {
         entry: Object,
         //user: Object,
         //username: ,
-        verify: false,
         type: '',
     };
   },
@@ -261,24 +260,10 @@ export default {
                 })
             .catch(err => console.log(err));
     },
-        getUser(){
-            axios.get("http://0.0.0.0:9000/users/createuser")
-            .then(res => {
-                this.users = res.data; //all users
-                console.log(this.users[0].email)
-                for(let u=0; u < this.users.length; u++) {
-                    if (this.users[u].email==this.email){
-                        console.log(this.users[u].email, this.users[u].can_verify);
-                        this.verify=true;
-                    }
-                }
-                })
-            .catch(err => console.log(err));
-        }
+
   },
   created(){
       this.getDetail(this.$route.params.entry_id);
-      //this.getUser();
   }
   
 };
