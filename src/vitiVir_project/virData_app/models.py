@@ -137,8 +137,8 @@ class Entry(models.Model):
     sample = models.CharField(max_length=255)
 
     verified = models.BooleanField(default=False) #update many by query_id
-    virus_type = models.CharField(max_length=255) #update many by query_id
-    host_organism = models.CharField(max_length=255) #update many by sample
+    virus_type = models.CharField(max_length=255, blank=True,) #update many by query_id
+    host_organism = models.CharField(max_length=255, blank=True,) #update many by sample
     
     objects = models.DjongoManager()
 

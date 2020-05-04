@@ -20,22 +20,54 @@
 
             <md-table-row>
                 <md-table-head>Verified</md-table-head>
-                <md-table-cell>{{ entry.verified }}</md-table-cell>
-            </md-table-row>
+                <md-table-cell>
+                    <div v-if="editMode==false" >
+                        <i v-if="entry.verified==true" id="check" class="fas fa-check-circle"></i>
+                        <i v-if="entry.verified==false" id="cross" class="fas fa-times-circle"></i>
+                    </div>
+                    <div v-if="editMode==true" class="edit">
+                        <md-checkbox v-model="entry.verified"></md-checkbox>
+                    </div>
+                </md-table-cell>
+            </md-table-row>    
 
             <md-table-row>
                 <md-table-head>Virus type</md-table-head>
-                <md-table-cell>{{ entry.virus_type }}</md-table-cell>
-            </md-table-row>
+                <md-table-cell>
+                    <div v-if="editMode==false" >
+                        {{ entry.virus_type}}
+                    </div>
+                    <div v-if="editMode==true" class="edit">
+                        <md-input class="input" type="text" v-model="entry.virus_type"></md-input>
+                    </div>
+                </md-table-cell> 
+             </md-table-row>
 
             <md-table-row>
                 <md-table-head>Host organism</md-table-head>
-                <md-table-cell>{{ entry.host_organism }}</md-table-cell>
+                <md-table-cell>
+                    <div v-if="editMode==false" >
+                        {{ entry.host_organism }}
+                    </div>
+                    <div v-if="editMode==true" class="edit">
+                        <md-input class="input" type="text" v-model="entry.host_organism"></md-input>
+                    </div>
+                </md-table-cell>
             </md-table-row>
 
         </md-table>
 
-        <md-button class="md-primary" v-if="this.$store.state.can_verify==true">Update</md-button>
+        <md-button class="md-primary" v-if="this.$store.state.can_verify==true && this.editMode==false" @click="editDetail()">
+            Edit
+        </md-button>
+
+        <md-button class="md-primary" v-if="this.$store.state.can_verify==true && this.editMode==true" @click="updateDetail()">
+            Update
+        </md-button>
+
+        <md-button class="md-danger" v-if="this.$store.state.can_verify==true && this.editMode==true" @click="cancelEdit()">
+            Cancel
+        </md-button>
 
 
         <h2 class="title text-center">Metadata</h2>
@@ -237,8 +269,8 @@ export default {
   data() {
     return {
         entry: Object,
-        //user: Object,
-        //username: ,
+        editMode: false,
+        beforeEditCache: null,
         type: '',
     };
   },
@@ -259,7 +291,41 @@ export default {
                 }
                 })
             .catch(err => console.log(err));
-    },
+        },
+
+        editDetail(){
+            this.editMode = true;
+            this.beforeEditCache = Object.assign({}, this.entry); //{verified:entry.verified, virus_type:entry.virus_type, host_type:entry.host_type}
+            console.log("CACHE",this.beforeEditCache.verified)
+        },
+
+        updateDetail(){//verified, virus_type, host_organism
+            this.edited = this.entry;
+            console.log("EDITED", this.edited.verified)
+            let newData = {'verified':this.edited.verified, 'virus_type':this.edited.virus_type, 'host_organism':this.edited.host_organism}
+            axios.patch("http://0.0.0.0:9000/api/data/entries/" + this.$route.params.entry_id + "/", newData,{
+                headers: {
+                    'Authorization': 'Token ' + this.$store.state.token
+                }
+            })
+            .then(res =>{
+                console.log(res)
+            })
+            .catch(err => {
+                console.log(err);
+            })
+            this.editMode = false
+
+        },
+
+        cancelEdit(){
+            this.editMode = false 
+            //this.entry = this.beforeEditCache
+            Object.assign(this.entry, this.beforeEditCache);
+            console.log("CANCELLED", this.entry.verified)
+            this.beforeEditCache = null;
+        }
+
 
   },
   created(){
@@ -272,4 +338,23 @@ export default {
 .md-table-head{
     width: 100px;
 }
+
+.edit{
+    display: block;
+}
+
+.input{
+    width: 200%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
+
+#check{
+  color:  #4caf50;
+}
+#cross{
+    color: red;
+}
+
 </style>
