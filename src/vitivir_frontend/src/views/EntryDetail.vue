@@ -73,6 +73,12 @@
         <h2 class="title text-center">Metadata</h2>
         <md-table v-if="type=='sra'">
 
+
+            <md-table-row>
+                <md-table-head>NCBI SRA</md-table-head>
+                <md-table-cell><p @click="openNCBI()">Click <b>here</b> to see entry in NCBI</p></md-table-cell>
+            </md-table-row>
+
             <md-table-row>
                 <md-table-head>Relsease Date</md-table-head>
                 <md-table-cell>{{ entry.sra_metadata.ReleaseDate }}</md-table-cell>
@@ -324,7 +330,12 @@ export default {
             Object.assign(this.entry, this.beforeEditCache);
             console.log("CANCELLED", this.entry.verified)
             this.beforeEditCache = null;
+        },
+
+        openNCBI(){
+            window.open("https://www.ncbi.nlm.nih.gov/sra/" + this.entry.sample, "_blank");    
         }
+
 
 
   },
