@@ -18,7 +18,7 @@
               <md-field class="md-form-group" slot="inputs">
                 <!-- <md-icon>lock_outline</md-icon> -->
                 <label>Password...</label>
-                <md-input id="password" v-model="password" type="password" required></md-input>
+                <md-input id="password" v-model="password" type="password" required @keyup.enter="login()"></md-input>
               </md-field>
               <md-button slot="footer" class="md-simple md-success md-lg" v-on:click="login()"> 
                 Login
@@ -94,6 +94,9 @@ export default {
         console.log(res.data.results[0].email,res.data.results[0].can_verify)
         let can_verify = res.data.results[0].can_verify
         this.$store.commit('setVerify', can_verify)
+      })
+      .catch(err => {
+        console.log(err);
       })
 
   }
