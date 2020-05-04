@@ -209,6 +209,7 @@ export default {
     logout(){
       this.$store.state.token = null;
       this.$store.state.can_verify = false;
+      sessionStorage.clear();
       this.$router.push('/landing');
       console.log(this.$store.state.token)
       //location.reload();
@@ -227,3 +228,4 @@ export default {
   }
 };
 </script>
+

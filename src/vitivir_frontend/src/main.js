@@ -2,6 +2,7 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from './router'
 import Vuex from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
 //import BootstrapVue from "bootstrap-vue";
 
 import '@fortawesome/fontawesome-free/css/all.css'
@@ -16,6 +17,9 @@ Vue.use(Vuex)
 
 
 const store = new Vuex.Store({
+  plugins: [createPersistedState({
+    storage: window.sessionStorage, //this means token is visible in session storage...
+  })],  
   state: {
     token: null,
     can_verify: false,
