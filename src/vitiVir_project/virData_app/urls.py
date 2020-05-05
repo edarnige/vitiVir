@@ -16,12 +16,6 @@ urlpatterns = [
 
 
 
-
-
-
-
-
-
 # /api/data/entry/<sample>?balststrps.evalue=-2
 
 # sample= 1

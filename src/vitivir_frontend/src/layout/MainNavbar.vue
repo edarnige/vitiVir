@@ -207,8 +207,10 @@ export default {
     },
     
     logout(){
-      this.$store.state.token = null;
-      this.$store.state.can_verify = false;
+      this.$store.commit('setVerify', false)
+      this.$store.commit('setToken', null)
+      // this.$store.state.token = null;
+      // this.$store.state.can_verify = false;
       sessionStorage.clear();
       this.$router.push('/landing');
       console.log(this.$store.state.token)

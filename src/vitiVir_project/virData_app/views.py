@@ -59,7 +59,7 @@ class EntryListCSVExportView(viewsets.ModelViewSet):
 
     # @action(methods=['get'], detail=False)
     # def get_queryset(self, sample, host_organism, virus_type, verified, exclude_vitis, order):
-
+            #use kwargs from url? 
     #     orderfields = ["-evalue", "query_length", "percent_id"]
     #     queryset = Entry.objects.filter(Q(sample__icontains=sample) & Q(host_organism=host_organism) 
     #         & Q(virus_type=virus_type) & Q(verified=verified) & Q(exclude_vitis=exclude_vitis))

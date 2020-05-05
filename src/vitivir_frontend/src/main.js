@@ -23,6 +23,7 @@ const store = new Vuex.Store({
   state: {
     token: null,
     can_verify: false,
+    search_q: '',
   },
   mutations: {
     setToken (state, token) {
@@ -30,7 +31,11 @@ const store = new Vuex.Store({
     },
     setVerify(state, can_verify){
       state.can_verify = can_verify //reset at logout
+    },
+    setSearch(state, search_q){
+      state.search_q = search_q
     }
+
   }
 })
 

@@ -61,20 +61,41 @@ export default {
       })
       .then(res => {
         this.entries = res.data.results
-        console.log(res.data)
+        console.log("ON LOAD",res.data)
+        console.log(this.$store.state.search_q)
         this.totalPages = Math.ceil(res.data.count/25)
         })
       .catch(err => console.log(err));
     },
+
     toDetail(entry){
       const entry_id = entry.entry_id
       this.$router.push({name: 'entrydetail', params: {entry_id}})
+    },
+
+    getSearch(){
+      axios.get("http://0.0.0.0:9000/api/data/entries/"+this.$store.state.search_q, {
+      })
+      .then(res => {
+        this.entries = res.data.results
+        console.log("SEARCH",res.data)
+        console.log(this.$store.state.search_q)
+        this.totalPages = Math.ceil(res.data.count/25)
+      })
+      .catch(err => {
+        console.log(err);
+      })
+
     }
-  },
+    
+    },
+
     created() { //calls methods
-    this.getEntries();
-    console.log("Is token passed?",this.$store.state.token)
-  }
+      this.getEntries();
+      console.log("Is token passed?",this.$store.state.token)
+    }
+
+
 };
 </script>
 

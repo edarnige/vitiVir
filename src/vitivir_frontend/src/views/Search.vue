@@ -65,7 +65,7 @@
           </div>
 
           <div class="md-layout-item md-size-50 md-small-size-70 md-xsmall-size-100">
-            <md-button class="md-primary">
+            <md-button class="md-primary" @click="search()">
               Search
             </md-button>
           </div>
@@ -84,14 +84,14 @@
                 <h2>Results</h2>
               </div>
               <div class="text-right">
-              <md-button  class="md-primary" @click="exportCSV()"> 
+              <md-button  class="md-primary" @click.prevent="exportCSV()"> 
                 Export CSV
               </md-button>
               </div>
 
             
             <div>
-              <ListEntries/>
+              <ListEntries ref="results"/>
             </div>
           
           </div>
@@ -127,20 +127,20 @@ export default {
 
   data() {
     return {
-      exclude: null,
+      exclude: '',
       verified: false,
-      sample: null,
-      host: null,
-      vtype: null,
-      startDate: null,
-      endDate: null,
-      order: null,
+      sample: '',
+      host: '',
+      vtype: '',
+      startDate: '',
+      endDate: '',
+      order: '',
 
     };
   },
   methods: {
     exportCSV(){
-        axios.get("http://0.0.0.0:9000/api/data/entries_csv/", {
+      axios.get("http://0.0.0.0:9000/api/data/entries_csv/", {
       })
       .then(res => {
         console.log(res);
@@ -156,8 +156,13 @@ export default {
       .catch(err => {
         console.log(err);
       })
+    },
 
-    }
+    search(){
+      let search_q = "?sample=" + this.sample
+      this.$store.commit('setSearch', search_q)
+      this.$refs.results.getSearch()
+      }
 
   },
   
