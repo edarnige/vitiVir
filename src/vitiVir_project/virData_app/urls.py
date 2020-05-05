@@ -4,10 +4,11 @@ from django.conf.urls import include
 # from rest_framework.routers import DefaultRouter
 from rest_framework import routers
 
-from .views import EntryListView
+from .views import EntryListView, EntryListCSVExportView
 
 router= routers.DefaultRouter()
 router.register('entries', EntryListView)
+router.register('entries_csv', EntryListCSVExportView,'entries-csv')
 
 urlpatterns = [
     path('', include(router.urls)),

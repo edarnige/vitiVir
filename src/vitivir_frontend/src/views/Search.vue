@@ -79,9 +79,16 @@
         <div class="section section-basic">
           <!-- <div class="container"> -->
               
+            
               <div class="title">
                 <h2>Results</h2>
               </div>
+              <div class="text-right">
+              <md-button  class="md-primary" @click="exportCSV()"> 
+                Export CSV
+              </md-button>
+              </div>
+
             
             <div>
               <ListEntries/>
@@ -96,6 +103,7 @@
 
 <script>
 import ListEntries from '@/views/components/ListEntries.vue'
+import axios from 'axios';
 
 export default {
   components: {
@@ -131,6 +139,25 @@ export default {
     };
   },
   methods: {
+    exportCSV(){
+        axios.get("http://0.0.0.0:9000/api/data/entries_csv/", {
+      })
+      .then(res => {
+        console.log(res);
+        var fileURL = window.URL.createObjectURL(new Blob([res.data]));
+        var fileLink = document.createElement('a');
+        
+        fileLink.href = fileURL;
+        fileLink.setAttribute('download', 'results.csv');
+        document.body.appendChild(fileLink);
+        
+        fileLink.click();
+      })
+      .catch(err => {
+        console.log(err);
+      })
+
+    }
 
   },
   
