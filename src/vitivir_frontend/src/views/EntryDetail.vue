@@ -3,7 +3,7 @@
       <div class="section section-basic">  
       <div class="md-layout-item md-size-90">
 
-        <md-button class="md-simple md-primary md-lg">Back</md-button>
+        <md-button class="md-simple md-primary md-lg" @click="goBack()">Back</md-button>
 
         <h2 class="title text-center">Entry information</h2>
         <md-table >
@@ -334,11 +334,14 @@ export default {
 
         openNCBI(){
             window.open("https://www.ncbi.nlm.nih.gov/sra/" + this.entry.sample, "_blank");    
+        },
+
+        goBack(){
+            this.$router.push('/search');
         }
 
-
-
   },
+
   created(){
       this.getDetail(this.$route.params.entry_id);
   }

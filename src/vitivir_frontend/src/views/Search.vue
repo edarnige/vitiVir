@@ -16,7 +16,7 @@
             <div class="md-layout-item md-size-25 md-xsmall-size-100 md-small-size-50 md-medium-size-25">
               <md-field>
                 <label>Sample</label>
-                <md-input v-model="sample"></md-input>
+                <md-input v-model="sample"><label></label></md-input>
               </md-field>
             </div>
 
@@ -129,7 +129,7 @@ export default {
     return {
       exclude: '',
       verified: false,
-      sample: '',
+      sample: this.$store.state.sample, //'',
       host: '',
       vtype: '',
       startDate: '',
@@ -161,6 +161,7 @@ export default {
     search(){
       let search_q = "?sample=" + this.sample
       this.$store.commit('setSearch', search_q)
+      this.$store.commit('setQParams',this.sample)
       this.$refs.results.getSearch()
       }
 

@@ -24,6 +24,7 @@ const store = new Vuex.Store({
     token: null,
     can_verify: false,
     search_q: '',
+    sample:''
   },
   mutations: {
     setToken (state, token) {
@@ -34,6 +35,9 @@ const store = new Vuex.Store({
     },
     setSearch(state, search_q){
       state.search_q = search_q
+    },
+    setQParams(state, sample){
+      state.sample = sample
     }
 
   }

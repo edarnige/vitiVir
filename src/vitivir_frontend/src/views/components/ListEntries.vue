@@ -54,7 +54,7 @@ export default {
   },
   methods: {
     getEntries() {
-      axios.get("http://0.0.0.0:9000/api/data/entries/?page=2", {
+      axios.get("http://0.0.0.0:9000/api/data/entries/" + this.$store.state.search_q, {
         headers: {
           'Authorization': 'Token ' + this.$store.state.token //this.token
         }
@@ -62,7 +62,7 @@ export default {
       .then(res => {
         this.entries = res.data.results
         console.log("ON LOAD",res.data)
-        console.log(this.$store.state.search_q)
+        console.log(this.$store.state.search_q, this.$store.state.sample)
         this.totalPages = Math.ceil(res.data.count/25)
         })
       .catch(err => console.log(err));
