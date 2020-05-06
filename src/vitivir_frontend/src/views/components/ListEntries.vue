@@ -24,6 +24,7 @@
       type="primary"
       v-model="defaultPagination"
       :page-count=totalPages
+      @update="updatePage"
       >
     </pagination>
 
@@ -40,7 +41,7 @@ import {Pagination} from '@/components'
 
 
 export default {
-  name: 'entries',
+  name: 'ListEntries',
   components: {
     Pagination
 
@@ -52,6 +53,7 @@ export default {
       totalPages: 1,
     }
   },
+
   methods: {
     getEntries() {
       axios.get("http://0.0.0.0:9000/api/data/entries/" + this.$store.state.search_q, {
@@ -73,7 +75,7 @@ export default {
       this.$router.push({name: 'entrydetail', params: {entry_id}})
     },
 
-    getSearch(){
+    getSearch(){ //same as getEntries, delete?
       axios.get("http://0.0.0.0:9000/api/data/entries/"+this.$store.state.search_q, {
       })
       .then(res => {
@@ -86,6 +88,11 @@ export default {
         console.log(err);
       })
 
+    },
+
+    updatePage(PageEntries){
+      this.entries = PageEntries
+      console.log("child clicked",this.entries[0])
     }
     
     },
@@ -93,7 +100,7 @@ export default {
     created() { //calls methods
       this.getEntries();
       console.log("Is token passed?",this.$store.state.token)
-    }
+    },
 
 
 };

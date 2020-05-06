@@ -58,7 +58,7 @@ export default {
     },
     perPage: {
       type: Number,
-      default: 10
+      default: 25
     },
     total: {
       type: Number,
@@ -134,7 +134,8 @@ export default {
         }
       })
       .then(res => {
-        this.entries = res.data.results //send to List entries and reload??
+        let PageEntries = res.data.results
+        this.$emit("update", PageEntries)
         })
       .catch(err => console.log(err));
     },
