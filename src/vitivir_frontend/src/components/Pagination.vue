@@ -30,7 +30,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 
 export default {
   name: "pagination",
@@ -127,17 +126,6 @@ export default {
     },
     changePage(item) {
       this.$emit("input", item);
-      console.log(item)
-      axios.get("http://0.0.0.0:9000/api/data/entries/"+"?page="+item, {
-        headers: {
-          'Authorization': 'Token ' + this.token
-        }
-      })
-      .then(res => {
-        let PageEntries = res.data.results
-        this.$emit("update", PageEntries)
-        })
-      .catch(err => console.log(err));
     },
     nextPage() {
       if (this.value < this.totalPages) {

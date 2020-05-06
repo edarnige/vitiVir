@@ -24,7 +24,7 @@
       type="primary"
       v-model="defaultPagination"
       :page-count=totalPages
-      @update="updatePage"
+      @input="updatePage"
       >
     </pagination>
 
@@ -77,6 +77,9 @@ export default {
 
     getSearch(){ //same as getEntries, delete?
       axios.get("http://0.0.0.0:9000/api/data/entries/"+this.$store.state.search_q, {
+        headers: {
+          'Authorization': 'Token ' + this.token
+        }
       })
       .then(res => {
         this.entries = res.data.results
@@ -90,9 +93,18 @@ export default {
 
     },
 
-    updatePage(PageEntries){
-      this.entries = PageEntries
-      console.log("child clicked",this.entries[0])
+    updatePage(item){
+      axios.get("http://0.0.0.0:9000/api/data/entries/"+"?page="+item, {
+        headers: {
+          'Authorization': 'Token ' + this.token
+        }
+      })
+      .then(res => {
+        console.log(res.data)
+        this.entries = res.data.results
+        this.totalPages = Math.ceil(res.data.count/25)
+        })
+      .catch(err => console.log(err)); 
     }
     
     },
