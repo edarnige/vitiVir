@@ -209,6 +209,8 @@ export default {
     logout(){
       this.$store.commit('setVerify', false)
       this.$store.commit('setToken', null)
+      this.$store.commit('setSearch', '')
+      this.$store.commit('setQParams', '')
       // this.$store.state.token = null;
       // this.$store.state.can_verify = false;
       sessionStorage.clear();
