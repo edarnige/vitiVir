@@ -49,7 +49,7 @@ class BlastxFilter(filters.FilterSet):
     #organism = filters.BooleanFilter(field_name='organism',lookup_expr="Vitis vinifera")
     class Meta:
         model = Blastx
-        fields = ['organism','query_length','percent_identity',]
+        fields = ['organism','query_length','percent_identity', 'taxonomy']
 
 from djongo import models
 class EntrySearchFilter(filters.FilterSet):
@@ -58,20 +58,21 @@ class EntrySearchFilter(filters.FilterSet):
     blastx = filters.RelatedFilter('BlastxFilter', queryset=Blastx.objects.all())
     class Meta:
         model = Entry
-        #fields = ("sample","blastx")
-        fields ={
-            'sample': ['icontains',],
-            'host_organism':['icontains'],
-            'virus_type':['icontains'],
-            'verified':['exact'],
+        fields = ("sample","blastx")
+        #fields ={
+        #    'sample': ['icontains',],
+        #    'host_organism':['icontains'],
+        #    'virus_type':['icontains'],
+        #    'verified':['exact'],
+        #    'blastx': ['exact']
 
-        }
+        #}
 
-        # filter_overrides = {
-        #     models.CharField: {
-        #         'filter_class': BlastxFilter,
-        #         'extra': lambda f: {
-        #             'lookup_expr': 'icontains',
-        #         },
-        #     }
-        # }
+        #filter_overrides = {
+         #   models.EmbeddedField: {
+        #        'filter_class': BlastxFilter,
+        #        'extra': lambda f: {
+        #            'lookup_expr': 'exact',
+        #        },
+        #    }
+        #}

@@ -6,7 +6,7 @@ from rest_framework.authentication import TokenAuthentication
 #from rest_framework.response import Response
 
 #from rest_framework.filters import SearchFilter, OrderingFilter
-from django_filters import rest_framework as filters
+#from django_filters import rest_framework as filters
 #from django_filters.rest_framework import FilterSet, filters
 #import rest_framework_filters as filters
 #import django_filters
@@ -18,9 +18,10 @@ from .filters import EntrySearchFilter
 
 from rest_framework import pagination
 
-#from rest_framework.settings import api_settings
 from rest_framework_csv.renderers import CSVRenderer
 from django.db.models import Q
+
+from bson.json_util import dumps
 
 
 class EntryListView(viewsets.ModelViewSet):
@@ -30,19 +31,40 @@ class EntryListView(viewsets.ModelViewSet):
     serializer_class = EntrySerializer
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
-
+    #filter_class = EntrySearchFilter
     pagination_calss= pagination.PageNumberPagination
 
-    filter_backends = (filters.DjangoFilterBackend,)
-    filter_fields = ('virus_type','sample')
+    # filter_backends = (filters.DjangoFilterBackend,)
+    # filter_fields = ('virus_type','sample') 
 
+    def get_queryset(self):
+        fields = ['query_length', 'organism']
+        queryset = self.queryset
+        for field in fields:
+            
+            #Get from url ?organism=Vitis vinifera
+            if field in self.request.GET:
+                value = self.request.GET.get(field)
+                if field == 'query_length':
+                    queryset = queryset.filter(blastx__exact={'query_length': int(value)})
+                elif field == 'organism':
+                    queryset = queryset.filter(blastx__exact={'organism': value})
+
+        # ordering not working
+        ordering = self.request.GET.get('ordering')
+
+        if ordering:
+            queryset = queryset.order_by(ordering)
+        print(queryset.query)
+        return queryset
 
 class EntryListCSVExportView(viewsets.ModelViewSet):
     '''Make CSV from Entry list results'''
 
     queryset = Entry.objects.all()
+    #use self.request.GET ^ to get all params from url passed
     #queryset = Entry.objects.filter(Q(sample__icontains="SRR") & Q(virus_type='')).order_by('sample')#('date_joined', '-last_login')
-    
+
     serializer_class = EntrySerializer
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
