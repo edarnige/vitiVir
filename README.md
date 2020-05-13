@@ -9,10 +9,8 @@ Clone repository
 ### and VirtualBox:
 [https://www.virtualbox.org/](https://www.virtualbox.org/)
 
-### Execute the following commands:
+### Execute the following command:
 ```diff
-+ vagrant box add --name vitiBox /path/to/vitiVir
-+ vagrant init vitiBox
 + vagrant up
 ```
 
@@ -36,17 +34,33 @@ Within the vagrant ssh
 In vagrant ssh
 Activate venv
 ```diff
-+ cd /vagrant/vitiVir
-+ pip install requirements.txt
++ cd /vagrant
++ pip install -r requirements.txt
 ```
 
 ## Frontend dependencies
 In vagrant ssh
 ```diff
-+ cd /vagrant/vitiVir/src/vitivir_frontend
++ cd /vagrant/src/vitivir_frontend
 + npm install package.json
 ```
+may need to remove node modules before installing
+```diff
++ rm -rf node_modules
+```
+
 ## Start MongoDB
+First time setup
+In a new terminal, execute:
+```diff
++ cd /path/to/vitiVir
++ vagrant ssh
++ mkdir data
++ cd data
++ mkdir db
++ chmod 777 /data/db
+```
+
 Start mongod
 In a new terminal, execute:
 ```diff
@@ -65,7 +79,17 @@ In a new terminal, execute:
 
 ## Running the servers
 ### Django
-In a new terminal, execute:
+First time setup - migrate db
+```diff
++ cd /path/to/vitiVir
++ vagrant ssh
++ cd /vagrant/src/vitiVir_project
++ python manage.py makemigrations
++ python manage.py migrate
+```
+
+Run server
+In a new terminal with the venv activated, execute:
 ```diff
 + cd /path/to/vitiVir
 + vagrant ssh
@@ -74,8 +98,14 @@ In a new terminal, execute:
 ```
 On your local browser, go to [http://0.0.0.0:9000/](http://0.0.0.0:9000/)
 
+urls:
+/admin/
+/api/data/entries/
+/api/data/entries_csv/
+/users/
+
 ### Vue.js
-In a new terminal, execute:
+In a new terminal with the venv activated, execute:
 ```diff
 + cd /path/to/vitiVir
 + vagrant ssh
@@ -83,3 +113,4 @@ In a new terminal, execute:
 + npm run serve
 ```
 On your local browser, go to  [http://0.0.0.0:8080/landing](http://0.0.0.0:8080/landing)
+
