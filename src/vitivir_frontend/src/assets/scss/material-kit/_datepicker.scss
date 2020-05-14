@@ -70,7 +70,18 @@
   }
 }
 
-.md-datepicker-today,
+.md-datepicker-today{
+  @include shadow-2dp-color($brand-primary);
+  font-weight: lighter !important;
+
+  &,
+  &:hover,
+  &:focus{
+    background-color: #a1a1a1 !important;
+    color: $white-color !important;
+  }
+
+}
 .md-datepicker-selected{
   @include shadow-2dp-color($brand-primary);
   font-weight: lighter !important;

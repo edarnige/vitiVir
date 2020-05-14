@@ -30,7 +30,9 @@ const store = new Vuex.Store({
     taxonomy:'',
     description:'',
     verified: '',
-    exclude: ''
+    exclude_vitis: '',
+    start_date: '',
+    end_date: ''
   },
   mutations: {
     setToken (state, token) {
@@ -42,21 +44,27 @@ const store = new Vuex.Store({
     setSearch(state, search_q){
       state.search_q = search_q
     },
-    allQParams(state, {sample, host_organism, virus_type, taxonomy, description, verified}){
+    allQParams(state, {
+      sample, host_organism, virus_type, taxonomy, 
+      description, verified, exclude_vitis, 
+      start_date, end_date
+    }){
       state.sample = sample
       state.host_organism = host_organism
       state.virus_type = virus_type
       state.taxonomy = taxonomy
       state.description = description
       state.verified = verified
-      //state.exclude = exclude
+      state.exclude_vitis = exclude_vitis
+      state.start_date = start_date
+      state.end_date = end_date
       //page
       //dates
     }
   },
   actions: {
-    setQParams({commit},{sample, host_organism, virus_type, taxonomy, description, verified}){
-      commit('allQParams',{sample, host_organism, virus_type, taxonomy, description, verified})
+    setQParams({commit},{sample, host_organism, virus_type, taxonomy, description, verified, exclude_vitis, start_date, end_date}){
+      commit('allQParams',{sample, host_organism, virus_type, taxonomy, description, verified, exclude_vitis, start_date, end_date})
     }
 
 

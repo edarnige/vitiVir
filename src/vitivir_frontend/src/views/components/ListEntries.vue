@@ -75,8 +75,8 @@ export default {
       this.$router.push({name: 'entrydetail', params: {entry_id}})
     },
 
-    getSearch(){ //same as getEntries, delete?
-      axios.get("http://0.0.0.0:9000/api/data/entries/"+this.$store.state.search_q, {
+    getSearch(){ //same as getEntries, delete one?
+      axios.get("http://0.0.0.0:9000/api/data/entries/"+this.$store.state.search_q+"&page=1", {
         headers: {
           'Authorization': 'Token ' + this.token
         }
@@ -94,7 +94,8 @@ export default {
     },
 
     updatePage(item){
-      axios.get("http://0.0.0.0:9000/api/data/entries/"+"?page="+item, {
+
+      axios.get("http://0.0.0.0:9000/api/data/entries/"+this.$store.state.search_q+"&page="+item, {
         headers: {
           'Authorization': 'Token ' + this.token
         }

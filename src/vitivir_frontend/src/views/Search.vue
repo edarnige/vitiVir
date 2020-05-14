@@ -45,11 +45,11 @@
           <div class="md-layout">
 
               <div class="md-layout-item md-size-25 md-xsmall-size-100 md-small-size-50 md-medium-size-25">
-                <md-datepicker class="md-primary" v-model="startDate">
-                  <label>Start date</label>
+                <md-datepicker class="md-primary" v-model="start_date">
+                  <label>Start date (yyyy-mm-dd)</label>
                 </md-datepicker>
-                <md-datepicker class="md-primary" v-model="endDate">
-                  <label>End date</label>
+                <md-datepicker class="md-primary" v-model="end_date">
+                  <label>End date (yyyy-mm-dd)</label>
                 </md-datepicker>
               </div>
 
@@ -57,7 +57,7 @@
           <div class="md-layout">
 
               <md-checkbox v-model="verified">Verified only</md-checkbox>
-              <md-checkbox v-model="exclude" value="Vitis vinifera" >Exclude <i>Vitis vinifera</i></md-checkbox>
+              <md-checkbox v-model="exclude_vitis" >Exclude <i>Vitis vinifera</i></md-checkbox>
 
                 <div class="md-layout-item md-size-25 md-xsmall-size-100 md-small-size-50 md-medium-size-25">
                   <md-field>
@@ -117,7 +117,7 @@ export default {
     ListEntries,
   },
   name: "search",
-  //bodyClass: "index-page",
+
   props: {
     header: {
       type: String,
@@ -129,20 +129,20 @@ export default {
       return {
         backgroundImage: `url(${this.header})`
       };
-    }
+    },  
   },
 
   data() {
     return {
-      exclude: '',
+      exclude_vitis: this.$store.state.exclude_vitis,
       verified: this.$store.state.verified,
       sample: this.$store.state.sample,
       host: this.$store.state.host_organism,
       vtype: this.$store.state.virus_type,
       taxonomy: this.$store.state.taxonomy,
       description: this.$store.state.description,
-      startDate: '',
-      endDate: '',
+      start_date: this.$store.state.start_date,
+      end_date: this.$store.state.end_date,
       order: '',
 
     };
@@ -168,24 +168,41 @@ export default {
     },
 
     search(){
-      console.log("before resetting search_q ",this.search_q,"stored",this.$store.state.search_q)
-      this.$store.commit('setSearch', '?') //reset every new search
+      //Reset query
+      this.$store.commit('setSearch', '?')
 
-      console.log("after resetting search_q ",this.search_q, "stored", this.$store.state.search_q)
-      console.log("testing the stored host",this.host)
+      //Format the dates
+      let formated_start_date = undefined
+      let formated_end_date = undefined
 
-      
+      if (this.start_date != undefined){
+        this.start_date = new Date(this.start_date)
+        formated_start_date = this.start_date.getFullYear() + 
+          '-' + (this.start_date.getMonth()+1) +
+          '-' + this.start_date.getDate() 
+      } 
+      if (this.end_date != undefined){
+        console.log("end date is not undefined",this.end_date)
+        this.end_date = new Date(this.end_date)
+        formated_end_date = this.end_date.getFullYear() + 
+          '-' + (this.end_date.getMonth()+1) +
+          '-' + this.end_date.getDate() 
+      }
+
+      //Store variables
       this.$store.dispatch('setQParams',{
         sample: this.sample, 
         host_organism: this.host, 
         virus_type: this.vtype, 
         taxonomy: this.taxonomy, 
         description: this.description, 
-        verified: this.verified
-      }) //not working
+        verified: this.verified,
+        exclude_vitis: this.exclude_vitis,
+        start_date: formated_start_date,
+        end_date: formated_end_date 
+      }) 
 
-      console.log("host stored after commit", this.$store.state.host)
-      //build query
+      //Build query
       let search_q= "?"
       if (this.sample != undefined){
         search_q += "&sample=" + this.$store.state.sample
@@ -199,11 +216,21 @@ export default {
         search_q += "&description=" + this.$store.state.description
       } if (this.verified != undefined){
         search_q += "&verified=" + this.$store.state.verified
+      } if (this.exclude_vitis!= undefined){
+        search_q += "&exclude_vitis=" + this.$store.state.exclude_vitis
+      } if(this.start_date != undefined){
+        search_q += "&start_date=" + this.$store.state.start_date
+      } if(this.end_date != undefined){
+        search_q += "&end_date=" + this.$store.state.end_date
       }
 
+      //Store query
       this.$store.commit('setSearch', search_q)
-      console.log(this.$store.state.search_q)
 
+      //set page visual back to 1
+      //???
+
+      //Get results based on query
       this.$refs.results.getSearch()
       
       }
