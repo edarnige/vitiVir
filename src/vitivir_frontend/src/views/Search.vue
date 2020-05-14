@@ -149,7 +149,7 @@ export default {
   },
   methods: {
     exportCSV(){
-      axios.get("http://0.0.0.0:9000/api/data/entries_csv/", {
+      axios.get("http://0.0.0.0:9000/api/data/entries_csv/" + this.$store.state.search_q, {
       })
       .then(res => {
         console.log(res);

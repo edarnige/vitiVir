@@ -101,16 +101,13 @@ class EntryListView(viewsets.ModelViewSet):
 class EntryListCSVExportView(viewsets.ModelViewSet):
     '''Make CSV from Entry list results'''
 
-    queryset = Entry.objects.all()
-    #use self.request.GET ^ to get all params from url passed
-    #queryset = Entry.objects.filter(Q(sample__icontains="SRR") & Q(virus_type='')).order_by('sample')#('date_joined', '-last_login')
-
     serializer_class = EntrySerializer
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
-
     pagination_class = None
-
     renderer_classes = [CSVRenderer]
+
+    def get_queryset(self):
+        return EntryListView.get_queryset(self)
 
  
