@@ -23,8 +23,14 @@ const store = new Vuex.Store({
   state: {
     token: null,
     can_verify: false,
-    search_q: '',
-    sample:''
+    search_q: '?',
+    sample:'',
+    host_organism:'',
+    virus_type:'',
+    taxonomy:'',
+    description:'',
+    verified: '',
+    exclude: ''
   },
   mutations: {
     setToken (state, token) {
@@ -36,11 +42,26 @@ const store = new Vuex.Store({
     setSearch(state, search_q){
       state.search_q = search_q
     },
-    setQParams(state, sample){
+    allQParams(state, {sample, host_organism, virus_type, taxonomy, description, verified}){
       state.sample = sample
+      state.host_organism = host_organism
+      state.virus_type = virus_type
+      state.taxonomy = taxonomy
+      state.description = description
+      state.verified = verified
+      //state.exclude = exclude
+      //page
+      //dates
+    }
+  },
+  actions: {
+    setQParams({commit},{sample, host_organism, virus_type, taxonomy, description, verified}){
+      commit('allQParams',{sample, host_organism, virus_type, taxonomy, description, verified})
     }
 
+
   }
+
 })
 
 const NavbarStore = {
