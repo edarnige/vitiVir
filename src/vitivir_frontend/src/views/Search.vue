@@ -62,10 +62,11 @@
                 <div class="md-layout-item md-size-25 md-xsmall-size-100 md-small-size-50 md-medium-size-25">
                   <md-field>
                     <label for="order">Order by</label>
-                    <md-select v-model="order" name="order" id="order">
-                      <md-option value="evalue">evalue</md-option>
-                      <md-option value="qlength">query length</md-option>
-                      <md-option value="percentID">percent id</md-option>
+                    <md-select v-model="ordering" name="ordering" id="ordering">
+                      <md-option value=""> </md-option>
+                      <md-option value="evalue"> rps-blast evalue (asc)</md-option>
+                      <md-option value="query_length"> query length (desc)</md-option>
+                      <md-option value="percent_id"> blastx percent id (desc)</md-option>
                     </md-select>
                     </md-field>
                   </div>
@@ -143,7 +144,7 @@ export default {
       description: this.$store.state.description,
       start_date: this.$store.state.start_date,
       end_date: this.$store.state.end_date,
-      order: '',
+      ordering: this.$store.state.ordering,
 
     };
   },
@@ -199,7 +200,8 @@ export default {
         verified: this.verified,
         exclude_vitis: this.exclude_vitis,
         start_date: formated_start_date,
-        end_date: formated_end_date 
+        end_date: formated_end_date,
+        ordering: this.ordering 
       }) 
 
       //Build query
@@ -222,6 +224,8 @@ export default {
         search_q += "&start_date=" + this.$store.state.start_date
       } if(this.end_date != undefined){
         search_q += "&end_date=" + this.$store.state.end_date
+      } if(this.ordering != undefined){
+        search_q += "&ordering=" + this.$store.state.ordering
       }
 
       //Store query

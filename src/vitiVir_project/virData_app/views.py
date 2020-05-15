@@ -1,18 +1,16 @@
 from django.shortcuts import render
-#from django.shortcuts import get_object_or_404
+
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.authentication import TokenAuthentication
+from rest_framework import pagination
 #from rest_framework.response import Response
 
 from .serializers import EntrySerializer
 from .models import Entry
 from .filters import EntrySearchFilter
 
-from rest_framework import pagination
-
 from rest_framework_csv.renderers import CSVRenderer
-from django.db.models import Q
 
 import datetime
 
@@ -22,18 +20,20 @@ class EntryListView(viewsets.ModelViewSet):
     ''' Entry API list view '''
     
     queryset = Entry.objects.all()
-
     serializer_class = EntrySerializer
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
     pagination_calss= pagination.PageNumberPagination
 
     def get_queryset(self):
-        fields = ['sample', 'host_organism', 'virus_type', 'taxonomy', 'description','verified','exclude_vitis', 'start_date', 'end_date']
+        fields = ['sample', 'host_organism', 'virus_type', 'taxonomy', 'description',
+            'verified','exclude_vitis', 'start_date', 'end_date', 'ordering']
         mongo_query = []
+        order = []
         mongo_results = ''
         entry_ids = []
-
+        
+        #Get all fields and values passed from frontend (elif?)
         for field in fields:
             if field in self.request.GET:
                 value = self.request.GET.get(field)
@@ -72,28 +72,42 @@ class EntryListView(viewsets.ModelViewSet):
                         ]})
                     except:
                         pass
+                if field == 'ordering':
+                    if value == 'evalue':
+                        order.append(('blastrps.evalue', 1)) 
+                    if value == 'query_length':
+                        order.append(('blastrps.query_length', -1))
+                    if value == 'percent_id':
+                        order.append(('blastx.percent_identity', -1))
 
-        
-        for entry in mongo_results:
-            entry_ids.append(entry['entry_id'])
-        
-        if mongo_query:
-            mongo_results = Entry.objects.mongo_find({'$and': mongo_query})
+        #Which type of mongo query    
+        if mongo_query or order:
+            if mongo_query and order:
+                mongo_results = Entry.objects.mongo_find({'$and': mongo_query}).sort(order)
+            elif mongo_query and not order:
+                mongo_results = Entry.objects.mongo_find({'$and': mongo_query})
+            elif not mongo_query and order:
+                mongo_results = Entry.objects.mongo_find().sort(order)
+
+            #Make a list of entry ids from mongodb query to make queryset
+            count = 0
             for entry in mongo_results:
-                entry_ids.append(entry['entry_id'])
+                #print(entry['entry_id'])
+                try: #there are some inviceb with no rps, temp fix to overcome missing entry_ids
+                    entry_ids.append(entry['entry_id'])
+                    count+=1
+                    print(count)
+                except:
+                    pass
+
             queryset = Entry.objects.filter(entry_id__in = entry_ids)
+            queryset = sorted(queryset, key=lambda i: entry_ids.index(i.pk))
+        
+        #if no parameters passed
         else:
             queryset = Entry.objects.all()
 
         return queryset
-
-
-
-    #     # ordering not working
-    #     ordering = self.request.GET.get('ordering')
-
-    #     if ordering:
-    #         queryset = queryset.order_by(ordering)
         
 
 
