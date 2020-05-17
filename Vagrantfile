@@ -15,10 +15,15 @@ Vagrant.configure("2") do |config|
   config.vm.box = "bento/ubuntu-18.04"
   config.vm.hostname = "vitiBox"
 
-  config.vm.network "forwarded_port", host_ip: "127.0.0.1", guest: 8080, host: 8080 #Django backend
-  config.vm.network "forwarded_port", host_ip: "127.0.0.1", guest: 27017, host: 27017 #mongo
-  config.vm.network "forwarded_port", host_ip: "127.0.0.1", guest: 9000, host: 9000 #Vue frontend
+  config.vm.network "forwarded_port", host_ip: "127.0.0.1", guest: 8080, host: 8080 #Vue frontend
+  config.vm.network "forwarded_port", host_ip: "127.0.0.1", guest: 27017, host: 27017 #MongoDB
+  config.vm.network "forwarded_port", host_ip: "127.0.0.1", guest: 9000, host: 9000 #Django backend
 
+  # Allow symlinks for npm install to work
+  config.vm.provider :virtualbox do |vm| 
+    vm.customize["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/vagrant", "1"]
+  end
+  
   config.vm.provision "shell", inline: <<-SHELL
     
   # Update and upgrade the server packages
@@ -51,7 +56,7 @@ Vagrant.configure("2") do |config|
       sudo apt-get install -y mongodb-org
     fi
 
-    #Node v10.20.0, npm v6.14.4, Vue CLI v4.3.1
+    # Node v10.20.0, npm v6.14.4, Vue CLI v4.3.1
     sudo apt-get install curl
     curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash - #12
     sudo apt-get install -y nodejs
