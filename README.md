@@ -23,9 +23,13 @@ Clone repository
 ## Virtual environment
 Within the vagrant ssh
 
-### Create and use venv:
+### Create venv:
 ```diff
 + mkvirtualenv venv_viti --python=python3
+```
+
+### Use venv:
+```diff
 + workon venv_viti
 + deactivate
 ```
@@ -39,15 +43,21 @@ Activate venv
 ```
 
 ## Frontend dependencies
-In vagrant ssh
+Within the vagrant ssh
+In Vagrant, locking isn't supported when syncing files, so npm install fails without symlinking node_modules outside of the synced folder. The name of this directory MUST be node_modules. See [here]( http://perrymitchell.net/article/npm-symlinks-through-vagrant-windows/) for more information. 
 ```diff
++ cd /path/to/vitiVir
++ vagrant ssh
++ mkdir ~/node_modules
 + cd /vagrant/src/vitivir_frontend
-+ npm install package.json
++ rm -rf node_modules package-lock.json
++ sudo npm cache clean -f
++ ln -s ~/node_modules node_modules
++ npm init
+[enter, enter, enter...]
++ npm install
 ```
-may need to remove node modules before installing
-```diff
-+ rm -rf node_modules
-```
+
 
 ## Start MongoDB
 First time setup
