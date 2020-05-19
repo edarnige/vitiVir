@@ -4,7 +4,7 @@ from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.authentication import TokenAuthentication
 from rest_framework import pagination
-#from rest_framework.response import Response
+from rest_framework.response import Response
 
 from .serializers import EntrySerializer
 from .models import Entry
@@ -121,6 +121,19 @@ class EntryListView(viewsets.ModelViewSet):
         print("queryset ready")
         
         return queryset
+
+    def partial_update(self, request, *args, **kwargs):
+        ''' Patch many based on sample or query_id '''
+        instance = self.queryset.get(pk=kwargs.get('pk'))
+        query_id = instance.query_id #contig for verified and virus type
+        sample = instance.sample #sample for host org
+        data=request.data
+
+        #update directly in the mongodb
+        Entry.objects.mongo_update_many({'query_id': query_id},{'$set':{'verified':data['verified'], 'virus_type':data['virus_type']}}, upsert=True) 
+        Entry.objects.mongo_update_many({'sample': sample},{'$set':{'host_organism':data['host_organism']}}, upsert=True)
+        
+        return Response()
         
 
 
