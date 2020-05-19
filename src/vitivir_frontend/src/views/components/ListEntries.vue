@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h4 v-if="totalResults !=0">{{totalResults}} entries</h4>
 
    <div class="md-size-25 md-xsmall-size-100 md-small-size-50 md-medium-size-25">
     <md-table component-name="pagination" class="pagination pagination-primary">
@@ -49,6 +50,7 @@ export default {
   data() {
     return {
       entries : [],
+      totalResults: 0,
       defaultPagination: 1,
       totalPages: 1,
     }
@@ -63,6 +65,7 @@ export default {
       })
       .then(res => {
         this.entries = res.data.results
+        this.totalResults = res.data.count
         console.log("ON LOAD",res.data)
         console.log(this.$store.state.search_q, this.$store.state.sample)
         this.totalPages = Math.ceil(res.data.count/25)
@@ -83,6 +86,7 @@ export default {
       })
       .then(res => {
         this.entries = res.data.results
+        this.totalResults = res.data.count
         console.log("SEARCH",res.data)
         console.log(this.$store.state.search_q)
         this.totalPages = Math.ceil(res.data.count/25)
@@ -103,6 +107,7 @@ export default {
       .then(res => {
         console.log(res.data)
         this.entries = res.data.results
+        this.totalResults = res.data.count
         this.totalPages = Math.ceil(res.data.count/25)
         })
       .catch(err => console.log(err)); 

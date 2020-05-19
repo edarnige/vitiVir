@@ -33,21 +33,36 @@
                   <md-input v-model="vtype"></md-input>
                 </md-field>
               </div>
+          
+          </div>
+
+          <div class="md-layout">
 
               <div class="md-layout-item md-size-25 md-xsmall-size-100 md-small-size-50 md-medium-size-25">
                 <md-field >
                   <label>Taxonomy</label>
                   <md-input v-model="taxonomy"></md-input>
                 </md-field>
+                </div>
+
+              <div class="md-layout-item md-size-25 md-xsmall-size-100 md-small-size-50 md-medium-size-25">
+                <md-field >
+                  <label>Domain</label>
+                  <md-input v-model="description"></md-input>
+                </md-field>
               </div>
-          
+
           </div>
+
           <div class="md-layout">
 
               <div class="md-layout-item md-size-25 md-xsmall-size-100 md-small-size-50 md-medium-size-25">
                 <md-datepicker class="md-primary" v-model="start_date">
                   <label>Start date (yyyy-mm-dd)</label>
                 </md-datepicker>
+              </div>
+
+              <div class="md-layout-item md-size-25 md-xsmall-size-100 md-small-size-50 md-medium-size-25">
                 <md-datepicker class="md-primary" v-model="end_date">
                   <label>End date (yyyy-mm-dd)</label>
                 </md-datepicker>
@@ -64,9 +79,15 @@
                     <label for="order">Order by</label>
                     <md-select v-model="ordering" name="ordering" id="ordering">
                       <md-option value=""> </md-option>
-                      <md-option value="evalue"> rps-blast evalue (asc)</md-option>
-                      <md-option value="query_length"> query length (desc)</md-option>
-                      <md-option value="percent_id"> blastx percent id (desc)</md-option>
+                      <md-option value="evalue"> 
+                        <div class="options"> rps-blast evalue (asc)</div>
+                      </md-option>
+                      <md-option value="query_length"> 
+                        <div class="options"> query length (desc) </div>
+                      </md-option>
+                      <md-option value="percent_id"> 
+                        <div class="options"> blastx percent id (desc) </div>
+                      </md-option>
                     </md-select>
                     </md-field>
                   </div>
@@ -206,30 +227,34 @@ export default {
 
       //Build query
       let search_q= "?"
-      if (this.sample != undefined){
+      if (this.sample != undefined && this.sample != ''){
         search_q += "&sample=" + this.$store.state.sample
-      } if (this.host != undefined){
+      } if (this.host != undefined && this.host != ''){
         search_q += "&host_organism=" + this.$store.state.host_organism //use stored names
-      } if (this.vtype != undefined){
+      } if (this.vtype != undefined && this.vtype != ''){
         search_q += "&virus_type=" + this.$store.state.virus_type
-      } if (this.taxonomy != undefined){
+      } if (this.taxonomy != undefined && this.taxonomy != ''){
         search_q += "&taxonomy=" + this.$store.state.taxonomy
-      } if (this.description != undefined){
+      } if (this.description != undefined && this.description != ''){
         search_q += "&description=" + this.$store.state.description
-      } if (this.verified != undefined){
+      } if (this.verified != undefined && this.verified != false){
         search_q += "&verified=" + this.$store.state.verified
-      } if (this.exclude_vitis!= undefined){
+      } if (this.exclude_vitis!= undefined && this.exclude_vitis != false){
         search_q += "&exclude_vitis=" + this.$store.state.exclude_vitis
-      } if(this.start_date != undefined){
+      } if(this.start_date != undefined && this.start_date != 'NaN-Nan-Nan'){
         search_q += "&start_date=" + this.$store.state.start_date
-      } if(this.end_date != undefined){
+      } if(this.end_date != undefined && this.end_date != 'NaN-Nan-Nan'){
+          console.log("type",typeof this.end_date)
         search_q += "&end_date=" + this.$store.state.end_date
-      } if(this.ordering != undefined){
+      } if(this.ordering != undefined && this.ordering != ''){
         search_q += "&ordering=" + this.$store.state.ordering
       }
 
       //Store query
+      console.log("stored SQ", this.$store.state.search_q)
       this.$store.commit('setSearch', search_q)
+      console.log("SQ",search_q)
+      
 
       //set page visual back to 1
       //???
@@ -252,5 +277,8 @@ export default {
   display: flex;
   margin: 0;
   margin-bottom: 0.5rem;
+}
+.options{
+  padding-left: 20px;
 }
 </style>
