@@ -14,7 +14,7 @@ from rest_framework_csv.renderers import CSVRenderer
 
 import datetime
 
-from bson.json_util import dumps
+#from bson.json_util import dumps
 
 
 
@@ -117,10 +117,15 @@ class EntryListView(viewsets.ModelViewSet):
         if entry_ids:
             queryset = Entry.objects.filter(entry_id__in = entry_ids)
             print(type(queryset[0]))
-            queryset = sorted(queryset, key=lambda i: entry_ids.index(i.pk))
+            if order:
+                queryset = sorted(queryset, key=lambda i: entry_ids.index(i.pk))
+        if not entry_ids and mongo_query: #if there are no results when filtering
+            queryset=[]
+
         print("queryset ready")
         
         return queryset
+
 
     def partial_update(self, request, *args, **kwargs):
         ''' Patch many based on sample or query_id '''
