@@ -14,6 +14,8 @@ from rest_framework_csv.renderers import CSVRenderer
 
 import datetime
 
+from bson.json_util import dumps
+
 
 
 class EntryListView(viewsets.ModelViewSet):
@@ -24,6 +26,8 @@ class EntryListView(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
     pagination_calss= pagination.PageNumberPagination
+
+    #queryset = Entry.objects.filter(blastx__query_length=7005)
 
     def get_queryset(self):
         fields = ['sample', 'host_organism', 'virus_type', 'taxonomy', 'description',
@@ -55,58 +59,67 @@ class EntryListView(viewsets.ModelViewSet):
                      if value == 'true':
                         mongo_query.append({'blastx.organism':{'$not':{'$regex':'Vitis vinifera', '$options': 'i'}}})
                 if field == 'start_date':
-                    try: #in case of misentry
-                        startdate = datetime.datetime.strptime(value,'%Y-%m-%d')
-                        mongo_query.append({'$or':[
-                            {'sra_metadata.ReleaseDate':{'$gte':startdate}}, 
-                            {'inv_metadata.date':{'$gte':startdate}}
-                        ]})
-                    except:
-                        pass
+                    if value != "NaN-NaN-NaN":
+                        try: #in case of misentry
+                            startdate = datetime.datetime.strptime(value,'%Y-%m-%d')
+                            mongo_query.append({'$or':[
+                                {'sra_metadata.ReleaseDate':{'$gte':startdate}}, 
+                                {'inv_metadata.date':{'$gte':startdate}}
+                            ]})
+                        except:
+                            pass
                 if field == 'end_date':
-                    try:
-                        enddate = datetime.datetime.strptime(value,'%Y-%m-%d')
-                        mongo_query.append({'$or':[
-                            {'sra_metadata.ReleaseDate':{'$lte':enddate}}, 
-                            {'inv_metadata.date':{'$lte':enddate}}
-                        ]})
-                    except:
-                        pass
+                    if value != "NaN-NaN-NaN":
+                        try:
+                            enddate = datetime.datetime.strptime(value,'%Y-%m-%d')
+                            mongo_query.append({'$or':[
+                                {'sra_metadata.ReleaseDate':{'$lte':enddate}}, 
+                                {'inv_metadata.date':{'$lte':enddate}}
+                            ]})
+                        except:
+                            pass
                 if field == 'ordering':
                     if value == 'evalue':
                         order.append(('blastrps.evalue', 1)) 
                     if value == 'query_length':
-                        order.append(('blastrps.query_length', -1))
+                        order.append(('blastx.query_length', -1))
                     if value == 'percent_id':
                         order.append(('blastx.percent_identity', -1))
 
         #Which type of mongo query    
-        if mongo_query or order:
-            if mongo_query and order:
-                mongo_results = Entry.objects.mongo_find({'$and': mongo_query}).sort(order)
-            elif mongo_query and not order:
-                mongo_results = Entry.objects.mongo_find({'$and': mongo_query})
-            elif not mongo_query and order:
-                mongo_results = Entry.objects.mongo_find().sort(order)
-
-            #Make a list of entry ids from mongodb query to make queryset
-            count = 0
-            for entry in mongo_results:
-                #print(entry['entry_id'])
-                try: #there are some inviceb with no rps, temp fix to overcome missing entry_ids
-                    entry_ids.append(entry['entry_id'])
-                    count+=1
-                    print(count)
-                except:
-                    pass
-
-            queryset = Entry.objects.filter(entry_id__in = entry_ids)
-            queryset = sorted(queryset, key=lambda i: entry_ids.index(i.pk))
-        
-        #if no parameters passed
+        if mongo_query and order:
+            print("mongo query and order")
+            mongo_results = Entry.objects.mongo_find({'$and': mongo_query}).sort(order)
+        elif mongo_query and not order:
+            print("mongo query and no order")
+            mongo_results = Entry.objects.mongo_find({'$and': mongo_query})
+        elif not mongo_query and order:
+            print("no mongo query and yes order")
+            #Entry.objects.mongo_createIndex({order[0][0]:order[0][1]})
+            mongo_results = Entry.objects.mongo_find().sort(order)
         else:
+            print("no mongo query no order")
             queryset = Entry.objects.all()
 
+        #Make a list of entry ids from mongodb query to make queryset
+        count = 0
+        print("make list")
+        for entry in mongo_results:
+            try: #there are some inviceb with no rps, temp fix to overcome missing entry_ids
+                entry_ids.append(entry['entry_id'])
+                count+=1
+                #print(count)
+            except:
+                pass
+        #print(mongo_results)
+        print("list done")
+        
+        if entry_ids:
+            queryset = Entry.objects.filter(entry_id__in = entry_ids)
+            print(type(queryset[0]))
+            queryset = sorted(queryset, key=lambda i: entry_ids.index(i.pk))
+        print("queryset ready")
+        
         return queryset
         
 
@@ -121,7 +134,5 @@ class EntryListCSVExportView(viewsets.ModelViewSet):
     pagination_class = None
     renderer_classes = [CSVRenderer]
 
-    def get_queryset(self):
+    def get_queryset(self): #repeats long search -other way?
         return EntryListView.get_queryset(self)
-
- 
