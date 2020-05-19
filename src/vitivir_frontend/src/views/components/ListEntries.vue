@@ -13,10 +13,17 @@
       </md-table-row>
 
       <md-table-row @click="toDetail(entry)" v-for="entry in entries" v-bind:key="entry.entry_id">
-        <md-table-cell>{{ entry.query_id }}</md-table-cell>
+        <md-table-cell v-if="entry.blastrps">{{ entry.query_id }}</md-table-cell>
+        <md-table-cell v-else> </md-table-cell>
+
         <md-table-cell>{{ entry.blastrps.evalue}}</md-table-cell>
-        <md-table-cell>{{ entry.blastx.query_length }}</md-table-cell>
-        <md-table-cell>{{ entry.blastx.percent_identity }}</md-table-cell>
+
+        <md-table-cell v-if="entry.blastx">{{ entry.blastx.query_length }}</md-table-cell>
+        <md-table-cell v-else> </md-table-cell>
+
+        <md-table-cell v-if="entry.blastx">{{ entry.blastx.percent_identity }}</md-table-cell>
+        <md-table-cell v-else> </md-table-cell>
+        
         <md-table-cell> <i v-if="entry.verified==true" class="fas fa-check-circle"></i></md-table-cell>
       </md-table-row>
     </md-table>
