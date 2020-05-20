@@ -1,12 +1,14 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from collections import OrderedDict
 from django.core.paginator import Paginator as DjangoPaginator
-import datetime
 
-from rest_framework import viewsets, status
+import datetime
+import re
+
+from rest_framework import viewsets, status, pagination
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.authentication import TokenAuthentication
-from rest_framework import pagination
+
 from rest_framework.response import Response
 from rest_framework.utils.urls import remove_query_param, replace_query_param
 
@@ -15,25 +17,6 @@ from rest_framework_csv.renderers import CSVRenderer
 from .serializers import EntrySerializer
 from .models import Entry
 
-class L(list):
-    """
-    A subclass of list that can accept additional attributes.
-    Used just like a regular list.
-    http://code.activestate.com/recipes/579103-python-addset-attributes-to-list/
-    """
-    def __new__(self, *args, **kwargs):
-        return super(L, self).__new__(self, args, kwargs)
-
-    def __init__(self, *args, **kwargs):
-        if len(args) == 1 and hasattr(args[0], '__iter__'):
-            list.__init__(self, args[0])
-        else:
-            list.__init__(self, args)
-        self.__dict__.update(kwargs)
-
-    def __call__(self, **kwargs):
-        self.__dict__.update(kwargs)
-        return self
 
 
 class CustomPaginator(DjangoPaginator):
@@ -108,6 +91,22 @@ class EntryListView(viewsets.ModelViewSet):
         mongo_results = ''
         entry_ids = []
         queryset = None
+
+        # IN PROGRESS - get detail without going through all the rest....
+        # print(self.request.path_info)
+        # print(self.request.content_params)
+        # UUID_PATTERN = re.compile(r'[\da-f]{8}-([\da-f]{4}-){3}[\da-f]{12}', re.IGNORECASE)
+        # entry_pk = re.search(UUID_PATTERN, self.request.path_info)[0]
+        # print(entry_pk)
+        # if entry_pk:
+        #     print("yes uuid")
+        #     return Entry.objects.get(pk=entry_pk)
+        
+
+        if "csv" in self.request.path_info:
+            make_csv = True
+        else:
+            make_csv = False
         
         #Get all fields and values passed from frontend (elif?)
         for field in fields:
@@ -176,14 +175,11 @@ class EntryListView(viewsets.ModelViewSet):
             queryset = Entry.objects.all()
             count = queryset.count()
 
-        #Make a list of entry ids from mongodb query to make queryset
         print("count ", count)
-        #update this count to be the correct one, perhaps do a coumnt query first? so 2 queries
-        #len(mongo_results) #get this efficiently
-        self.current_count = count
         print("make list")
+        
+        #Make a list of entry ids from mongodb query to make queryset
         page_size = 25
-
         #only get 25 results at a time 
         try:
             page = int(self.request.GET.get('page'))
@@ -191,29 +187,40 @@ class EntryListView(viewsets.ModelViewSet):
             page= 1 
         start = (page - 1) * page_size
         end = page * page_size
-        for entry in mongo_results[start: end]:
-            try: #there are some inviceb with no rps, temp fix to overcome missing entry_ids
-                entry_ids.append(entry['entry_id']) #cursor
-            except:
-                pass
 
-        if queryset:
-            for entry in queryset[start:end]:
-                try:
-                    entry_ids.append(entry.entry_id)  #queryset
+        if make_csv == False:
+            for entry in mongo_results[start: end]:
+                try: #there are some inviceb with no rps, temp fix to overcome missing entry_ids
+                    entry_ids.append(entry['entry_id']) #cursor
                 except:
-                    pass
+                    print("missing")
+
+            if queryset:
+                for entry in queryset[start:end]:
+                    try:
+                        entry_ids.append(entry.entry_id)  #queryset
+                    except:
+                        print("missing")
+
+        if make_csv == True:
+            for entry in mongo_results:
+                try: #there are some inviceb with no rps, temp fix to overcome missing entry_ids
+                    entry_ids.append(entry['entry_id']) #cursor
+                except:
+                    print("missing")
+
 
         #print(mongo_results)
         print("entries",len(entry_ids))
         print("list done")
         
+        #second query and sorting
         if entry_ids:
             queryset = Entry.objects.filter(entry_id__in = entry_ids)
             if order: 
                 queryset= L(sorted(queryset, key=lambda i: entry_ids.index(i.pk)))
         if not entry_ids and mongo_query: #if there are no results when filtering
-            queryset=[]
+            queryset=L([])
 
         print("queryset ready")
         queryset.length = count
@@ -235,7 +242,6 @@ class EntryListView(viewsets.ModelViewSet):
         
 
 
-
 class EntryListCSVExportView(viewsets.ModelViewSet):
     '''Make CSV from Entry list results'''
 
@@ -245,5 +251,26 @@ class EntryListCSVExportView(viewsets.ModelViewSet):
     pagination_class = None
     renderer_classes = [CSVRenderer]
 
-    def get_queryset(self): #repeats long search -other way?
+    def get_queryset(self):
         return EntryListView.get_queryset(self)
+
+
+class L(list):
+    """
+    A subclass of list that can accept additional attributes.
+    Used just like a regular list.
+    http://code.activestate.com/recipes/579103-python-addset-attributes-to-list/
+    """
+    def __new__(self, *args, **kwargs):
+        return super(L, self).__new__(self, args, kwargs)
+
+    def __init__(self, *args, **kwargs):
+        if len(args) == 1 and hasattr(args[0], '__iter__'):
+            list.__init__(self, args[0])
+        else:
+            list.__init__(self, args)
+        self.__dict__.update(kwargs)
+
+    def __call__(self, **kwargs):
+        self.__dict__.update(kwargs)
+        return self
