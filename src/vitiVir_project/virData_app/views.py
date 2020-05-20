@@ -4,6 +4,7 @@ from django.core.paginator import Paginator as DjangoPaginator
 
 import datetime
 import re
+import uuid
 
 from rest_framework import viewsets, status, pagination
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -92,15 +93,12 @@ class EntryListView(viewsets.ModelViewSet):
         entry_ids = []
         queryset = None
 
-        # IN PROGRESS - get detail without going through all the rest....
-        # print(self.request.path_info)
-        # print(self.request.content_params)
-        # UUID_PATTERN = re.compile(r'[\da-f]{8}-([\da-f]{4}-){3}[\da-f]{12}', re.IGNORECASE)
-        # entry_pk = re.search(UUID_PATTERN, self.request.path_info)[0]
-        # print(entry_pk)
-        # if entry_pk:
-        #     print("yes uuid")
-        #     return Entry.objects.get(pk=entry_pk)
+        #IN PROGRESS - get detail without going through all the rest....
+        if 'pk' in self.kwargs:
+            print("pk in kwargs")
+            pk_entry = self.kwargs['pk']
+            #return Entry.objects.get_object_or_404(pk=pk_entry) 
+            return Entry.objects.filter(entry_id=pk_entry)
         
 
         if "csv" in self.request.path_info:
