@@ -196,14 +196,13 @@ export default {
       //Format the dates
       let formated_start_date = undefined
       let formated_end_date = undefined
-
-      if (this.start_date != undefined){
+      if (this.start_date){
         this.start_date = new Date(this.start_date)
         formated_start_date = this.start_date.getFullYear() + 
           '-' + (this.start_date.getMonth()+1) +
           '-' + this.start_date.getDate() 
       } 
-      if (this.end_date != undefined){
+      if (this.end_date){
         console.log("end date is not undefined",this.end_date)
         this.end_date = new Date(this.end_date)
         formated_end_date = this.end_date.getFullYear() + 
@@ -241,10 +240,9 @@ export default {
         search_q += "&verified=" + this.$store.state.verified
       } if (this.exclude_vitis!= undefined && this.exclude_vitis != false){
         search_q += "&exclude_vitis=" + this.$store.state.exclude_vitis
-      } if(this.start_date != undefined && this.start_date != 'NaN-Nan-Nan'){
+      } if(this.start_date){
         search_q += "&start_date=" + this.$store.state.start_date
-      } if(this.end_date != undefined && this.end_date != 'NaN-Nan-Nan'){
-          console.log("type",typeof this.end_date)
+      } if(this.end_date){
         search_q += "&end_date=" + this.$store.state.end_date
       } if(this.ordering != undefined && this.ordering != ''){
         search_q += "&ordering=" + this.$store.state.ordering
@@ -254,10 +252,6 @@ export default {
       console.log("stored SQ", this.$store.state.search_q)
       this.$store.commit('setSearch', search_q)
       console.log("SQ",search_q)
-      
-
-      //set page visual back to 1
-      //???
 
       //Get results based on query
       this.$refs.results.getSearch()

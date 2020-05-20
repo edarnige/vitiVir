@@ -23,21 +23,20 @@
 
         <md-table-cell v-if="entry.blastx">{{ entry.blastx.percent_identity }}</md-table-cell>
         <md-table-cell v-else> </md-table-cell>
-        
+
         <md-table-cell> <i v-if="entry.verified==true" class="fas fa-check-circle"></i></md-table-cell>
       </md-table-row>
     </md-table>
    
-    <pagination
-      type="primary"
-      v-model="defaultPagination"
-      :page-count=totalPages
+    <pagination 
+      type="primary"      
+      :total="totalResults" 
       @input="updatePage"
-      >
+      :value="currentPage"
+      ><!--props passed to child (pagination) :prop--> 
     </pagination>
 
    </div>
-
 
   </div>
 </template>
@@ -60,6 +59,7 @@ export default {
       totalResults: 0,
       defaultPagination: 1,
       totalPages: 1,
+      currentPage: 1,
     }
   },
 
@@ -86,6 +86,8 @@ export default {
     },
 
     getSearch(){ //same as getEntries, delete one?
+      this.currentPage = 1
+      console.log("setting current page", this.currentPage)
       axios.get("http://0.0.0.0:9000/api/data/entries/"+this.$store.state.search_q+"&page=1", {
         headers: {
           'Authorization': 'Token ' + this.token
@@ -96,7 +98,7 @@ export default {
         this.totalResults = res.data.count
         console.log("SEARCH",res.data)
         console.log(this.$store.state.search_q)
-        this.totalPages = Math.ceil(res.data.count/25)
+        //this.totalPages = Math.ceil(res.data.count/25)
       })
       .catch(err => {
         console.log(err);
@@ -105,6 +107,7 @@ export default {
     },
 
     updatePage(item){
+      this.currentPage = item
 
       axios.get("http://0.0.0.0:9000/api/data/entries/"+this.$store.state.search_q+"&page="+item, {
         headers: {
@@ -115,7 +118,7 @@ export default {
         console.log(res.data)
         this.entries = res.data.results
         this.totalResults = res.data.count
-        this.totalPages = Math.ceil(res.data.count/25)
+        //this.totalPages = Math.ceil(res.data.count/25) //should now be passed into pagination
         })
       .catch(err => console.log(err)); 
     }
