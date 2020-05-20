@@ -107,6 +107,7 @@ class EntryListView(viewsets.ModelViewSet):
         order = []
         mongo_results = ''
         entry_ids = []
+        queryset = None
         
         #Get all fields and values passed from frontend (elif?)
         for field in fields:
@@ -192,9 +193,17 @@ class EntryListView(viewsets.ModelViewSet):
         end = page * page_size
         for entry in mongo_results[start: end]:
             try: #there are some inviceb with no rps, temp fix to overcome missing entry_ids
-                entry_ids.append(entry['entry_id'])
+                entry_ids.append(entry['entry_id']) #cursor
             except:
                 pass
+
+        if queryset:
+            for entry in queryset[start:end]:
+                try:
+                    entry_ids.append(entry.entry_id)  #queryset
+                except:
+                    pass
+
         #print(mongo_results)
         print("entries",len(entry_ids))
         print("list done")
