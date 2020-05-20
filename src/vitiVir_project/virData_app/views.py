@@ -1,21 +1,94 @@
 from django.shortcuts import render
+from collections import OrderedDict
+from django.core.paginator import Paginator as DjangoPaginator
+import datetime
 
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.authentication import TokenAuthentication
 from rest_framework import pagination
 from rest_framework.response import Response
-
-from .serializers import EntrySerializer
-from .models import Entry
-from .filters import EntrySearchFilter
+from rest_framework.utils.urls import remove_query_param, replace_query_param
 
 from rest_framework_csv.renderers import CSVRenderer
 
-import datetime
+from .serializers import EntrySerializer
+from .models import Entry
 
-#from bson.json_util import dumps
+class L(list):
+    """
+    A subclass of list that can accept additional attributes.
+    Used just like a regular list.
+    http://code.activestate.com/recipes/579103-python-addset-attributes-to-list/
+    """
+    def __new__(self, *args, **kwargs):
+        return super(L, self).__new__(self, args, kwargs)
 
+    def __init__(self, *args, **kwargs):
+        if len(args) == 1 and hasattr(args[0], '__iter__'):
+            list.__init__(self, args[0])
+        else:
+            list.__init__(self, args)
+        self.__dict__.update(kwargs)
+
+    def __call__(self, **kwargs):
+        self.__dict__.update(kwargs)
+        return self
+
+
+class CustomPaginator(DjangoPaginator):
+    @property
+    def count(self):
+        return self.object_list.length
+
+
+class CustomMongoPaginator(pagination.PageNumberPagination):
+
+    def paginate_queryset(self, queryset, request, view=None):
+        """
+        Paginate a queryset if required, either returning a
+        page object, or `None` if pagination is not configured for this view.
+        https://github.com/encode/django-rest-framework/blob/master/rest_framework/pagination.py
+        """
+        page_size = self.get_page_size(request)
+        if not page_size:
+            return None
+
+        paginator = CustomPaginator(queryset, page_size)
+        self.paginator = paginator
+        self.page = self.paginator.page(1)
+        page_number = request.query_params.get(self.page_query_param, 1)
+        if page_number in self.last_page_strings:
+            page_number = paginator.num_pages
+
+        if paginator.num_pages > 1 and self.template is not None:
+            # The browsable API should display pagination controls.
+            self.display_page_controls = True
+
+        self.request = request
+        return queryset
+
+    def get_paginated_response(self, data):
+        return Response(OrderedDict([
+            ('count', self.paginator.count),
+            ('next', self.get_next_link()),
+            ('previous', self.get_previous_link()),
+            ('results', data)
+        ]))
+
+    def get_next_link(self):
+
+        url = self.request.build_absolute_uri()
+        page_number = int(self.request.GET.get('page', 1)) + 1
+        return replace_query_param(url, self.page_query_param, page_number)
+
+    def get_previous_link(self):
+
+        url = self.request.build_absolute_uri()
+        page_number = int(self.request.GET.get('page', 1)) - 1
+        if page_number == 1:
+            return remove_query_param(url, self.page_query_param)
+        return replace_query_param(url, self.page_query_param, page_number)
 
 
 class EntryListView(viewsets.ModelViewSet):
@@ -25,9 +98,7 @@ class EntryListView(viewsets.ModelViewSet):
     serializer_class = EntrySerializer
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
-    pagination_calss= pagination.PageNumberPagination
-
-    #queryset = Entry.objects.filter(blastx__query_length=7005)
+    pagination_class= CustomMongoPaginator #pagination.PageNumberPagination
 
     def get_queryset(self):
         fields = ['sample', 'host_organism', 'virus_type', 'taxonomy', 'description',
@@ -90,40 +161,53 @@ class EntryListView(viewsets.ModelViewSet):
         if mongo_query and order:
             print("mongo query and order")
             mongo_results = Entry.objects.mongo_find({'$and': mongo_query}).sort(order)
+            count = mongo_results.count()
         elif mongo_query and not order:
             print("mongo query and no order")
             mongo_results = Entry.objects.mongo_find({'$and': mongo_query})
+            count = mongo_results.count()
         elif not mongo_query and order:
             print("no mongo query and yes order")
-            #Entry.objects.mongo_createIndex({order[0][0]:order[0][1]})
             mongo_results = Entry.objects.mongo_find().sort(order)
+            count = mongo_results.count()
         else:
             print("no mongo query no order")
             queryset = Entry.objects.all()
+            count = queryset.count()
 
         #Make a list of entry ids from mongodb query to make queryset
-        count = 0
+        print("count ", count)
+        #update this count to be the correct one, perhaps do a coumnt query first? so 2 queries
+        #len(mongo_results) #get this efficiently
+        self.current_count = count
         print("make list")
-        for entry in mongo_results:
+        page_size = 25
+
+        #only get 25 results at a time 
+        try:
+            page = int(self.request.GET.get('page'))
+        except:
+            page= 1 
+        start = (page - 1) * page_size
+        end = page * page_size
+        for entry in mongo_results[start: end]:
             try: #there are some inviceb with no rps, temp fix to overcome missing entry_ids
                 entry_ids.append(entry['entry_id'])
-                count+=1
-                #print(count)
             except:
                 pass
         #print(mongo_results)
+        print("entries",len(entry_ids))
         print("list done")
         
         if entry_ids:
             queryset = Entry.objects.filter(entry_id__in = entry_ids)
-            print(type(queryset[0]))
-            if order:
-                queryset = sorted(queryset, key=lambda i: entry_ids.index(i.pk))
+            if order: 
+                queryset= L(sorted(queryset, key=lambda i: entry_ids.index(i.pk)))
         if not entry_ids and mongo_query: #if there are no results when filtering
             queryset=[]
 
         print("queryset ready")
-        
+        queryset.length = count
         return queryset
 
 
