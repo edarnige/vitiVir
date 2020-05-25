@@ -38,7 +38,7 @@
                       <md-button
                         slot="title"
                         class="md-button md-button-link md-white md-simple "
-                        @click="$router.push('/landing');"
+                        @click="$router.push('/');"
                       >
                         <p>Home</p>
                       </md-button>
@@ -227,7 +227,7 @@ export default {
       // this.$store.state.token = null;
       // this.$store.state.can_verify = false;
       sessionStorage.clear();
-      this.$router.push('/landing');
+      this.$router.push('/');
       console.log(this.$store.state.token)
     },
 

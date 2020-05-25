@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Index from "./views/Index.vue";
+//import Index from "./views/Index.vue";
 import Landing from "./views/Landing.vue";
 import Login from "./views/Login.vue";
 import Signup from "./views/Signup";
@@ -14,17 +14,17 @@ Vue.use(Router);
 
 export default new Router({
   routes: [
+    // {
+    //   path: "/",
+    //   name: "index",
+    //   components: { default: Index, header: MainNavbar, footer: MainFooter },
+    //   props: {
+    //     header: { colorOnScroll: 400 },
+    //     footer: { backgroundColor: "black" }
+    //   }
+    // },
     {
       path: "/",
-      name: "index",
-      components: { default: Index, header: MainNavbar, footer: MainFooter },
-      props: {
-        header: { colorOnScroll: 400 },
-        footer: { backgroundColor: "black" }
-      }
-    },
-    {
-      path: "/landing",
       name: "landing",
       components: { default: Landing, header: MainNavbar, footer: MainFooter },
       props: {

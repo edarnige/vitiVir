@@ -7,7 +7,7 @@
             class="md-layout-item md-size-50 md-small-size-70 md-xsmall-size-100"
           >
             <h1 class="title">VitiVir Database</h1>
-            <h4>
+            <h4 id="subtitle">
               A web mining tool to analyze the phytovirus and mycovirus diversity of grapevine. 
               Login to access the search utility.
             </h4>
@@ -16,8 +16,7 @@
               class="md-primary md-lg"
               @click="canSearch()"
               >Search</md-button>
-            <p>
-              <br/>
+            <p id="photo-cred">
             Photo by Dario Krejci
             </p>
           </div>
@@ -178,11 +177,9 @@ export default {
 .contact-form {
   margin-top: 30px;
 }
-
 .md-has-textarea + .md-layout {
   margin-top: 15px;
 }
-
 .fa-viruses{
   color: #f57c00;
   font-size: 3em;
@@ -194,6 +191,14 @@ export default {
 .fa-file-upload{
   color: #2196f3;
   font-size: 3em;
+}
+#subtitle{
+  font-weight: bold;
+  text-shadow: 2px 2px 3px rgba(0,0,0,0.3);
+}
+#photo-cred{
+  padding-top:30px;
+  font-size: 0.5em;
 }
 
 </style>
