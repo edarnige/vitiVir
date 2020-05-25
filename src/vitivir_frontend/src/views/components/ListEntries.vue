@@ -13,7 +13,7 @@
       </md-table-row>
 
       <md-table-row @click="toDetail(entry)" v-for="entry in entries" v-bind:key="entry.entry_id">
-        <md-table-cell v-if="entry.blastrps">{{ entry.query_id }}</md-table-cell>
+        <md-table-cell v-if="entry.blastrps">{{ entry.query_id }}</md-table-cell> <!--may need double "if" if missing data -->
         <md-table-cell v-else> </md-table-cell>
 
         <md-table-cell>{{ entry.blastrps.evalue}}</md-table-cell>
@@ -78,7 +78,7 @@ export default {
         console.log("ON LOAD",res.data)
         console.log(this.$store.state.search_q, this.$store.state.sample)
         //this.totalPages = Math.ceil(res.data.count/25)
-        console.log("Exiting getEntries")
+        console.log("Entering getEntries")
         })
       .catch(err =>{
         this.$Progress.fail()

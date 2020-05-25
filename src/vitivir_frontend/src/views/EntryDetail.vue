@@ -162,8 +162,8 @@
            
         </md-table>
 
-        <h2 class="title text-center">BLASTX results</h2>
-        <md-table >           
+        <h2 class="title text-center" v-if="entry.blastx">BLASTX results</h2>
+        <md-table v-if="entry.blastx">           
 
             <md-table-row>
                 <md-table-head>Taxonomy</md-table-head>
@@ -202,8 +202,8 @@
 
         </md-table>
 
-        <h2 class="title text-center">RPS-BLAST results</h2>
-        <md-table >
+        <h2 class="title text-center" v-if="entry.blastrps">RPS-BLAST results</h2>
+        <md-table v-if="entry.blastrps">
 
             <md-table-row>
                 <md-table-head >Cdd ID</md-table-head>
