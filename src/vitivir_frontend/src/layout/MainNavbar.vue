@@ -207,16 +207,28 @@ export default {
     },
     
     logout(){
+      //reset all variables
       this.$store.commit('setVerify', false)
       this.$store.commit('setToken', null)
-      this.$store.commit('setSearch', '')
-      this.$store.commit('setQParams', '')
+      this.$store.commit('setSearch', '?')
+      this.$store.dispatch('setQParams',{
+        sample:'',
+        host_organism:'',
+        virus_type:'',
+        taxonomy:'',
+        description:'',
+        verified: '',
+        exclude_vitis: '',
+        start_date: '',
+        end_date: '',
+        ordering: ''
+      }) 
+      //this.$store.commit('setQParams', '')
       // this.$store.state.token = null;
       // this.$store.state.can_verify = false;
       sessionStorage.clear();
       this.$router.push('/landing');
       console.log(this.$store.state.token)
-      //location.reload();
     },
 
 
