@@ -1,4 +1,5 @@
 import Vue from "vue";
+import VueProgressBar from 'vue-progressbar'
 import App from "./App.vue";
 import router from './router'
 import Vuex from 'vuex'
@@ -77,6 +78,23 @@ const NavbarStore = {
   showNavbar: false
 };
 
+//Progress bar options
+const options = {
+  color: '#00a33c',
+  failedColor: '#874b4b',
+  thickness: '10px',
+  transition: {
+    speed: '0.2s',
+    opacity: '0.6s',
+    termination: 300
+  },
+  autoRevert: true,
+  location: 'top',
+  inverse: false
+}
+
+Vue.use(VueProgressBar, options)
+
 Vue.mixin({
   data() {
     return {
@@ -85,7 +103,7 @@ Vue.mixin({
   }
 });
 
-new Vue({
+export default new Vue({
   router,
   store:store,
   render: h => h(App)

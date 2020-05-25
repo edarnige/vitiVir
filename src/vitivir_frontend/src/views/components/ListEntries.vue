@@ -46,7 +46,6 @@
 import axios from 'axios';
 import {Pagination} from '@/components'
 
-
 export default {
   name: 'ListEntries',
   components: {
@@ -65,19 +64,24 @@ export default {
 
   methods: {
     getEntries() {
+      this.$Progress.start()
       axios.get("http://0.0.0.0:9000/api/data/entries/" + this.$store.state.search_q, {
         headers: {
           'Authorization': 'Token ' + this.$store.state.token //this.token
         }
       })
       .then(res => {
+        this.$Progress.finish()
         this.entries = res.data.results
         this.totalResults = res.data.count
         console.log("ON LOAD",res.data)
         console.log(this.$store.state.search_q, this.$store.state.sample)
         this.totalPages = Math.ceil(res.data.count/25)
         })
-      .catch(err => console.log(err));
+      .catch(err =>{
+        this.$Progress.fail()
+        console.log(err);
+      })
     },
 
     toDetail(entry){
@@ -86,6 +90,7 @@ export default {
     },
 
     getSearch(){ //same as getEntries, delete one?
+      this.$Progress.start()
       this.currentPage = 1
       console.log("setting current page", this.currentPage)
       axios.get("http://0.0.0.0:9000/api/data/entries/"+this.$store.state.search_q+"&page=1", {
@@ -94,6 +99,7 @@ export default {
         }
       })
       .then(res => {
+        this.$Progress.finish()
         this.entries = res.data.results
         this.totalResults = res.data.count
         console.log("SEARCH",res.data)
@@ -101,12 +107,14 @@ export default {
         //this.totalPages = Math.ceil(res.data.count/25)
       })
       .catch(err => {
+        this.$Progress.fail()
         console.log(err);
       })
 
     },
 
     updatePage(item){
+      this.$Progress.start()
       this.currentPage = item
 
       axios.get("http://0.0.0.0:9000/api/data/entries/"+this.$store.state.search_q+"&page="+item, {
@@ -115,18 +123,22 @@ export default {
         }
       })
       .then(res => {
+        this.$Progress.finish()
         console.log(res.data)
         this.entries = res.data.results
         this.totalResults = res.data.count
         //this.totalPages = Math.ceil(res.data.count/25) //should now be passed into pagination
         })
-      .catch(err => console.log(err)); 
+      .catch(err => {
+        this.$Progress.fail()
+        console.log(err)
+        })
     }
     
     },
 
     created() { //calls methods
-      this.getEntries();
+      this.getEntries(); //getSeatch();
       console.log("Is token passed?",this.$store.state.token)
     },
 

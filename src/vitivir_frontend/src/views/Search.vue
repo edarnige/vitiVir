@@ -116,6 +116,8 @@
               <md-button  class="md-primary" @click.prevent="exportCSV()"> 
                 Export CSV
               </md-button>
+              <p class="csv-info">*To speed up download, do not use ordering in search </p>
+              <p class="csv-info">*The more results, the longer the download</p>
               </div>
 
             
@@ -171,10 +173,12 @@ export default {
   },
   methods: {
     exportCSV(){
+      this.$Progress.start()
       axios.get("http://0.0.0.0:9000/api/data/entries_csv/" + this.$store.state.search_q, {
       })
       .then(res => {
         console.log(res);
+        this.$Progress.finish()
         var fileURL = window.URL.createObjectURL(new Blob([res.data]));
         var fileLink = document.createElement('a');
         
@@ -185,6 +189,7 @@ export default {
         fileLink.click();
       })
       .catch(err => {
+        this.$Progress.fail()
         console.log(err);
       })
     },
@@ -274,5 +279,10 @@ export default {
 }
 .options{
   padding-left: 20px;
+}
+.csv-info{
+  font-size: 0.8em;
+  color: #646464;
+  line-height: 0.75;
 }
 </style>

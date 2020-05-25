@@ -282,12 +282,14 @@ export default {
   },
   methods: {
         getDetail(entry_id) {
+            this.$Progress.start()
             axios.get("http://0.0.0.0:9000/api/data/entries/" + entry_id,{
                 headers: {
                     'Authorization': 'Token ' + this.$store.state.token
                 }
             })
             .then(res => {
+                this.$Progress.finish()
                 this.entry = res.data
                 console.log(this.entry)
                 if(this.entry.sra_metadata != null){
@@ -296,7 +298,10 @@ export default {
                     this.type = 'inv'
                 }
                 })
-            .catch(err => console.log(err));
+            .catch(err => {
+                this.$Progress.fail()
+                console.log(err)
+                })
         },
 
         editDetail(){
@@ -306,6 +311,7 @@ export default {
         },
 
         updateDetail(){//verified, virus_type, host_organism
+            this.$Progress.start()
             this.edited = this.entry;
             console.log("EDITED", this.edited.verified)
             let newData = {'verified':this.edited.verified, 'virus_type':this.edited.virus_type, 'host_organism':this.edited.host_organism}
@@ -315,9 +321,11 @@ export default {
                 }
             })
             .then(res =>{
+                this.$Progress.finish()
                 console.log(res)
             })
             .catch(err => {
+                this.$Progress.fail()
                 console.log(err);
             })
             this.editMode = false
