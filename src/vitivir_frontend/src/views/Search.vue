@@ -116,8 +116,9 @@
               <md-button  class="md-primary" @click.prevent="exportCSV()"> 
                 Export CSV
               </md-button>
-              <p class="csv-info">*To speed up download, do not use ordering in search </p>
+              <p class="csv-info"><br></p>
               <p class="csv-info">*The more results, the longer the download</p>
+              <p class="csv-info">*Ordering is not preserved in the download</p>
               </div>
 
             

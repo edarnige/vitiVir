@@ -64,8 +64,9 @@ export default {
 
   methods: {
     getEntries() {
+      console.log("Entering getEntries")
       this.$Progress.start()
-      axios.get("http://0.0.0.0:9000/api/data/entries/" + this.$store.state.search_q, {
+      axios.get("http://0.0.0.0:9000/api/data/entries/" + this.$store.state.search_q+"&page=1", {
         headers: {
           'Authorization': 'Token ' + this.$store.state.token //this.token
         }
@@ -76,7 +77,8 @@ export default {
         this.totalResults = res.data.count
         console.log("ON LOAD",res.data)
         console.log(this.$store.state.search_q, this.$store.state.sample)
-        this.totalPages = Math.ceil(res.data.count/25)
+        //this.totalPages = Math.ceil(res.data.count/25)
+        console.log("Exiting getEntries")
         })
       .catch(err =>{
         this.$Progress.fail()
@@ -90,6 +92,7 @@ export default {
     },
 
     getSearch(){ //same as getEntries, delete one?
+    console.log("Entering getSearch")
       this.$Progress.start()
       this.currentPage = 1
       console.log("setting current page", this.currentPage)

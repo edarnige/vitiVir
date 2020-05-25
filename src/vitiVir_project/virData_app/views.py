@@ -98,7 +98,7 @@ class EntryListView(viewsets.ModelViewSet):
             print("pk in kwargs")
             pk_entry = self.kwargs['pk']
             #return Entry.objects.get_object_or_404(pk=pk_entry) 
-            return Entry.objects.filter(entry_id=pk_entry)
+            return Entry.objects.filter(entry_id=pk_entry) #return all might be faster, to test
         
 
         if "csv" in self.request.path_info:
@@ -215,7 +215,8 @@ class EntryListView(viewsets.ModelViewSet):
         #second query and sorting
         if entry_ids:
             queryset = Entry.objects.filter(entry_id__in = entry_ids)
-            if order: 
+            if make_csv == False and order: #do not bother to order csv
+                print("ordering...")
                 queryset= L(sorted(queryset, key=lambda i: entry_ids.index(i.pk)))
         if not entry_ids and mongo_query: #if there are no results when filtering
             queryset=L([])
