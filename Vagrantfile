@@ -20,9 +20,9 @@ Vagrant.configure("2") do |config|
   config.vm.network "forwarded_port", host_ip: "127.0.0.1", guest: 9000, host: 9000 #Django backend
 
   # Allow symlinks for npm install to work
-  config.vm.provider :virtualbox do |vm| 
-    vm.customize["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/vagrant", "1"]
-  end
+  #config.vm.provider :virtualbox do |vm| 
+    #vm.customize["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/vagrant", "1"]
+  #end
   
   config.vm.provision "shell", inline: <<-SHELL
     
