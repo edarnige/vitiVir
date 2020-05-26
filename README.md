@@ -57,21 +57,33 @@ In Vagrant, locking isn't supported when syncing files, so npm install fails wit
 [enter, enter, enter...]
 + npm install
 ```
+If symlinks are not functioning, enable them manually in Vagrany by:\
+1. On the host machine: 
+Windows ```cd C:\Program Files\Oracle\VirtualBox```
+MacOS ```cd /Users/username/VirtualBox\ VMs```
+
+2. Run the following command:
+```VBoxManage setextradata VM_NAME VBoxInternal2/SharedFoldersEnableSymlinksCreate/SHARE_NAME 1```
+replacing VM_NAME with your Virtual Machine's name (if you don't know this, in VBox go to Machine > Settings > General > Basic > Name --- also replace SHARE_NAME with the name of your shared folder, if you don't remember this, go to Machine > Settings > Shared Folders. 
+verify with: 
+```VBoxManage getextradata "<vm name>" enumerate```
+
+3. Restart your VM AND VirtualBox, run as administrator
 
 
 ## Start MongoDB
-First time setup
+First time setup\
 In a new terminal, execute:
 ```diff
 + cd /path/to/vitiVir
 + vagrant ssh
-+ mkdir data
++ sudo mkdir /data
 + cd data
-+ mkdir db
-+ chmod 777 /data/db
++ sudo mkdir /db
++ sudo chmod 777 /data/db
 ```
 
-Start mongod
+Start mongod\
 In a new terminal, execute:
 ```diff
 + cd /path/to/vitiVir
@@ -79,7 +91,7 @@ In a new terminal, execute:
 + mongod
 ```
 
-Mongo shell 
+Mongo shell\
 In a new terminal, execute:
 ```diff
 + cd /path/to/vitiVir
@@ -89,13 +101,14 @@ In a new terminal, execute:
 
 ## Running the servers
 ### Django
-First time setup - migrate db
+First time setup - migrate db and create superuser
 ```diff
 + cd /path/to/vitiVir
 + vagrant ssh
 + cd /vagrant/src/vitiVir_project
 + python manage.py makemigrations
 + python manage.py migrate
++ pyton manage.py createsuperuser
 ```
 
 Run server
