@@ -156,7 +156,7 @@ export default {
   },
   computed: {
     showDownload() {
-      const excludedRoutes = ["login", "landing", "search", "signup","entrydetail"];
+      const excludedRoutes = ["login", "landing", "search", "signup","entrydetail", "blast"];
       return excludedRoutes.every(r => r !== this.$route.name);
     }
   },

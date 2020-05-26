@@ -5,7 +5,8 @@ import Landing from "./views/Landing.vue";
 import Login from "./views/Login.vue";
 import Signup from "./views/Signup";
 import Search from "./views/Search.vue";
-import EntryDetail from"./views/EntryDetail.vue";
+import EntryDetail from "./views/EntryDetail.vue";
+import Blast from "./views/Blast.vue";
 import MainNavbar from "./layout/MainNavbar.vue";
 import MainFooter from "./layout/MainFooter.vue";
 
@@ -72,6 +73,14 @@ export default new Router({
       components: { default: EntryDetail, header: MainNavbar, footer: MainFooter }, 
       props: { //props: true,
 
+      }
+    },
+    {
+      path: "/blast",
+      name: "blast",
+      components: { default: Blast, header: MainNavbar, footer: MainFooter },
+      props: {
+        footer: { backgroundColor: "black" }
       }
     },
   ],

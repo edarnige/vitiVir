@@ -126,18 +126,7 @@ export default {
       type: String,
       default: require("@/assets/img/vineyard.jpeg")
     },
-    teamImg1: {
-      type: String,
-      default: require("@/assets/img/faces/avatar.jpg")
-    },
-    teamImg2: {
-      type: String,
-      default: require("@/assets/img/faces/christian.jpg")
-    },
-    teamImg3: {
-      type: String,
-      default: require("@/assets/img/faces/kendall.jpg")
-    }
+
   },
 
   data() {
