@@ -4,7 +4,11 @@ import App from "./App.vue";
 import router from './router'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
-//import BootstrapVue from "bootstrap-vue";
+import BootstrapVue from 'bootstrap-vue'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+Vue.use(BootstrapVue)
 
 import '@fortawesome/fontawesome-free/css/all.css'
 import '@fortawesome/fontawesome-free/js/all.js'
