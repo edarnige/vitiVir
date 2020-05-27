@@ -21,7 +21,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('users/',include('vitiVir_app.urls')), #users
+    path('',include('vitiVir_app.urls')), #users, blast
     path('api/data/', include('virData_app.urls')), #virus data
     path('auth/', obtain_auth_token) #test auth
 ]
