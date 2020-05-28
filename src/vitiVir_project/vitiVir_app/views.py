@@ -11,6 +11,9 @@ from virData_app.views import EntryListView
 
 from django_filters import rest_framework as filters
 
+from Bio import SeqIO
+from Bio.Blast.Applications import NcbiblastnCommandline, NcbitblastxCommandline, NcbitblastnCommandline
+from Bio.Blast import NCBIXML
 
 class UserViewSet(viewsets.ModelViewSet):
     ''' Manage and create users at /users/manageusers/'''
@@ -42,14 +45,21 @@ class LoginViewSet(viewsets.ViewSet):
 
 
 class BlastViewSet(viewsets.ViewSet):
-    '''place holder'''
-    def list(self, request):
-        queryset = MyUser.objects.all()
-        serializer = MyUserSerializer(queryset, many=True)
-        return Response(serializer.data)
+    ''' Blastn or tblastx against local vitivirseq db at /api/blast/'''
 
-    # @action(detail=True, methods=['post'], permission_classes=[IsAdminOrIsSelf])
-    # def blast(self):
-    #     '''blast here?'''
-#http://biopython.org/DIST/docs/tutorial/Tutorial.html
-#7.2.2
+    blastn_path = '/vagrant/db/blastdb/ncbi-blast-2.10.0+/bin/blastn'
+    blast_cline = NcbiblastnCommandline(cmd=blastn_path, query='/vagrant/db/blastdb/genes_of_interest.fasta', db='/vagrant/db/blastdb/vitiVirSeq.fasta', outfmt=5, out='/vagrant/db/results2.xml')
+    blast_cline
+    #print(blast_cline)
+    stdout, stderr = blast_cline()
+    result_handle = open("/vagrant/db/results2.xml")
+
+    
+    #blast_cline= NcbiblastnCommandline(query='PATH/to/genes_of_interest.fasta', db='/PATH/to/local/db/protein.fa', out='PATH/to/results.xml')
+    #http://biopython.org/DIST/docs/tutorial/Tutorial.html
+    #7.2.2
+    #What about if only 1 result? check fasta input ? 
+    # blast_records = NCBIXML.parse(result_handle)
+    # for blast_record in blast_records:
+    #     print(">>>>>ping")
+        #convert to json object to send to front
