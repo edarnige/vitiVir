@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h4>Click a row to see the alignment</h4>
     <vue-good-table
       ref="blast-table"
       :columns="columns"
@@ -28,9 +29,7 @@
         </template>
         <template v-else>
           <span v-if="props.column.field == 'action'">
-            <b-button pill variant="outline-primary" @click="launchAction(props.row)">{{
-              buttonActionLabel
-            }}</b-button>
+            <b-button pill variant="outline-primary" @click="launchAction(props.row)">entry</b-button>
           </span>
           <span v-else>{{ props.formattedRow[props.column.field] }}</span>
         </template>
@@ -106,7 +105,7 @@ export default {
           formatFn: formatPercentage,
         },
         {
-          label: this.buttonActionLabel,
+          label: "To entry",//this.buttonActionLabel,
           field: 'action',
         },
       ];
@@ -171,10 +170,26 @@ export default {
         this.$refs['blast-table'].selectedRows.map(x => x.accession)
       );
     },
-    launchAction: function(evt) {
-      this.$emit('launchAction', evt);
+    launchAction: function(params) { //to detail
+      console.log("to launch", params.accession)
+      //this.$emit('launchAction', evt);
+      const entry_id = params.accession.split("_",1) 
+      console.log(entry_id)
+      let route = this.$router.resolve({path: '/search/'+entry_id});
+      console.log(route)
+      window.open(route.href)
     },
+    // toDetail: function(params) {
+    //   console.log("to detail")
+    //   const entry_id = params.row.accession.split("_",1) 
+    //   console.log(entry_id)
+    //   let route = this.$router.resolve({path: '/search/'+entry_id});
+    //   console.log(route)
+    //   window.open(route.href)
+    //   //this.$router.push({name: 'entrydetail', params: {entry_id}})
+    // },
     onRowClick: function(params) {
+      console.log("to rowclick (alignment)")
       this.$emit('onRowClick', params.row.accession);
     },
     downloadAsCsv: function() {
@@ -225,4 +240,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+h4{
+  margin-left: 10px;
+}
+</style>
