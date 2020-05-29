@@ -169,7 +169,7 @@ GTGGTCCTAGGCA
           canCancel: false,
           loader: 'dots',
         });*/
-        axios.post(`${process.env.VUE_APP_API_HOST}/api/blast/`, finalForm).then( //send form info
+        axios.post("http://0.0.0.0:9000/api/blast/", finalForm).then( //`${process.env.VUE_APP_API_HOST}/api/blast/`
           // eslint-disable-next-line arrow-parens
           resp => {
             const xml = resp.data;

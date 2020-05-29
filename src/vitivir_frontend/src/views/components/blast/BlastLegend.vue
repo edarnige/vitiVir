@@ -42,4 +42,20 @@ export default {
 </script>
 
 <style scoped>
+.color1  {
+  fill: #5c6d7e;
+}
+
+.color2  {
+  fill: #9b59b6;
+}
+.color3  {
+  fill: #5cace2;
+}
+.color4  {
+  fill: #57d68d;
+}
+.color5  {
+  fill: #c0392b;
+}
 </style>

@@ -17,10 +17,13 @@ import '@fortawesome/fontawesome-free/js/all.js'
 
 import MaterialKit from "./plugins/material-kit";
 
+import VTooltip from 'v-tooltip';
+
 Vue.config.productionTip = false;
 
 Vue.use(MaterialKit);
 Vue.use(Vuex)
+Vue.use(VTooltip);
 
 //Default axios header sent when token in session storage
 if (window.sessionStorage.getItem('vuex')) {
