@@ -11,4 +11,5 @@ router.register('api/blast', BlastViewSet, basename='blast')
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('api/blast/', BlastViewSet.as_view({'post': 'post'}))
 ]

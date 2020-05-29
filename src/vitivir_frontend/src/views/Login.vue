@@ -79,8 +79,8 @@ export default {
         this.$store.commit('setToken',token) //change token value
         this.getUser(this.email)
         this.$router.push('/search');
-        //location.reload(); //to show correct navbar buttons...
         console.log(this.$store.state.token)
+        //axios.defaults.headers.common['Authorization'] = `Token ${token}`;
       })
       .catch(err => {
         console.log(err);

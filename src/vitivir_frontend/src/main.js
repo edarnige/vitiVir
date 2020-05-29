@@ -3,10 +3,12 @@ import VueProgressBar from 'vue-progressbar'
 import App from "./App.vue";
 import router from './router'
 import Vuex from 'vuex'
+import axios from 'axios'
 import createPersistedState from 'vuex-persistedstate'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+require('dotenv').config()
 
 Vue.use(BootstrapVue)
 
@@ -19,6 +21,15 @@ Vue.config.productionTip = false;
 
 Vue.use(MaterialKit);
 Vue.use(Vuex)
+
+//Default axios header sent when token in session storage
+if (window.sessionStorage.getItem('vuex')) {
+  const data = JSON.parse(window.sessionStorage.getItem('vuex'))
+  if (data.token) {
+    axios.defaults.headers.common.Authorization = `Token ${data.token}`;
+  }
+  
+}
 
 
 const store = new Vuex.Store({

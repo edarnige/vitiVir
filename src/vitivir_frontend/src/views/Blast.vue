@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import Vue from 'vue';
+import axios from 'axios';
 import BlastResult from '@/views/components/blast/BlastResult.vue';
 import BlastForm from '@/views/components/blast/BlastForm.vue';
 
@@ -145,11 +145,9 @@ LVIDSVQGAEGAIQIGS`,
       },
 
       programs: [
-        { text: 'blastn', value: 'blastn' }, //remove
-        { text: 'blastp', value: 'blastp' },
-        { text: 'blastx', value: 'blastx' },
-        { text: 'tblastn', value: 'tblastn' }, //remove
-        { text: 'tblastx', value: 'tblastx' }, //remove
+        { text: 'blastn', value: 'blastn' }, 
+        { text: 'tblastn', value: 'tblastn' }, 
+        { text: 'tblastx', value: 'tblastx' }, 
       ],
       urlBlastResult: '',
       errorMessage: 'Error',
@@ -180,32 +178,38 @@ LVIDSVQGAEGAIQIGS`,
       this.dismissCountDown = this.dismissSecs;
     },
     onSubmit(event) {
+
+        console.log(process.env.VUE_APP_API_HOST, process.env) //testing environment
       event.preventDefault();
 
       let blastForm = this.$refs['blast-form'].form;
 
       if (this.$refs['blast-form'].isValid()) {
         let finalForm = Object.assign({}, blastForm);
-        finalForm.login = this.$store.getters.getLogin;
-        finalForm.token = this.$store.getters.getToken;
+        // finalForm.login = this.$store.getters.getLogin;
+        // finalForm.token = this.$store.getters.getToken;
 
-        let loader = this.$loading.show({
+        /*let loader = this.$loading.show({
           // Optional parameters
           container: null,
           canCancel: false,
           loader: 'dots',
-        });
-        Vue.http.post('api/blast', finalForm).then(
+        });*/
+        axios.post(`${process.env.VUE_APP_API_HOST}/api/blast/`, finalForm).then( //send form info
           // eslint-disable-next-line arrow-parens
           resp => {
-            var success = resp.body.success;
+            const xml = resp.data;
+            console.log(xml)
+            const success = true;
+            
             if (success === false) {
               this.errorMessage = resp.body.message;
               this.showAlert();
             } else {
-              this.urlBlastResult = resp.body.url;
+              //this.urlBlastResult = resp.body.url; //get xml url? 
+              this.urlBlastResult = 'http://google.com' //why are we using this?
               // TODO : à enlever
-              this.res = resp.body.res;
+              this.res = xml;
               if (resp.body.url === undefined || resp.body.url === '') {
                 this.errorMessage = 'No result';
                 this.showAlert();
@@ -213,10 +217,10 @@ LVIDSVQGAEGAIQIGS`,
                 this.showForm = false;
               }
             }
-            loader.hide();
+            // loader.hide();
           },
           () => {
-            loader.hide();
+            // loader.hide();
             this.errorMessage = 'Server error';
             this.showAlert();
           }
@@ -231,7 +235,6 @@ LVIDSVQGAEGAIQIGS`,
         evalue: 1e-10,
         maxNbAlignments: null,
         sequences: '',
-        //speciesIds: '',
       });
     },
     setExample() {

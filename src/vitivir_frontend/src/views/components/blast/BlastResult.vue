@@ -22,6 +22,7 @@
       :query="selectedQuery"
       @selectAlignment="selectAlignment"
     ></blast-graphics>
+    <!--@onRowClick redirect to entry detail -->
     <blast-table
       v-if="jsonData"
       :json-data="jsonData"
@@ -30,7 +31,7 @@
       :db-type="dbType"
       selection-button-text="Download selected sequences (fasta)"
       button-action-label="alignment"
-      @onRowClick="selectAlignment"
+      @onRowClick="selectAlignment" 
       @clickActionOnSelect="openFastaWindow"
       @launchAction="selectAlignment"
     ></blast-table>
