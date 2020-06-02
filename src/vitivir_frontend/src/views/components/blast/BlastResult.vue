@@ -90,7 +90,7 @@ import BlastGraphics from '@/views/components/blast/BlastGraphics.vue';
 import BlastTable from '@/views/components/blast/BlastTable.vue';
 import BlastAlignment from '@/views/components/blast/BlastAlignment.vue';
 
-import Vue from 'vue';
+// import Vue from 'vue';
 
 var blastParser = require('biojs-io-blast');
 
@@ -221,30 +221,36 @@ export default {
       return a_from_to;
     },
     getFastaSequences() {
-      let a_from_to = this.selectedIds.map(id => this.getLimitsTarget(id));
+      //let a_from_to = this.selectedIds.map(id => this.getLimitsTarget(id));
+      
+      console.log(this.res)
+      console.log(this.jsonData) //iterations.hits.hseq
+      console.log(this.selectedIds)
+      console.log(this.selectedQuery) // test seq 1
 
-      let params = {
-        limits: a_from_to,
-        ids: this.selectedIds,
-        db: this.db,
-        dbType: this.dbType,
-        urlResult: this.urlResult,
-        lb: this.lbFasta,
-        ub: this.ubFasta,
-      };
-
-      Vue.http.post('api/getBlastSequences', params).then(
-        resp => {
-          let success = resp.body.success;
-          if (success) {
-            window.open(resp.body.url);
+      //write fasta format
+      let str = ''
+      if (this.jsonData.iterations && this.selectedQuery !== "") {
+        this.jsonData.iterations.forEach(iteration => {
+          let queryId = iteration["query-def"];
+          if (queryId === this.selectedQuery) {
+            iteration.hits.forEach(hit =>{
+              if(this.selectedIds.includes(hit.id)){
+                str += ">" + hit.id +"\n" + hit.hsps[0].hseq + "\n"; //I think there is always only 1 hsps?
+              }
+            })
           }
-        },
-        () => {
-          console.log('Network Problem');
-        }
-      );
+        })
+      }
+      //download fasta file
+      var fileURL = window.URL.createObjectURL(new Blob([str]));
+      var fileLink = document.createElement('a');
+      fileLink.href = fileURL;
+      fileLink.setAttribute('download', 'sequences.fasta');
+      document.body.appendChild(fileLink);
+      fileLink.click();
     },
+
     selectAlignment(acc) {
       this.subject = acc;
       this.$refs['modal-align'].show();
