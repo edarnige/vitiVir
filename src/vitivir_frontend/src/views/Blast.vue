@@ -1,7 +1,7 @@
 <template>
 <div class="wrapper">
   <div>
-    <b-container id="blast"><!-- <b-container v-if="authenticated"> -->
+    <b-container id="blast" v-if="$store.state.token"><!-- <b-container v-if="authenticated"> -->
         <div class="row">
             <div class="col">
                 <h2>Search by Blast</h2>
@@ -64,7 +64,7 @@
             </div>
         </div>
     </b-container>
-    <!-- <b-alert v-else show variant="danger">You must be logged to access this function</b-alert> -->
+    <b-alert class="alert" v-else show variant="danger">You must be logged to access this function</b-alert>
   </div>
 </div> 
 </template>
@@ -232,7 +232,8 @@ GTGGTCCTAGGCA
 .submit-button{
     margin: 10px;
 }
-
-
+.alert{
+    padding-top: 100px;
+}
 
 </style>
