@@ -78,8 +78,8 @@ In a new terminal, execute:
 + cd /path/to/vitiVir
 + vagrant ssh
 + sudo mkdir /data
-+ cd data
-+ sudo mkdir /db
++ cd /data
++ sudo mkdir db
 + sudo chmod 777 /data/db
 ```
 
@@ -90,6 +90,11 @@ In a new terminal, execute:
 + vagrant ssh
 + mongod
 ```
+or 
+```
++ sudo service mongod start
+```
+to run in the background
 
 Mongo shell\
 In a new terminal, execute:
