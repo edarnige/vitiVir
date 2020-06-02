@@ -64,7 +64,7 @@
             </div>
         </div>
     </b-container>
-    <b-alert class="alert" v-else show variant="danger">You must be logged to access this function</b-alert>
+    <b-alert class="alert" v-else show variant="danger">You must be logged in to access the blast function</b-alert>
   </div>
 </div> 
 </template>

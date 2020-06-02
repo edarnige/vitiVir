@@ -124,7 +124,7 @@
     </div>
   </div>
   <div class="wrapper login-alert" v-else >
-    <b-alert show variant="danger">You must be logged to access this function</b-alert>
+    <b-alert show variant="danger">You must be logged in to access the search function</b-alert>
   </div>
 </template>
 
