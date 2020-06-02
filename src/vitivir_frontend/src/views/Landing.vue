@@ -63,10 +63,13 @@
               </div>
               <div class="md-layout-item md-medium-size-33 md-small-size-100">
                 <div class="info">
-                  <i class="fas fa-file-upload"></i>
-                  <h4 class="info-title">BLASTX portal</h4>
+                  <md-button class="md-simple" @click="$router.push('/blast');">
+                    <i class="fas fa-file-upload"></i>
+                  </md-button>
+                  <h4 class="info-title">BLAST portal</h4>
                   <p>
-                    Upload a fasta file to undergo BLASTX....
+                    Enter your grapevine-associated viral fasta sequences to run BLASTN, TBLASTN, 
+                    or TBLASTX against the VitiVir viral sequence database. 
                   </p>
                 </div>
               </div>
@@ -188,6 +191,11 @@ export default {
 #photo-cred{
   padding-top:30px;
   font-size: 0.5em;
+}
+#blast-button{
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
 }
 
 </style>

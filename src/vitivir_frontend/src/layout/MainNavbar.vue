@@ -89,6 +89,22 @@
                       <md-button
                         slot="title"
                         class="md-button md-button-link md-white md-simple "
+                        @click="$router.push('/blast');"
+                      >
+                        <p>BLAST</p>
+                      </md-button>
+                  </div>
+                </a>
+              </li>
+              <li class="md-list-item" v-if="!showDownload" >
+                <a
+                  href="javascript:void(0)"
+                  class="md-list-item-router md-list-item-container md-button-clean dropdown"
+                >
+                  <div class="md-list-item-content" v-if="this.$store.state.token!=null">
+                      <md-button
+                        slot="title"
+                        class="md-button md-button-link md-white md-simple "
                         @click="logout()"
                       >
                         <p>Logout</p>
