@@ -169,8 +169,14 @@ GTGGTCCTAGGCA
           canCancel: false,
           loader: 'dots',
         });*/
-        axios.post("http://0.0.0.0:9000/api/blast/", finalForm).then( //`${process.env.VUE_APP_API_HOST}/api/blast/`
+        axios.post("http://0.0.0.0:9000/api/blast/", finalForm,{//`${process.env.VUE_APP_API_HOST}/api/blast/`
+            headers: {
+                'Authorization': 'Token ' + this.$store.state.token
+            }
+            })
+            .then( 
           // eslint-disable-next-line arrow-parens
+          
           resp => {
             const xml = resp.data;
             console.log(xml)
