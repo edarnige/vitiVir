@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper" v-if="$store.state.token">
     <div class="section section-basic">  
       <div class="container">
                 
@@ -7,9 +7,6 @@
           <h2>Search query filters</h2>
         </div>    
       
-      <!-- </div>
-        
-        <div class="container"> -->
 
           <div class="md-layout">
 
@@ -99,14 +96,9 @@
             </md-button>
           </div>
 
-          <!-- </div> -->
-        <!-- </div> -->
-
-
-    <!-- Results -->
 
         <div class="section section-basic">
-          <!-- <div class="container"> -->
+
               
             
               <div class="title">
@@ -130,6 +122,9 @@
 
       </div>
     </div>
+  </div>
+  <div class="wrapper login-alert" v-else >
+    <b-alert show variant="danger">You must be logged to access this function</b-alert>
   </div>
 </template>
 
@@ -285,5 +280,9 @@ export default {
   font-size: 0.8em;
   color: #646464;
   line-height: 0.75;
+}
+
+.login-alert{
+  padding-top:100px
 }
 </style>
