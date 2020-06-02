@@ -32,10 +32,19 @@
             >
               <h2 class="title text-center">About the database</h2>
               <h5 class="description">
-                Data from NCBI's publically available SRA as well as data from project InViCeb 
-                were analyzed via the VirAnnot pipeline, and the results can be explored here. 
-                VirAnnot was developped by Marie Lefebvre and Sebastian Thiel within the plant virology etiology team. VirAnnot is a bioinformatic 
-                resource for the automatic classification of viral OTUs. Mycovir... INVICEB...
+                Project 
+                <a href="https://www.plan-deperissement-vigne.fr/recherches/programmes-de-recherche/mycovir"> MYCOVIR </a>
+                is a collaboration between multiple research units of the INRAE 
+                and the IFV. The objective of project MYCOVIR is to determine the diversity and 
+                interactions of viral and fungal communities associated with grapevine trunk diseases.
+                In a similar light, the InViCeb project aims to take virologic inventory of Bordeaux grape varieties.
+                Grapevine assocaited raw RNA-seq data from NCBI's publically available SRA as well as data from project InViCeb 
+                were analyzed via the 
+                <a href="https://apsjournals.apsnet.org/doi/full/10.1094/PBIOMES-07-19-0037-A">
+                  VirAnnot pipeline</a>, 
+                as developped by Marie Lefebvre and Sebastian Thiel within the INRAE  UMR 1332 BFP 
+                plant virology etiology team. The resulting taxonomic classifications were stored in
+                the VitiVir database and can be mined in this web tool.
               </h5>
             </div>
           </div>
@@ -46,24 +55,26 @@
                   <i class="fas fa-viruses"></i>
                   <h4 class="info-title">Virus data</h4>
                   <p>
-                    All kinds of viruses phyto myco phage. viri viruses virus
+                    While the focus of project MYCOVIR targets mycoviruses, 
+                    grapevine associated phytoviruses and bacteriophages are also 
+                    present in the VitiVir database.
                   </p>
                 </div>
               </div>
               <div class="md-layout-item md-medium-size-33 md-small-size-100">
                 <div class="info">
                     <i class="fas fa-user-check"></i>
-                  <h4 class="info-title">Verified Users</h4>
+                  <h4 class="info-title">Verified users</h4>
                   <p>
                     Database access is restricted to INRAE UMR 1332 researchers 
                     and MYCOVIR partners. Only MYCOVIR project directors can verify
-                    taxonomy, host organism, and virus type. 
+                    taxonomy, host organism, and virus type of an entry. 
                   </p>
                 </div>
               </div>
               <div class="md-layout-item md-medium-size-33 md-small-size-100">
                 <div class="info">
-                  <md-button class="md-simple" @click="$router.push('/blast');">
+                  <md-button id="blast-button" class="md-simple" @click="$router.push('/blast');">
                     <i class="fas fa-file-upload"></i>
                   </md-button>
                   <h4 class="info-title">BLAST portal</h4>
@@ -112,6 +123,10 @@
                   </div>
                 </div>
               </form>
+                            
+                            
+              <img src="@/assets/img/logos.png" alt="">
+
             </div>
           </div>
         </div>
@@ -193,9 +208,13 @@ export default {
   font-size: 0.5em;
 }
 #blast-button{
-  background-color: #4CAF50; /* Green */
-  border: none;
-  color: white;
+  margin: -5px;
+}
+img{
+  padding-top: 100px;
+}
+.section-contacts{
+  margin-top: -100px;
 }
 
 </style>
