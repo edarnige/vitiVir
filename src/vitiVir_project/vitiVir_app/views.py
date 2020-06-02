@@ -51,7 +51,8 @@ class BlastViewSet(viewsets.ViewSet):
     ''' Blastn, tblastn, or tblastx against local vitivirseq db at /api/blast/'''
 
     authentication_classes = (TokenAuthentication,) #still accessible when not logged in???
-
+    permission_classes = (IsAuthenticated,)
+    
     def post(self, request):
         data = request.data.get('sequences')
         type_of_blast = request.data.get('program')
