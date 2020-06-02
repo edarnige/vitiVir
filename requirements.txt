@@ -1,3 +1,4 @@
+biopython==1.77
 bson==0.5.8
 dataclasses==0.7
 Django==2.2.11
@@ -8,6 +9,7 @@ djangorestframework-csv==2.1.0
 djangorestframework-filters==1.0.0.dev0
 djangotoolbox==1.8.0
 djongo==1.3.1
+numpy==1.18.4
 pymongo==3.10.1
 python-dateutil==2.8.1
 pytz==2019.3
