@@ -58,7 +58,15 @@ class BlastViewSet(viewsets.ViewSet):
         type_of_blast = request.data.get('program')
         tmp_file_path = os.path.join('/tmp', "%s.in" % timezone.now().microsecond) #time stamp for unique in case of multiple queries at once
         tmp_out_file_path = os.path.join('/tmp', "%s.out" % timezone.now().microsecond)
+        evalue = float(1e-10)
+        max_nb = 100000
+        
+        if request.data.get('evalue'):
+            evalue = float(request.data.get('evalue'))
 
+        if request.data.get('maxNbAlignments'):
+            max_nb = request.data.get('maxNbAlignments')
+            
         with open(tmp_file_path, 'w') as f:
             f.write(data)
 
@@ -69,6 +77,8 @@ class BlastViewSet(viewsets.ViewSet):
                 cmd=blastn_path, 
                 query=tmp_file_path, 
                 db='/vagrant/db/blastdb/vitiVirSeq.fasta', 
+                evalue=evalue,
+                max_target_seqs=max_nb,
                 outfmt=5, 
                 out=tmp_out_file_path)
             blast_cline
@@ -78,6 +88,8 @@ class BlastViewSet(viewsets.ViewSet):
                 cmd=blastn_path, 
                 query=tmp_file_path, 
                 db='/vagrant/db/blastdb/vitiVirSeq.fasta', 
+                evalue=evalue,
+                max_target_seqs=max_nb,
                 outfmt=5, 
                 out=tmp_out_file_path)
             blast_cline
@@ -87,6 +99,8 @@ class BlastViewSet(viewsets.ViewSet):
                 cmd=blastn_path, 
                 query=tmp_file_path, 
                 db='/vagrant/db/blastdb/vitiVirSeq.fasta', 
+                evalue=evalue,
+                max_target_seqs=max_nb,
                 outfmt=5, 
                 out=tmp_out_file_path)
             blast_cline

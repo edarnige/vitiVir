@@ -221,13 +221,6 @@ export default {
       return a_from_to;
     },
     getFastaSequences() {
-      //let a_from_to = this.selectedIds.map(id => this.getLimitsTarget(id));
-      
-      console.log(this.res)
-      console.log(this.jsonData) //iterations.hits.hseq
-      console.log(this.selectedIds)
-      console.log(this.selectedQuery) // test seq 1
-
       //write fasta format
       let str = ''
       if (this.jsonData.iterations && this.selectedQuery !== "") {

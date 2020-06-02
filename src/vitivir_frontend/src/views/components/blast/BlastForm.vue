@@ -127,8 +127,8 @@ export default {
     form() {
       return {
         program: this.program,
-        evalue: this.evalue,
-        maxNbAlignments: this.maxNbAlignments,
+        evalue: Number(this.evalue),
+        maxNbAlignments: parseInt(this.maxNbAlignments),
         sequences: this.sequences,
       };
     },
@@ -232,7 +232,7 @@ export default {
 
       // note that the empty string is caught above
       // allow for Selenocysteine (U)
-      if (this.program == 'blastp' || this.program == 'tblastn') {
+      if (this.program == 'tblastn') {
         return /^[ACDEFGHIKLMNPQRSTUVWY*\s]+$/i.test(fasta);
       } else {
         return /^[ACGTU\s]+$/i.test(fasta);
