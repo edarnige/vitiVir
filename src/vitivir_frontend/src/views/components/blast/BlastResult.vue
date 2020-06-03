@@ -105,7 +105,7 @@ export default {
     db: { type: String, default: null },
     dbType: { type: String, default: null },
     res: { type: String, default: null },
-    urlResult: { type: String, default: null },
+    //urlResult: { type: String, default: null },
   },
   data: function() {
     return {

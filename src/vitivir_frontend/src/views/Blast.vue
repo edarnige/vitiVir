@@ -49,13 +49,12 @@
                         </b-form>
                     </b-collapse>
                     </b-card>
-                    <b-card  v-if="urlBlastResult" no-body class="text-left mb-1"> <!-- remove v-if to see -->
+                    <b-card  v-if="res" no-body class="text-left mb-1"> <!-- remove v-if to see -->
                     <b-card-header header-tag="header" class="p-1" role="tab">
                         <b-btn class="form-header" v-b-toggle.res-panel block variant="success">Results</b-btn>
                     </b-card-header>
                     <b-collapse id="res-panel" v-model="showRes" accordion="res-accordion" role="tabpanel">
                         <blast-result
-                        :url-result="urlBlastResult"
                         :res="res"
                         ></blast-result>
                     </b-collapse>
@@ -123,7 +122,7 @@ GTGGTCCTAGGCA
         { text: 'tblastn', value: 'tblastn' }, 
         { text: 'tblastx', value: 'tblastx' }, 
       ],
-      urlBlastResult: '',
+      //urlBlastResult: '',
       errorMessage: 'Error',
       variant: 'danger',
       dismissSecs: 3,
@@ -187,7 +186,7 @@ GTGGTCCTAGGCA
               this.showAlert();
             } else {
               //this.urlBlastResult = resp.body.url; //get xml url? 
-              this.urlBlastResult = 'http://google.com' //why are we using this?
+              //this.urlBlastResult = 'http://google.com' //why are we using this?
               // TODO : à enlever
               this.res = xml;
               if (resp.data=== undefined || resp.data === '') { //I use the xml so it's never empty...
@@ -221,7 +220,7 @@ GTGGTCCTAGGCA
     setExample() {
       this.form = Object.assign({}, this.form, this.example);
       this.variant = 'success';
-      this.showAlert();
+      //this.showAlert(); //otherwise green error bar??
     },
 
   },
