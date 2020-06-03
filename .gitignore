@@ -103,7 +103,7 @@ ENV/
 .vagrant
 
 #DB
-db/
+# db/
 
 
 *.DS_Store

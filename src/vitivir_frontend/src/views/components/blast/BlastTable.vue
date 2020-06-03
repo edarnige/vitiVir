@@ -70,7 +70,7 @@ export default {
     columns: function() {
       return [
         {
-          label: 'Accession',
+          label: 'Accession and VitiVir ID',
           field: 'accession',
         },
         // {
@@ -173,9 +173,9 @@ export default {
     launchAction: function(params) { //to detail
       console.log("to launch", params.accession)
       //this.$emit('launchAction', evt);
-      const entry_id = params.accession.split("_",1) 
+      const entry_id = params.accession.split("_",2) //array of 2
       console.log(entry_id)
-      let route = this.$router.resolve({path: '/search/'+entry_id});
+      let route = this.$router.resolve({path: '/search/'+entry_id[1]});
       console.log(route)
       window.open(route.href)
     },
