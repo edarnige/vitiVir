@@ -98,7 +98,7 @@ export default {
       console.log("setting current page", this.currentPage)
       axios.get("http://0.0.0.0:9000/api/data/entries/"+this.$store.state.search_q+"&page=1", {
         headers: {
-          'Authorization': 'Token ' + this.token
+          'Authorization': 'Token ' + this.$store.state.token
         }
       })
       .then(res => {
@@ -122,7 +122,7 @@ export default {
 
       axios.get("http://0.0.0.0:9000/api/data/entries/"+this.$store.state.search_q+"&page="+item, {
         headers: {
-          'Authorization': 'Token ' + this.token
+          'Authorization': 'Token ' + this.$store.state.token
         }
       })
       .then(res => {
