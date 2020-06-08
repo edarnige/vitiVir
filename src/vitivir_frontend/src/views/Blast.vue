@@ -168,7 +168,7 @@ GTGGTCCTAGGCA
           canCancel: false,
           loader: 'dots',
         });*/
-        axios.post("http://0.0.0.0:9000/api/blast/", finalForm,{//`${process.env.VUE_APP_API_HOST}/api/blast/`
+        axios.post("http://147.100.102.68:9000/api/blast/", finalForm,{//`${process.env.VUE_APP_API_HOST}/api/blast/`
             headers: {
                 'Authorization': 'Token ' + this.$store.state.token
             }

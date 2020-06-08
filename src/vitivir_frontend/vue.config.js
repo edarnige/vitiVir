@@ -6,7 +6,7 @@ module.exports = {
             aggregateTimeout: 300,
             poll: 1500
           },
-          public: '0.0.0.0' // vagrant machine address
+          public: '147.100.102.68' // vagrant machine address
       }
     }
   }

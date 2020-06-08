@@ -70,13 +70,13 @@ class BlastViewSet(viewsets.ViewSet):
         with open(tmp_file_path, 'w') as f:
             f.write(data)
 
-        blastn_path = '/vagrant/db/blastdb/ncbi-blast-2.10.0+/bin/' + type_of_blast
+        blastn_path = '/var/www/vitiVir/db/blastdb/ncbi-blast-2.10.0+/bin/' + type_of_blast
         
         if type_of_blast == 'blastn':
             blast_cline = NcbiblastnCommandline(
                 cmd=blastn_path, 
                 query=tmp_file_path, 
-                db='/vagrant/db/blastdb/vitiVirSeq.fasta', 
+                db='/var/www/vitiVir/db/blastdb/vitiVirSeq.fasta', 
                 evalue=evalue,
                 max_target_seqs=max_nb,
                 outfmt=5, 
@@ -87,7 +87,7 @@ class BlastViewSet(viewsets.ViewSet):
             blast_cline = NcbitblastnCommandline(
                 cmd=blastn_path, 
                 query=tmp_file_path, 
-                db='/vagrant/db/blastdb/vitiVirSeq.fasta', 
+                db='/var/www/vitiVir/db/blastdb/vitiVirSeq.fasta', 
                 evalue=evalue,
                 max_target_seqs=max_nb,
                 outfmt=5, 
@@ -98,7 +98,7 @@ class BlastViewSet(viewsets.ViewSet):
             blast_cline = NcbitblastxCommandline(
                 cmd=blastn_path, 
                 query=tmp_file_path, 
-                db='/vagrant/db/blastdb/vitiVirSeq.fasta', 
+                db='/var/www/vitiVir/db/blastdb/vitiVirSeq.fasta', 
                 evalue=evalue,
                 max_target_seqs=max_nb,
                 outfmt=5, 

@@ -66,7 +66,7 @@ export default {
     getEntries() {
       console.log("Entering getEntries")
       this.$Progress.start()
-      axios.get("http://0.0.0.0:9000/api/data/entries/" + this.$store.state.search_q+"&page=1", {
+      axios.get("http://147.100.102.68:9000/api/data/entries/" + this.$store.state.search_q+"&page=1", {
         headers: {
           'Authorization': 'Token ' + this.$store.state.token //this.token
         }
@@ -96,7 +96,7 @@ export default {
       this.$Progress.start()
       this.currentPage = 1
       console.log("setting current page", this.currentPage)
-      axios.get("http://0.0.0.0:9000/api/data/entries/"+this.$store.state.search_q+"&page=1", {
+      axios.get("http://147.100.102.68:9000/api/data/entries/"+this.$store.state.search_q+"&page=1", {
         headers: {
           'Authorization': 'Token ' + this.$store.state.token
         }
@@ -120,7 +120,7 @@ export default {
       this.$Progress.start()
       this.currentPage = item
 
-      axios.get("http://0.0.0.0:9000/api/data/entries/"+this.$store.state.search_q+"&page="+item, {
+      axios.get("http://147.100.102.68:9000/api/data/entries/"+this.$store.state.search_q+"&page="+item, {
         headers: {
           'Authorization': 'Token ' + this.$store.state.token
         }

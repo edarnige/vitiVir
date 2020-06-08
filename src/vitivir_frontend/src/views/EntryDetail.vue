@@ -283,7 +283,7 @@ export default {
   methods: {
         getDetail(entry_id) {
             this.$Progress.start()
-            axios.get("http://0.0.0.0:9000/api/data/entries/" + entry_id,{
+            axios.get("http://147.100.102.68:9000/api/data/entries/" + entry_id,{
                 headers: {
                     'Authorization': 'Token ' + this.$store.state.token
                 }
@@ -315,7 +315,7 @@ export default {
             this.edited = this.entry;
             console.log("EDITED", this.edited.verified)
             let newData = {'verified':this.edited.verified, 'virus_type':this.edited.virus_type, 'host_organism':this.edited.host_organism}
-            axios.patch("http://0.0.0.0:9000/api/data/entries/" + this.$route.params.entry_id + "/", newData,{
+            axios.patch("http://147.100.102.68:9000/api/data/entries/" + this.$route.params.entry_id + "/", newData,{
                 headers: {
                     'Authorization': 'Token ' + this.$store.state.token
                 }

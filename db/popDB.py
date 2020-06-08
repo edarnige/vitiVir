@@ -291,14 +291,14 @@ print("INV done")
 print("count before removing w/o entries", db.virData_app_entry.find().count())
 
 #Remove entries with entry_ids (had diamond, no rps)
-db.virData_app_entry.remove({'entry_id':{'$exists':'false'}})
-print("count after removing w/o entries", db.virData_app_entry.find().count())
+#db.virData_app_entry.remove({'entry_id':{'$exists':'false'}})
+#print("count after removing w/o entries", db.virData_app_entry.find().count())
 
 #INDEXING
-db.virData_app_entry.createIndex({ "blastrps.evalue": 1 })
-db.virData_app_entry.createIndex({ "blastx.query_length": -1 })
-db.virData_app_entry.createIndex({ "blastx.percent_identity": -1 })
-print("Indexing done")
+#db.virData_app_entry.createIndex({ "blastrps.evalue": 1 })
+#db.virData_app_entry.createIndex({ "blastx.query_length": -1 })
+#db.virData_app_entry.createIndex({ "blastx.percent_identity": -1 })
+#print("Indexing done")
 
 #extract and write into file to turn into virseq db
 #ExportSeq.js
