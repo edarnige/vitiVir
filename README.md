@@ -140,5 +140,15 @@ In a new terminal with the venv activated, execute:
 + cd /vagrant/src/vitivir_frontend
 + npm run serve
 ```
+# Create an environment path variable
+```diff
+touch /vagrant/src/vitivir_frontend/.env
+```
+Inside .env, add your backend path (where Django is running). Example:
+```
+VUE_APP_    API_HOST='http://localhost:9000'
+```
+
+
 On your local browser, go to  [http://0.0.0.0:8080/landing](http://0.0.0.0:8080/landing)
 
