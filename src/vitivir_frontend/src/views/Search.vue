@@ -170,7 +170,7 @@ export default {
   methods: {
     exportCSV(){
       this.$Progress.start()
-      axios.get("http://147.100.102.68:9000/api/data/entries_csv/" + this.$store.state.search_q, {
+      axios.get(`${process.env.VUE_APP_API_HOST}/api/data/entries_csv/` + this.$store.state.search_q, {
         headers: {
           'Authorization': 'Token ' + this.$store.state.token
         }

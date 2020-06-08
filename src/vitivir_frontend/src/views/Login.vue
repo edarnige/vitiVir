@@ -69,7 +69,7 @@ export default {
 
   methods:{
     login(){
-      axios.post("http://147.100.102.68:9000/users/login/", {
+      axios.post(`${process.env.VUE_APP_API_HOST}/users/login/`, {
         username: this.email,
         password: this.password,
       })
@@ -89,7 +89,7 @@ export default {
     },
 
     getUser(email){
-      axios.get("http://147.100.102.68:9000/users/manageusers/"+"?email="+email)
+      axios.get(`${process.env.VUE_APP_API_HOST}/users/manageusers/`+"?email="+email)
       .then(res=> {
         console.log(res.data.results[0].email,res.data.results[0].can_verify)
         let can_verify = res.data.results[0].can_verify
