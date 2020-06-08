@@ -38,11 +38,11 @@
                 and the IFV. The objective of project MYCOVIR is to determine the diversity and 
                 interactions of viral and fungal communities associated with grapevine trunk diseases.
                 In a similar light, the InViCeb project aims to take virologic inventory of Bordeaux grape varieties.
-                Grapevine assocaited raw RNA-seq data from NCBI's publically available SRA as well as data from project InViCeb 
+                Grapevine associated raw RNA-seq data from NCBI's publically available SRA as well as data from project InViCeb 
                 were analyzed via the 
                 <a href="https://apsjournals.apsnet.org/doi/full/10.1094/PBIOMES-07-19-0037-A">
                   VirAnnot pipeline</a>, 
-                as developped by Marie Lefebvre and Sebastian Thiel within the INRAE  UMR 1332 BFP 
+                as developped by Marie Lefebvre and Sebastien Thiel within the INRAE  UMR 1332 BFP 
                 plant virology etiology team. The resulting taxonomic classifications were stored in
                 the VitiVir database and can be mined in this web tool.
               </h5>
