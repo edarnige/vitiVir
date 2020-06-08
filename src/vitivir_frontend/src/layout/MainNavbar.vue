@@ -79,7 +79,22 @@
                   </div>
                 </a>
               </li>
-
+              <li class="md-list-item" v-if="!showDownload && this.$store.state.token!=null" >
+                <a
+                  href="javascript:void(0)"
+                  class="md-list-item-router md-list-item-container md-button-clean dropdown"
+                >
+                  <div class="md-list-item-content">
+                      <md-button
+                        slot="title"
+                        class="md-button md-button-link md-white md-simple "
+                        @click="$router.push('/search');"
+                      >
+                        <p>SEARCH</p>
+                      </md-button>
+                  </div>
+                </a>
+              </li>
               <li class="md-list-item" v-if="!showDownload && this.$store.state.token!=null" >
                 <a
                   href="javascript:void(0)"
