@@ -142,7 +142,7 @@ In a new terminal with the venv activated, execute:
 ```
 # Create an environment path variable
 ```diff
-touch /vagrant/src/vitivir_frontend/.env
++ touch /vagrant/src/vitivir_frontend/.env
 ```
 Inside .env, add your backend path (where Django is running). Example:
 ```
