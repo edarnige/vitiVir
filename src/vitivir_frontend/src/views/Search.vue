@@ -275,6 +275,7 @@ export default {
   display: flex;
   margin: 0;
   margin-bottom: 0.5rem;
+  padding-right: 15px;
 }
 .options{
   padding-left: 20px;
@@ -288,4 +289,5 @@ export default {
 .login-alert{
   padding-top:100px
 }
+
 </style>
