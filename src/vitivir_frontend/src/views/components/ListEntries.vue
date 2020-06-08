@@ -120,7 +120,7 @@ export default {
       this.$Progress.start()
       this.currentPage = item
 
-      axios.get(`${process.env.VUE_APP_API_HOST}api/data/entries/`+this.$store.state.search_q+"&page="+item, {
+      axios.get(`${process.env.VUE_APP_API_HOST}/api/data/entries/`+this.$store.state.search_q+"&page="+item, {
         headers: {
           'Authorization': 'Token ' + this.$store.state.token
         }
