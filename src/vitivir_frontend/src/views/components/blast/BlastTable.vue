@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h4>Click a row to see the alignment</h4>
     <vue-good-table
       ref="blast-table"
       :columns="columns"
@@ -12,7 +11,7 @@
         selectionText: 'accessions selected',
         clearSelectionText: 'clear',
       }"
-      @on-cell-click="onRowClick"
+
     >
       <div slot="selected-row-actions">
         <b-button pill @click="clickButton">{{ selectionButtonText }}</b-button>
@@ -28,8 +27,11 @@
           >
         </template>
         <template v-else>
-          <span v-if="props.column.field == 'action'">
-            <b-button pill variant="outline-primary" @click="launchAction(props.row)">entry</b-button>
+          <span v-if="props.column.field == 'action' || props.column.field == 'align'">
+            <b-button v-if="props.column.field == 'action'" pill variant="outline-primary" @click="launchAction(props.row)">entry</b-button>
+            <b-button v-if="props.column.field == 'align'" pill variant="outline-primary" @click="onEyeClick(props)"><i class="fas fa-eye"></i>
+
+</b-button>
           </span>
           <span v-else>{{ props.formattedRow[props.column.field] }}</span>
         </template>
@@ -103,6 +105,10 @@ export default {
           field: 'identities',
           type: 'number',
           formatFn: formatPercentage,
+        },
+        {
+          label: "Alignment",//this.buttonActionLabel,
+          field: 'align',
         },
         {
           label: "To entry",//this.buttonActionLabel,
@@ -188,7 +194,7 @@ export default {
     //   window.open(route.href)
     //   //this.$router.push({name: 'entrydetail', params: {entry_id}})
     // },
-    onRowClick: function(params) {
+    onEyeClick: function(params) {
       console.log("to rowclick (alignment)")
       this.$emit('onRowClick', params.row.accession);
     },
