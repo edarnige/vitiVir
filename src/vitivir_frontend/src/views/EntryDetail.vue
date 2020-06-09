@@ -88,6 +88,21 @@
                 <md-table-head>Spots</md-table-head>
                 <md-table-cell>{{ entry.sra_metadata.spots }}</md-table-cell>
             </md-table-row>
+            
+            <md-table-row>
+                <md-table-head>Bases</md-table-head>
+                <md-table-cell>{{ entry.sra_metadata.bases }}</md-table-cell>
+            </md-table-row>
+            
+            <md-table-row>
+                <md-table-head>Average Length</md-table-head>
+                <md-table-cell>{{ entry.sra_metadata.avgLength }}</md-table-cell>
+            </md-table-row>
+            
+            <md-table-row>
+                <md-table-head>Size MB</md-table-head>
+                <md-table-cell>{{ entry.sra_metadata.size_MB }}</md-table-cell>
+            </md-table-row>
 
             <md-table-row>
                 <md-table-head>Experiment</md-table-head>
@@ -105,8 +120,23 @@
             </md-table-row>
 
             <md-table-row>
+                <md-table-head>Library Selection</md-table-head>
+                <md-table-cell>{{ entry.sra_metadata.LibrarySelection }}</md-table-cell>
+            </md-table-row>
+
+            <md-table-row>
+                <md-table-head>Library Layout</md-table-head>
+                <md-table-cell>{{ entry.sra_metadata.LibraryLayout }}</md-table-cell>
+            </md-table-row>
+
+            <md-table-row>
                 <md-table-head>Platform</md-table-head>
                 <md-table-cell>{{ entry.sra_metadata.Platform }}</md-table-cell>
+            </md-table-row>
+
+            <md-table-row>
+                <md-table-head>Model</md-table-head>
+                <md-table-cell>{{ entry.sra_metadata.Model }}</md-table-cell>
             </md-table-row>
 
             <md-table-row>
@@ -115,14 +145,47 @@
             </md-table-row>
 
             <md-table-row>
-                <md-table-head>Run Hash</md-table-head>
-                <md-table-cell>{{ entry.sra_metadata.RunHash }}</md-table-cell>
+                <md-table-head>Bio Project</md-table-head>
+                <md-table-cell>{{ entry.sra_metadata.BioProject }}</md-table-cell>
             </md-table-row>
 
             <md-table-row>
-                <md-table-head>Library Layout</md-table-head>
-                <md-table-cell>{{ entry.sra_metadata.LibraryLayout }}</md-table-cell>
+                <md-table-head>Sample</md-table-head>
+                <md-table-cell>{{ entry.sra_metadata.Sample }}</md-table-cell>
             </md-table-row>
+
+            <md-table-row>
+                <md-table-head>Bio Sample</md-table-head>
+                <md-table-cell>{{ entry.sra_metadata.BioSample }}</md-table-cell>
+            </md-table-row>
+
+            <md-table-row>
+                <md-table-head>Tax ID</md-table-head>
+                <md-table-cell>{{ entry.sra_metadata.TaxID }}</md-table-cell>
+            </md-table-row>
+
+            <md-table-row>
+                <md-table-head>Scientific Name</md-table-head>
+                <md-table-cell>{{ entry.sra_metadata.ScientificName }}</md-table-cell>
+            </md-table-row>
+
+            <md-table-row>
+                <md-table-head>Sample Name</md-table-head>
+                <md-table-cell>{{ entry.sra_metadata.SampleName }}</md-table-cell>
+            </md-table-row>
+
+            <md-table-row>
+                <md-table-head>Center Name</md-table-head>
+                <md-table-cell>{{ entry.sra_metadata.CenterName }}</md-table-cell>
+            </md-table-row>
+
+            <md-table-row>
+                <md-table-head>Submission</md-table-head>
+                <md-table-cell>{{ entry.sra_metadata.Submission }}</md-table-cell>
+            </md-table-row>
+
+
+
 
         </md-table>
 
@@ -158,8 +221,47 @@
                 <md-table-head>Substrate</md-table-head>
                 <md-table-cell>{{ entry.inv_metadata.substrate}}</md-table-cell>
             </md-table-row>
+
+            <md-table-row>
+                <md-table-head>Extraction method</md-table-head>
+                <md-table-cell>{{ entry.inv_metadata.extraction_method}}</md-table-cell>
+            </md-table-row>
+
+            <md-table-row>
+                <md-table-head>Organ</md-table-head>
+                <md-table-cell>{{ entry.inv_metadata.organ}}</md-table-cell>
+            </md-table-row>
             
-           
+            <md-table-row>
+                <md-table-head>Run Name</md-table-head>
+                <md-table-cell>{{ entry.inv_metadata.run_name}}</md-table-cell>
+            </md-table-row>
+
+            <md-table-row>
+                <md-table-head>Technology</md-table-head>
+                <md-table-cell>{{ entry.inv_metadata.technology}}</md-table-cell>
+            </md-table-row>
+            
+            <md-table-row>
+                <md-table-head>Run ID</md-table-head>
+                <md-table-cell>{{ entry.inv_metadata.run_id}}</md-table-cell>
+            </md-table-row>
+
+            <md-table-row>
+                <md-table-head>Date</md-table-head>
+                <md-table-cell>{{ entry.inv_metadata.date}}</md-table-cell>
+            </md-table-row>
+
+            <md-table-row>
+                <md-table-head>Sequencing location</md-table-head>
+                <md-table-cell>{{ entry.inv_metadata.seq_location}}</md-table-cell>
+            </md-table-row>
+            
+            <md-table-row>
+                <md-table-head>RNA</md-table-head>
+                <md-table-cell>{{ entry.inv_metadata.rna}}</md-table-cell>
+            </md-table-row>
+            
         </md-table>
 
         <h2 class="title text-center" v-if="entry.blastx">BLASTX results</h2>
@@ -168,6 +270,21 @@
             <md-table-row>
                 <md-table-head>Taxonomy</md-table-head>
                 <md-table-cell >{{ entry.blastx.taxonomy }}</md-table-cell>
+            </md-table-row>
+
+            <md-table-row>
+                <md-table-head>Number of Reads</md-table-head>
+                <md-table-cell >{{ entry.blastx.nb_reads }}</md-table-cell>
+            </md-table-row>
+
+            <md-table-row>
+                <md-table-head>Accession</md-table-head>
+                <md-table-cell>{{ entry.blastx.accession }}</md-table-cell>
+            </md-table-row>
+
+            <md-table-row>
+                <md-table-head>Description</md-table-head>
+                <md-table-cell>{{ entry.blastx.description }}</md-table-cell>
             </md-table-row>
 
             <md-table-row>
@@ -181,18 +298,38 @@
             </md-table-row>
 
             <md-table-row>
-                <md-table-head>Number of reads</md-table-head>
-                <md-table-cell >{{ entry.blastx.nb_reads }}</md-table-cell>
+                <md-table-head>Number of Hsps</md-table-head>
+                <md-table-cell >{{ entry.blastx.nb_hsps }}</md-table-cell>
+            </md-table-row>
+
+            <md-table-row>
+                <md-table-head>Query Overlap</md-table-head>
+                <md-table-cell >{{ entry.blastx.query_overlap }}</md-table-cell>
+            </md-table-row>
+
+            <md-table-row>
+                <md-table-head>Hit Overlap</md-table-head>
+                <md-table-cell >{{ entry.blastx.hit_overlap }}</md-table-cell>
+            </md-table-row>
+
+            <md-table-row>
+                <md-table-head>Evalue</md-table-head>
+                <md-table-cell >{{ entry.blastx.evalue }}</md-table-cell>
+            </md-table-row>
+
+            <md-table-row>
+                <md-table-head>Score</md-table-head>
+                <md-table-cell >{{ entry.blastx.score }}</md-table-cell>
+            </md-table-row>
+
+            <md-table-row>
+                <md-table-head>Tax ID</md-table-head>
+                <md-table-cell >{{ entry.blastx.tax_id }}</md-table-cell>
             </md-table-row>
 
             <md-table-row>
                 <md-table-head>Algorithm</md-table-head>
                 <md-table-cell>{{ entry.blastx.algo }}</md-table-cell>
-            </md-table-row>
-
-            <md-table-row>
-                <md-table-head>Accession</md-table-head>
-                <md-table-cell>{{ entry.blastx.accession }}</md-table-cell>
             </md-table-row>
 
             <md-table-row>
@@ -221,13 +358,38 @@
             </md-table-row>
 
             <md-table-row>
+                <md-table-head>Evalue</md-table-head>
+                <md-table-cell>{{ entry.blastrps.evalue }}</md-table-cell>
+            </md-table-row>
+
+            <md-table-row>
+                <md-table-head>StartQ</md-table-head>
+                <md-table-cell>{{ entry.blastrps.startQ }}</md-table-cell>
+            </md-table-row>
+
+            <md-table-row>
+                <md-table-head>EndQ</md-table-head>
+                <md-table-cell>{{ entry.blastrps.endQ }}</md-table-cell>
+            </md-table-row>
+
+            <md-table-row>
+                <md-table-head>Frame</md-table-head>
+                <md-table-cell>{{ entry.blastrps.frame }}</md-table-cell>
+            </md-table-row>
+
+            <md-table-row>
                 <md-table-head>Description</md-table-head>
                 <md-table-cell class="text-left">{{ entry.blastrps.description }}</md-table-cell>
             </md-table-row>
 
             <md-table-row>
-                <md-table-head>Evalue</md-table-head>
-                <md-table-cell>{{ entry.blastrps.evalue }}</md-table-cell>
+                <md-table-head>Super Kingdom</md-table-head>
+                <md-table-cell>{{ entry.blastrps.superkingdom }}</md-table-cell>
+            </md-table-row>
+
+            <md-table-row>
+                <md-table-head>No Rank</md-table-head>
+                <md-table-cell>{{ entry.blastrps.no_rank }}</md-table-cell>
             </md-table-row>
 
             <md-table-row>
