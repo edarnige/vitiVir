@@ -291,17 +291,11 @@ print("INV done")
 print("count before removing w/o entries", db.virData_app_entry.find().count())
 
 #Remove entries with entry_ids (had diamond, no rps)
-#db.virData_app_entry.remove({'entry_id':{'$exists':'false'}})
-#print("count after removing w/o entries", db.virData_app_entry.find().count())
+db.virData_app_entry.remove({'entry_id':{'$exists':'false'}})
+print("count after removing w/o entries", db.virData_app_entry.find().count())
 
 #INDEXING
-#db.virData_app_entry.createIndex({ "blastrps.evalue": 1 })
-#db.virData_app_entry.createIndex({ "blastx.query_length": -1 })
-#db.virData_app_entry.createIndex({ "blastx.percent_identity": -1 })
-#print("Indexing done")
-
-#extract and write into file to turn into virseq db
-#ExportSeq.js
-# virseqs = db.virData_app_entry.find({'blastx.sequence':{'$exists':'true'}},{'blastx.sequence':1,'entry_id':1,'sample':1})
-# writeFile("/vagrant/db/test.json",tojson(virseqs))
-#convert entry id to string https://www.fileformat.info/tool/guid-base64.htm
+# db.virData_app_entry.createIndex({ "blastrps.evalue": 1 })
+# db.virData_app_entry.createIndex({ "blastx.query_length": -1 })
+# db.virData_app_entry.createIndex({ "blastx.percent_identity": -1 })
+# print("Indexing done")
