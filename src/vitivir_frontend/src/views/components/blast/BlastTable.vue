@@ -24,14 +24,13 @@
             :href="createLink(props.row.accession)"
             target="_blank"
             >{{ props.row.accession }}</a
-          >
+          > <!-- remove href and target?-->
         </template>
         <template v-else>
           <span v-if="props.column.field == 'action' || props.column.field == 'align'">
             <b-button v-if="props.column.field == 'action'" pill variant="outline-primary" @click="launchAction(props.row)">entry</b-button>
             <b-button v-if="props.column.field == 'align'" pill variant="outline-primary" @click="onEyeClick(props)"><i class="fas fa-eye"></i>
-
-</b-button>
+            </b-button>
           </span>
           <span v-else>{{ props.formattedRow[props.column.field] }}</span>
         </template>
@@ -72,13 +71,21 @@ export default {
     columns: function() {
       return [
         {
-          label: 'Accession and VitiVir ID',
+          label: 'Accession',
           field: 'accession',
         },
         // {
         //   label: "Description",
         //   field: "def"
         // },
+        {
+          label: 'Description',
+          field: 'description',
+        },
+        {
+          label: 'Query ID',
+          field: 'query_id',
+        },
         {
           label: 'Max score',
           field: 'max-score',
@@ -158,7 +165,12 @@ export default {
               hit['query-cover'] = Math.round((totalLength / queryLength) * 100);
               hit['identities'] = Math.round((totalIdentities / totalAlignmentLength) * 100);
 
-              a_rows.push(hit);
+              let def = hit.def.split("|");
+              hit['accession'] = def[1];
+              hit['description'] = def[2];
+              hit['query_id'] = def[3]
+              
+              a_rows.push(hit); //list of hits has def
             });
           }
         });
@@ -177,11 +189,10 @@ export default {
       );
     },
     launchAction: function(params) { //to detail
-      console.log("to launch", params.accession)
+      console.log("to launch", params.id)
       //this.$emit('launchAction', evt);
-      const entry_id = params.accession.split("_",2) //array of 2
-      console.log(entry_id)
-      let route = this.$router.resolve({path: '/search/'+entry_id[1]});
+      const entry_id = params.id//accession.split("_",2) //array of 2
+      let route = this.$router.resolve({path: '/search/'+entry_id});
       console.log(route)
       window.open(route.href)
     },
