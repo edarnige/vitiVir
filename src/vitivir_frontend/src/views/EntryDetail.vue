@@ -456,7 +456,7 @@ export default {
                 console.log(this.entry)
                 if(this.entry.sra_metadata != null){
                     this.type = 'sra'
-                }else{
+                }else if(this.entry.inv_metadata != null){
                     this.type = 'inv'
                 }
                 })
