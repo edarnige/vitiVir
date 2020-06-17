@@ -105,6 +105,9 @@
                 <h2>Results</h2>
               </div>
               <div class="text-right">
+              <md-button  class="md-primary" @click.prevent="exportFasta()"> 
+                Export FASTA
+              </md-button>
               <md-button  class="md-primary" @click.prevent="exportCSV()"> 
                 Export CSV
               </md-button>
@@ -176,8 +179,6 @@ export default {
         }
       })
       .then(res => {
-        console.log(res);
-        this.$Progress.finish()
         var fileURL = window.URL.createObjectURL(new Blob([res.data]));
         var fileLink = document.createElement('a');
         
@@ -186,6 +187,43 @@ export default {
         document.body.appendChild(fileLink);
         
         fileLink.click();
+        this.$Progress.finish()
+      })
+      .catch(err => {
+        this.$Progress.fail()
+        console.log(err);
+      })
+    },
+
+    exportFasta(){
+      this.$Progress.start()
+      axios.get(`${process.env.VUE_APP_API_HOST}/api/data/entries_fasta/` + this.$store.state.search_q, {
+        headers: {
+          'Authorization': 'Token ' + this.$store.state.token
+        }
+      })
+      .then(res => {
+        console.log(res)
+        let fasta_format = ""
+        for (let obj of res.data){
+          if (obj.blastx){
+            if(obj.blastx.sequence){
+              console.log(obj.blastx.sequence)
+              fasta_format += ">" + obj.blastx.accession + "|" + obj.blastx.description + "|" + 
+              obj.query_id + "|" + obj.entry_id + "\n" + obj.blastx.sequence + "\n"
+            }
+          }
+        }
+        console.log(fasta_format)
+        var fileURL = window.URL.createObjectURL(new Blob([fasta_format]));
+        var fileLink = document.createElement('a');
+        
+        fileLink.href = fileURL;
+        fileLink.setAttribute('download', 'results.fasta');
+        document.body.appendChild(fileLink);
+        
+        fileLink.click();
+        this.$Progress.finish()
       })
       .catch(err => {
         this.$Progress.fail()
@@ -285,7 +323,6 @@ export default {
   color: #646464;
   line-height: 0.75;
 }
-
 .login-alert{
   padding-top:100px
 }

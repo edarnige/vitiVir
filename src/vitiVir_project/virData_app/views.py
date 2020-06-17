@@ -101,7 +101,7 @@ class EntryListView(viewsets.ModelViewSet):
             return Entry.objects.filter(entry_id=pk_entry) #return all might be faster, to test
         
 
-        if "csv" in self.request.path_info:
+        if "csv" in self.request.path_info or "fasta" in self.request.path_info:
             make_csv = True
         else:
             make_csv = False
@@ -249,6 +249,18 @@ class EntryListCSVExportView(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     pagination_class = None
     renderer_classes = [CSVRenderer]
+
+    def get_queryset(self):
+        return EntryListView.get_queryset(self)
+
+
+class EntryListFastaExportView(viewsets.ModelViewSet):
+    '''Make CSV from Entry list results'''
+
+    serializer_class = EntrySerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    pagination_class = None
 
     def get_queryset(self):
         return EntryListView.get_queryset(self)
