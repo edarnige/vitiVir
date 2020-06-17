@@ -1,7 +1,8 @@
 //get sequences for virseq db
 db.virData_app_entry.find({'blastx.sequence':{'$exists':'true'}},
-    {'blastx.sequence':1, 'blastx.accession':1, 'entry_id':1}).forEach(function(entry){ //sample and blastx.accession:1?
-    print(">"+entry.blastx.accession+"_"+entry.entry_id.hex().toString()+"\n"+entry.blastx.sequence);
+    {'blastx.sequence':1, 'blastx.accession':1, 'entry_id':1, "blastx.description":1,"query_id":1}).forEach(function(entry){ //sample and blastx.accession:1?
+    print(">"+entry.blastx.accession+"|"+entry.blastx.description+"|"+entry.query_id+"|"+
+      entry.entry_id.hex().toString()+"\n"+entry.blastx.sequence);
   });
 
 
