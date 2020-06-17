@@ -294,7 +294,7 @@
 
             <md-table-row>
                 <md-table-head>Percent ID</md-table-head>
-                <md-table-cell >{{ entry.blastx.percent_idenentity }}</md-table-cell>
+                <md-table-cell >{{ entry.blastx.percent_identity }}</md-table-cell>
             </md-table-row>
 
             <md-table-row>
