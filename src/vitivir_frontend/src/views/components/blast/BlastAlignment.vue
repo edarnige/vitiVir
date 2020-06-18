@@ -42,15 +42,15 @@
         <svg>
           <g>
             <text x="5" y="15" font-size="15" font-weight="bold" fill="black">Query</text>
-            <text x="65" y="15" font-size="15" font-weight="bold" fill="black">
-              {{ hsp['query-from'] }}
+            <text x="65" y="15" font-size="12" font-weight="bold" fill="black">
+              {{ hsp['query-from'] }} - {{ hsp['query-to'] }}
             </text>
             <template v-for="letter in lettersQuery">
               <alignment-letter
                 :key="letter.id"
                 :width="letterWidth"
                 :padding="letterPadding"
-                :offsetX="100"
+                :offsetX="110"
                 :pos="letter.id"
               >
                 {{ letter.value }}
@@ -65,7 +65,7 @@
                 :key="letter.id"
                 :width="letterWidth"
                 :padding="letterPadding"
-                :offsetX="100"
+                :offsetX="110"
                 :offsetY="letterWidth + 2 * letterPadding"
                 :pos="letter.id"
               >
@@ -88,18 +88,18 @@
             <text
               x="65"
               :y="3 * (letterWidth + 2 * letterPadding) - letterPadding"
-              font-size="15"
+              font-size="12"
               font-weight="bold"
               fill="black"
             >
-              {{ hsp['hit-from'] }}
+              {{ hsp['hit-from'] }} - {{ hsp['hit-to'] }}
             </text>
             <template v-for="letter in lettersSubject">
               <alignment-letter
                 :key="letter.id"
                 :width="letterWidth"
                 :padding="letterPadding"
-                :offsetX="100"
+                :offsetX="110"
                 :offsetY="2 * (letterWidth + 2 * letterPadding)"
                 :pos="letter.id"
                 :height="letterWidth"
