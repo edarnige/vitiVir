@@ -229,7 +229,12 @@ export default {
           if (queryId === this.selectedQuery) {
             iteration.hits.forEach(hit =>{
               if(this.selectedIds.includes(hit.id)){
-                str += ">" + hit.id +"\n" + hit.hsps[0].hseq + "\n"; //I think there is always only 1 hsps?
+                let def = hit.hsps[0].def.split("|");
+                let accession = def[1];
+                let description = def[2];
+                let query_id = def[3];
+                str += ">|" + accession + "|" + description + "|" + query_id + "|" + hit.id  + 
+                  "\n" + hit.hsps[0].hseq + "\n"; //I think there is always only 1 hsps?
               }
             })
           }

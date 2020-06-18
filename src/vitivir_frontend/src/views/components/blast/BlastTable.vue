@@ -74,10 +74,6 @@ export default {
           label: 'Accession',
           field: 'accession',
         },
-        // {
-        //   label: "Description",
-        //   field: "def"
-        // },
         {
           label: 'Description',
           field: 'description',
@@ -168,7 +164,8 @@ export default {
               let def = hit.def.split("|");
               hit['accession'] = def[1];
               hit['description'] = def[2];
-              hit['query_id'] = def[3]
+              hit['query_id'] = def[3];
+              hit['vitivir_id'] = hit.id;
               
               a_rows.push(hit); //list of hits has def
             });
@@ -185,7 +182,7 @@ export default {
     clickButton: function() {
       this.$emit(
         'clickActionOnSelect',
-        this.$refs['blast-table'].selectedRows.map(x => x.accession)
+        this.$refs['blast-table'].selectedRows.map(x => x.vitivir_id) //accession
       );
     },
     launchAction: function(params) { //to detail
@@ -223,7 +220,10 @@ export default {
           row['accession'] +
           '",' +
           '"' +
-          row['def'] +
+          row['description'] +
+          '",' +
+          '"' +
+          row['query_id'] +
           '",' +
           '"' +
           row['max-score'] +
