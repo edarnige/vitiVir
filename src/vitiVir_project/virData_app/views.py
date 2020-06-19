@@ -85,7 +85,7 @@ class EntryListView(viewsets.ModelViewSet):
     pagination_class= CustomMongoPaginator #pagination.PageNumberPagination
 
     def get_queryset(self):
-        fields = ['sample', 'host_organism', 'virus_type', 'taxonomy', 'description',
+        fields = ['sample', 'host_organism', 'virus_type', 'taxonomy', 'description', 'cultivar',
             'verified','exclude_vitis', 'start_date', 'end_date', 'ordering']
         mongo_query = []
         order = []
@@ -120,6 +120,11 @@ class EntryListView(viewsets.ModelViewSet):
                     mongo_query.append({'blastx.taxonomy':{'$regex':value, '$options': 'i'}})
                 if field == 'description':
                     mongo_query.append({'blastrps.description':{'$regex':value, '$options': 'i'}})
+                if field == 'cultivar':
+                    mongo_query.append({'$or':[
+                        {'sra_metadata.Cultivar':{'$regex':value, '$options': 'i'}},
+                        {'inv_metadata.grapevine_cultivar':{'$regex':value, '$options': 'i'}}
+                    ]})
                 if field == 'verified':
                     if value == 'true':
                         value = True

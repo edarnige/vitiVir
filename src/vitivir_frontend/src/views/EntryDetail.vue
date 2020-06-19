@@ -83,6 +83,11 @@
                 <md-table-head>Relsease Date</md-table-head>
                 <md-table-cell>{{ entry.sra_metadata.ReleaseDate }}</md-table-cell>
             </md-table-row>
+
+            <md-table-row>
+                <md-table-head>Cultivar</md-table-head>
+                <md-table-cell>{{ entry.sra_metadata.Cultivar }}</md-table-cell>
+            </md-table-row>
             
             <md-table-row>
                 <md-table-head>Spots</md-table-head>

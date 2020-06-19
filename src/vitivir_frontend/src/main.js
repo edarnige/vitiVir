@@ -48,6 +48,7 @@ const store = new Vuex.Store({
     virus_type:'',
     taxonomy:'',
     description:'',
+    cultivar:'',
     verified: '',
     exclude_vitis: '',
     start_date: '',
@@ -66,7 +67,7 @@ const store = new Vuex.Store({
     },
     allQParams(state, {
       sample, host_organism, virus_type, taxonomy, 
-      description, verified, exclude_vitis, 
+      description, cultivar, verified, exclude_vitis, 
       start_date, end_date, ordering
     }){
       state.sample = sample
@@ -74,6 +75,7 @@ const store = new Vuex.Store({
       state.virus_type = virus_type
       state.taxonomy = taxonomy
       state.description = description
+      state.cultivar = cultivar
       state.verified = verified
       state.exclude_vitis = exclude_vitis
       state.start_date = start_date
@@ -83,8 +85,8 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    setQParams({commit},{sample, host_organism, virus_type, taxonomy, description, verified, exclude_vitis, start_date, end_date, ordering}){
-      commit('allQParams',{sample, host_organism, virus_type, taxonomy, description, verified, exclude_vitis, start_date, end_date, ordering})
+    setQParams({commit},{sample, host_organism, virus_type, taxonomy, description, cultivar, verified, exclude_vitis, start_date, end_date, ordering}){
+      commit('allQParams',{sample, host_organism, virus_type, taxonomy, description, cultivar, verified, exclude_vitis, start_date, end_date, ordering})
     }
 
 

@@ -117,7 +117,7 @@ def SRA_meta():
         'InsertSize','InsertDev','Platform','Model','SRAStudy','BioProject','Study_Pubmed_id','ProjectID','Sample','BioSample',
         'SampleType','TaxID','ScientificName','SampleName','g1k_pop_code','source','g1k_analysis_group','Subject_ID','Sex',
         'Disease','Tumor','Affection_Status','Analyte_Type','Histological_Type','Body_Site','CenterName','Submission',
-        'dbgap_study_accession','Consent','RunHash','ReadHash']
+        'dbgap_study_accession','Consent','RunHash','ReadHash','Cultivar']
     meta_int = ['spots','bases','spots_with_mates','avgLength','size_MB','InsertSize','InsertDev']
 
     meta_path = os.getcwd() + "/SRA_metadata.csv"
@@ -291,8 +291,8 @@ print("INV done")
 print("count before removing w/o entries", db.virData_app_entry.find().count())
 
 #Remove entries with entry_ids (had diamond, no rps)
-db.virData_app_entry.remove({'entry_id':{'$exists':'false'}})
-print("count after removing w/o entries", db.virData_app_entry.find().count())
+# db.virData_app_entry.remove({'entry_id':{'$exists':'false'}})
+# print("count after removing w/o entries", db.virData_app_entry.find().count())
 
 #INDEXING
 # db.virData_app_entry.createIndex({ "blastrps.evalue": 1 })

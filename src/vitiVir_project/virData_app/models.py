@@ -84,6 +84,7 @@ class SRAMetadata(models.Model):
     Consent = models.CharField(max_length=250)
     RunHash = models.CharField(max_length=250) #hash?
     ReadHash = models.CharField(max_length=250) #hash?
+    Cultivar= models.CharField(max_length=250)
 
 
 class INVMetadata(models.Model):

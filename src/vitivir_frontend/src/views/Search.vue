@@ -49,6 +49,13 @@
                 </md-field>
               </div>
 
+              <div class="md-layout-item md-size-25 md-xsmall-size-100 md-small-size-50 md-medium-size-25">
+                <md-field >
+                  <label>Cultivar</label>
+                  <md-input v-model="cultivar"></md-input>
+                </md-field>
+              </div>
+
           </div>
 
           <div class="md-layout">
@@ -164,6 +171,7 @@ export default {
       vtype: this.$store.state.virus_type,
       taxonomy: this.$store.state.taxonomy,
       description: this.$store.state.description,
+      cultivar: this.$store.state.cultivar,
       start_date: this.$store.state.start_date,
       end_date: this.$store.state.end_date,
       ordering: this.$store.state.ordering,
@@ -259,6 +267,7 @@ export default {
         virus_type: this.vtype, 
         taxonomy: this.taxonomy, 
         description: this.description, 
+        cultivar: this.cultivar,
         verified: this.verified,
         exclude_vitis: this.exclude_vitis,
         start_date: formated_start_date,
@@ -278,6 +287,8 @@ export default {
         search_q += "&taxonomy=" + this.$store.state.taxonomy
       } if (this.description != undefined && this.description != ''){
         search_q += "&description=" + this.$store.state.description
+      } if (this.cultivar != undefined && this.cultivar != ''){
+        search_q += "&cultivar=" + this.$store.state.cultivar
       } if (this.verified != undefined && this.verified != false){
         search_q += "&verified=" + this.$store.state.verified
       } if (this.exclude_vitis!= undefined && this.exclude_vitis != false){
