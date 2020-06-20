@@ -248,6 +248,7 @@ export default {
         virus_type:'',
         taxonomy:'',
         description:'',
+        cultivar:'',
         verified: '',
         exclude_vitis: '',
         start_date: '',
