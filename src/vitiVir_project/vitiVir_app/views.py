@@ -1,6 +1,7 @@
 import os, glob
 from django.utils import timezone
 from rest_framework import viewsets
+from rest_framework.views import APIView
 
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.authtoken.serializers import AuthTokenSerializer
@@ -8,7 +9,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.response import Response
 
-from .serializers import MyUserSerializer
+from .serializers import MyUserSerializer, ContactSerializer
 from .models import MyUser
 from virData_app.views import EntryListView
 
@@ -52,7 +53,6 @@ class BlastViewSet(viewsets.ViewSet):
 
     authentication_classes = (TokenAuthentication,) #still accessible when not logged in???
     permission_classes = (IsAuthenticated,)
-    
     def post(self, request):
         data = request.data.get('sequences')
         type_of_blast = request.data.get('program')
@@ -70,13 +70,14 @@ class BlastViewSet(viewsets.ViewSet):
         with open(tmp_file_path, 'w') as f:
             f.write(data)
 
-        blastn_path = '/var/www/vitiVir/db/blastdb/ncbi-blast-2.10.0+/bin/' + type_of_blast
+        blast_path = '/var/www/vitiVir/db/blastdb/ncbi-blast-2.10.0+/bin/' + type_of_blast #'/vagrant/db/blastdb/ncbi-blast-2.10.0+/bin/'
+        local_db = '/var/www/vitiVir/db/blastdb/vitiVirSeq.fasta' #'/vagrant/db/blastdb/vitiVirSeq.fasta',  
         
         if type_of_blast == 'blastn':
             blast_cline = NcbiblastnCommandline(
-                cmd=blastn_path, 
+                cmd=blast_path, 
                 query=tmp_file_path, 
-                db='/var/www/vitiVir/db/blastdb/vitiVirSeq.fasta', 
+                db=local_db, 
                 evalue=evalue,
                 max_target_seqs=max_nb,
                 outfmt=5, 
@@ -85,9 +86,9 @@ class BlastViewSet(viewsets.ViewSet):
             stdout, stderr = blast_cline()
         elif type_of_blast == 'tblastn':
             blast_cline = NcbitblastnCommandline(
-                cmd=blastn_path, 
+                cmd=blast_path, 
                 query=tmp_file_path, 
-                db='/var/www/vitiVir/db/blastdb/vitiVirSeq.fasta', 
+                db=local_db, 
                 evalue=evalue,
                 max_target_seqs=max_nb,
                 outfmt=5, 
@@ -96,9 +97,9 @@ class BlastViewSet(viewsets.ViewSet):
             stdout, stderr = blast_cline()
         elif type_of_blast == 'tblastx':
             blast_cline = NcbitblastxCommandline(
-                cmd=blastn_path, 
+                cmd=blast_path, 
                 query=tmp_file_path, 
-                db='/var/www/vitiVir/db/blastdb/vitiVirSeq.fasta', 
+                db=local_db, 
                 evalue=evalue,
                 max_target_seqs=max_nb,
                 outfmt=5, 
@@ -115,8 +116,13 @@ class BlastViewSet(viewsets.ViewSet):
         os.remove(tmp_out_file_path)
         
         return Response(out, content_type='text/xml')
-    
-    
-    #evalue_threshold = 1e-10 #handeled in front ? 
-    #max_output = None
+        
 
+class ContactView(APIView):
+    permission_classes = []
+    def post(self, request):
+        serializer = ContactSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.send()
+            return Response(status=201)
+        return Response(serializer.errors, status=400)

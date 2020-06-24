@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+from decouple import config, Csv
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -23,9 +24,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '-quunmi6&ppym#g_i8^e)t0rt-ck_*brx%$0g9-#(2#o6^@3c^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', cast=bool) #change in vitiVir_project/.env DEBUG=True
 
-ALLOWED_HOSTS = ['127.0.0.1', '0.0.0.0','localhost', '147.100.102.68']
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=Csv()) #change in vitiVir_project/.env ALLOWED_HOSTS=[]
 
 # Application definition
 
@@ -140,6 +141,11 @@ AUTH_USER_MODEL = 'vitiVir_app.MyUser'
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 25,
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ],
 
     'DEFAULT_PERMISSION_CLASSES':(
                 'rest_framework.permissions.IsAuthenticated',
@@ -153,3 +159,8 @@ REST_FRAMEWORK = {
 
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'VitiVir.db@gmail.com'
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')#change in vitiVir_project/.env EMAIL_HOST_PASSWORD=***
+EMAIL_USE_TLS = True

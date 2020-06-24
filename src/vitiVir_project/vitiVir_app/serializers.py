@@ -1,3 +1,6 @@
+from django.core.mail import send_mail
+from django.conf import settings
+
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 
@@ -30,5 +33,15 @@ class MyUserSerializer(serializers.ModelSerializer):
         return user
 
 
+class ContactSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    email = serializers.EmailField()
+    message = serializers.CharField()
 
-
+    def send(self):
+        return send_mail(
+            "Contact from VitiVir", 
+            'Message sent to VitiVir from '+self.validated_data['name']+':\n'+self.validated_data['message'], 
+            settings.EMAIL_HOST_USER, #from host
+            [settings.EMAIL_HOST_USER, self.validated_data['email'], 'eden.darnige@inrae.fr'] #to host, client, and my work email   #marie.lefebvre@inrae.fr
+        )

@@ -113,13 +113,17 @@
                     </md-field>
                   </div>
                 </div>
-                <md-field maxlength="5">
+                <md-field>
                   <label>Your Message</label>
                   <md-textarea v-model="message"></md-textarea>
                 </md-field>
                 <div class="md-layout">
                   <div class="md-layout-item md-size-33 mx-auto text-center">
-                    <md-button class="md-primary">Send Message</md-button>
+                    <md-field>
+                      <label>What is {{x}} + {{y}}</label>
+                      <md-input v-model="answer" type="email"></md-input>
+                    </md-field>
+                    <md-button @click="sendContact()" :disabled="x + y != answer" class="md-primary">Send Message</md-button>
                   </div>
                 </div>
               </form>
@@ -136,7 +140,11 @@
 </template>
 
 <script>
+import axios from 'axios';
 
+function getRandomInt(max) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
 export default {
   bodyClass: "landing-page",
   props: {
@@ -152,6 +160,9 @@ export default {
       name: null,
       email: null,
       message: null,
+      x: getRandomInt(10),
+      y: getRandomInt(10),
+      answer: 0
     };
   },
 
@@ -172,6 +183,20 @@ export default {
         this.$router.push('/login')
       }
     },
+    async sendContact() {
+      const data = {
+        'name': this.name,
+        'email': this.email,
+        'message': this.message
+      }
+
+      await axios.post(`${process.env.VUE_APP_API_HOST}/api/contact/`, data); //once done then...
+      alert('sent');
+      this.name = '';
+      this.email = '';
+      this.message = '';
+      this.answer = 0;
+    }
   }
 };
 </script>
