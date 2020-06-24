@@ -81,16 +81,16 @@
                 <div class="md-layout-item md-size-25 md-xsmall-size-100 md-small-size-50 md-medium-size-25">
                   <md-field>
                     <label for="order">Order by</label>
-                    <md-select v-model="ordering" name="ordering" id="ordering">
-                      <md-option value=""> </md-option>
+                    <md-select v-model="ordering" placeholder="" name="ordering" id="ordering">
+                      <md-option value=""></md-option>
                       <md-option value="evalue"> 
-                        <div class="options"> rps-blast evalue (asc)</div>
+                        rps-blast evalue (asc)
                       </md-option>
                       <md-option value="query_length"> 
-                        <div class="options"> query length (desc) </div>
+                        query length (desc) 
                       </md-option>
                       <md-option value="percent_id"> 
-                        <div class="options"> blastx percent id (desc) </div>
+                        blastx percent id (desc) 
                       </md-option>
                     </md-select>
                     </md-field>
@@ -316,6 +316,10 @@ export default {
 };
 </script>
 <style lang="scss">
+.md-list-item-text {
+  padding-left: 10px;
+  padding-right: 10px;
+}
 .vertical-center {
   display: flex;
   align-items: center;

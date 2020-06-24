@@ -92,6 +92,7 @@ class EntryListView(viewsets.ModelViewSet):
         mongo_results = ''
         entry_ids = []
         queryset = None
+        is_queryset = False
 
         #IN PROGRESS - get detail without going through all the rest....
         if 'pk' in self.kwargs:
@@ -162,23 +163,24 @@ class EntryListView(viewsets.ModelViewSet):
 
         #Which type of mongo query    
         if mongo_query and order:
-            print("mongo query and order")
+            print("mongo query and order", datetime.datetime.now())
             mongo_results = Entry.objects.mongo_find({'$and': mongo_query}).sort(order)
             count = mongo_results.count()
         elif mongo_query and not order:
-            print("mongo query and no order")
+            print("mongo query and no order", datetime.datetime.now())
             mongo_results = Entry.objects.mongo_find({'$and': mongo_query})
             count = mongo_results.count()
         elif not mongo_query and order:
-            print("no mongo query and yes order")
+            print("no mongo query and yes order", datetime.datetime.now())
             mongo_results = Entry.objects.mongo_find().sort(order)
             count = mongo_results.count()
         else:
-            print("no mongo query no order")
+            print("no mongo query no order", datetime.datetime.now())
             queryset = Entry.objects.all()
             count = queryset.count()
+            is_queryset = True
 
-        print("count ", count)
+        print("count ", count,  datetime.datetime.now())
         print("make list")
         
         #Make a list of entry ids from mongodb query to make queryset
@@ -197,9 +199,9 @@ class EntryListView(viewsets.ModelViewSet):
                     entry_ids.append(entry['entry_id']) #cursor
                 except:
                     print("missing")
-
-            if queryset:
-                for entry in queryset[start:end]:
+            if is_queryset:
+                chunk = queryset[start:end]
+                for entry in chunk:
                     try:
                         entry_ids.append(entry.entry_id)  #queryset
                     except:
@@ -214,7 +216,7 @@ class EntryListView(viewsets.ModelViewSet):
 
 
         #print(mongo_results)
-        print("entries",len(entry_ids))
+        print("entries",len(entry_ids), datetime.datetime.now())
         print("list done")
         
         #second query and sorting
@@ -226,7 +228,7 @@ class EntryListView(viewsets.ModelViewSet):
         if not entry_ids and mongo_query: #if there are no results when filtering
             queryset=L([])
 
-        print("queryset ready")
+        print("queryset ready",  datetime.datetime.now())
         queryset.length = count
         return queryset
 

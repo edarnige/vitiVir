@@ -75,10 +75,9 @@ export default {
         this.$Progress.finish()
         this.entries = res.data.results
         this.totalResults = res.data.count
-        console.log("ON LOAD",res.data)
+        //console.log("ON LOAD",res.data)
         console.log(this.$store.state.search_q, this.$store.state.sample)
         //this.totalPages = Math.ceil(res.data.count/25)
-        console.log("Entering getEntries")
         })
       .catch(err =>{
         this.$Progress.fail()
@@ -142,7 +141,7 @@ export default {
 
     created() { //calls methods
       this.getEntries(); //getSeatch();
-      console.log("Is token passed?",this.$store.state.token)
+      //console.log("Is token passed?",this.$store.state.token)
     },
 
 
