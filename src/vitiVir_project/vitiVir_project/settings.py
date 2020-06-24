@@ -78,9 +78,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'vitiVir_project.wsgi.application'
 
 CORS_ORIGIN_ALLOW_ALL = True #domain, anyone can access
-CORS_ORIGIN_WHITE_LIST = [ #website address, allow request front to back
-    'http://localhost:8080'
-]
+# CORS_ORIGIN_WHITE_LIST = [ #website address, allow request front to back
+#     'http://localhost:8080'
+# ]
 
 
 # Database
