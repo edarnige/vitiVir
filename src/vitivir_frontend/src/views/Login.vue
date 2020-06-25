@@ -83,6 +83,7 @@ export default {
         //axios.defaults.headers.common['Authorization'] = `Token ${token}`;
       })
       .catch(err => {
+        alert("Unable to login with these credentials")
         console.log(err);
         this.$store.state.token = null;
       })

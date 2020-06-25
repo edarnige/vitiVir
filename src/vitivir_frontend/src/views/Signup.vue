@@ -83,22 +83,32 @@ export default {
           console.log("signed up", res),
           this.$router.push('/login')
         })
-        .catch(err => console.log(err));
+        .catch(err =>{
+          alert("Unable to request account with these credentials")
+          console.log(err);
+        })
+
+        //Send email to request account, suepruser must switch is_active on 
+        const data = {
+          'email': this.email,
+        }
+        axios.post(`${process.env.VUE_APP_API_HOST}/api/request_account/`, data)
+        .then(res=>{
+          console.log(res)
+          alert('Request sent');
+        })
+        .catch(err =>{
+          console.log(err);
+          alert("Unable to send request")
+          });
       }
+
       else{
+        alert("Passwords do not match")
         console.log("Passwords do not match")
       }
 
-      //Send email to request account, suepruser must switch is_active on 
-      const data = {
-        'email': this.email,
-      }
-      axios.post(`${process.env.VUE_APP_API_HOST}/api/request_account/`, data)
-      .then(res=>{
-        console.log(res)
-        alert('Request sent');
-      })
-      .catch(err =>console.log(err));
+
       
 
     },
