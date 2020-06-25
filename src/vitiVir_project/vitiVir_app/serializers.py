@@ -45,3 +45,15 @@ class ContactSerializer(serializers.Serializer):
             settings.EMAIL_HOST_USER, #from host
             [settings.EMAIL_HOST_USER, self.validated_data['email'], 'eden.darnige@inrae.fr'] #to host, client, and my work email   #marie.lefebvre@inrae.fr
         )
+
+
+class RequestAccountSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+    def send(self):
+        return send_mail(
+            "VitiVir Account Request", 
+            "An account request has been made for "+self.validated_data['email'], 
+            settings.EMAIL_HOST_USER, #from host
+            [settings.EMAIL_HOST_USER, self.validated_data['email'], 'eden.darnige@inrae.fr'] #to host, client, and my work email   #marie.lefebvre@inrae.fr
+        )

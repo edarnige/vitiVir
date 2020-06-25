@@ -9,7 +9,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.response import Response
 
-from .serializers import MyUserSerializer, ContactSerializer
+from .serializers import MyUserSerializer, ContactSerializer, RequestAccountSerializer
 from .models import MyUser
 from virData_app.views import EntryListView
 
@@ -122,6 +122,16 @@ class ContactView(APIView):
     permission_classes = []
     def post(self, request):
         serializer = ContactSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.send()
+            return Response(status=201)
+        return Response(serializer.errors, status=400)
+
+
+class RequestAccountView(APIView):
+    permission_classes=[]
+    def post(self, request):
+        serializer = RequestAccountSerializer(data=request.data)
         if serializer.is_valid():
             serializer.send()
             return Response(status=201)

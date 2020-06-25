@@ -32,8 +32,8 @@ class MyUserManager(BaseUserManager): #inherit from BaseUserManager
         user = self.model(email=email)
 
         # can verify
-        if email == 'thierry.candresse@inrae.fr' or email == 'armelle.marais-colombel@inrae.fr':
-            user.can_verify = True
+        # if email == 'thierry.candresse@inrae.fr' or email == 'armelle.marais-colombel@inrae.fr':
+        #     user.can_verify = True
 
         user.set_password(password)
         user.save(using=self._db) #default db in settings
@@ -45,6 +45,7 @@ class MyUserManager(BaseUserManager): #inherit from BaseUserManager
         email = self.normalize_email(email)
         user = self.model(email=email)
 
+        user.is_active = True
         user.is_superuser = True
         user.is_staff = True
         user.can_verify = True
@@ -66,7 +67,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
 
     can_verify = models.BooleanField(default=False) # flag active vs guest user
-    is_active = models.BooleanField(default=True) 
+    is_active = models.BooleanField(default=False) # must request account
     is_staff = models.BooleanField(default=False)
     
     objects = MyUserManager()

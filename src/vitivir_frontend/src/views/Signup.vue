@@ -73,6 +73,7 @@ export default {
 
   methods:{
     signup(){
+      //Create account with is_activated = false
       if(this.password == this.passwordConfirmed){
         axios.post(`${process.env.VUE_APP_API_HOST}/users/manageusers/`,{
           email: this.email,
@@ -87,11 +88,24 @@ export default {
       else{
         console.log("Passwords do not match")
       }
-    }
 
+      //Send email to request account, suepruser must switch is_active on 
+      const data = {
+        'email': this.email,
+      }
+      axios.post(`${process.env.VUE_APP_API_HOST}/api/request_account/`, data)
+      .then(res=>{
+        console.log(res)
+        alert('Request sent');
+      })
+      .catch(err =>console.log(err));
+      
+
+    },
   }
 
-};
+  };
+// };
 </script>
 
 <style lang="css"></style>
