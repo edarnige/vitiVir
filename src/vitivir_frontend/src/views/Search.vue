@@ -129,10 +129,8 @@
               </md-button>
               <p class="csv-info"><br></p>
               <p class="csv-info">*The more results, the longer the download</p>
-              <p class="csv-info">*Ordering is not preserved in the download</p>
               </div>
-
-            
+              
             <div>
               <ListEntries ref="results"/>
             </div>
@@ -247,16 +245,19 @@ export default {
       .then(res => {
         console.log(res)
         let fasta_format = ""
+        let acc_list = [] //avoid redundancy 
         for (let obj of res.data){
           if (obj.blastx){
             if(obj.blastx.sequence){
-              console.log(obj.blastx.sequence)
-              fasta_format += ">" + obj.blastx.accession + "|" + obj.blastx.description + "|" + 
-              obj.query_id + "|" + obj.entry_id + "\n" + obj.blastx.sequence + "\n"
+              if(acc_list.includes(obj.blastx.accession) == false ){ //1x per accession
+                acc_list.push(obj.blastx.accession);
+                //console.log(acc_list);
+                fasta_format += ">" + obj.blastx.accession + "|" + obj.blastx.description + "|" + 
+                obj.query_id + "|" + obj.entry_id + "\n" + obj.blastx.sequence + "\n";
+              }
             }
           }
         }
-        console.log(fasta_format)
         var fileURL = window.URL.createObjectURL(new Blob([fasta_format]));
         var fileLink = document.createElement('a');
         
