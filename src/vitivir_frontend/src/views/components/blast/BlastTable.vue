@@ -83,6 +83,17 @@ export default {
           field: 'query_id',
         },
         {
+          label: 'Hit length',
+          field: 'length',
+          type: 'number',
+        },
+        {
+          label: 'Query cover',
+          field: 'query-cover',
+          type: 'number',
+          formatFn: formatPercentage,
+        },
+        {
           label: 'Max score',
           field: 'max-score',
           type: 'number',
@@ -91,12 +102,6 @@ export default {
           label: 'Total score',
           field: 'total-score',
           type: 'number',
-        },
-        {
-          label: 'Query cover',
-          field: 'query-cover',
-          type: 'number',
-          formatFn: formatPercentage,
         },
         {
           label: 'E-value',
@@ -156,6 +161,7 @@ export default {
                 totalScore += hsp['bit-score'];
               });
               hit['max-score'] = Math.round(maxScore * 10) / 10;
+              hit['length']= totalLength
               hit['total-score'] = Math.round(totalScore * 10) / 10;
               hit['evalue'] = minEvalue;
               hit['query-cover'] = Math.round((totalLength / queryLength) * 100);
@@ -226,13 +232,16 @@ export default {
           row['query_id'] +
           '",' +
           '"' +
+          row['length']+
+          '",' +
+          '"' +
+          row['query-cover'] +
+          '",' +
+          '"' +
           row['max-score'] +
           '",' +
           '"' +
           row['total-score'] +
-          '",' +
-          '"' +
-          row['query-cover'] +
           '",' +
           '"' +
           row['evalue'] +
