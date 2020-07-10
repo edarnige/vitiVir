@@ -222,7 +222,7 @@ class EntryListView(viewsets.ModelViewSet):
         #second query and sorting
         if entry_ids:
             queryset = Entry.objects.filter(entry_id__in = entry_ids)
-            if make_csv == False and order: #do not bother to order csv
+            if order: #to remove csv order: and make_csv==False
                 print("ordering...")
                 queryset= L(sorted(queryset, key=lambda i: entry_ids.index(i.pk)))
         if not entry_ids and mongo_query: #if there are no results when filtering
