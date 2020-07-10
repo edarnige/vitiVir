@@ -27,7 +27,18 @@
               <div class="md-layout-item md-size-25 md-xsmall-size-100 md-small-size-50 md-medium-size-25">
                 <md-field >
                   <label>Virus type</label>
-                  <md-input v-model="vtype"></md-input>
+                    <md-select v-model="vtype" placeholder="" name="vtype" id="vtype">
+                      <md-option value=""></md-option>
+                      <md-option value="Mycovirus"> 
+                        Mycovirus
+                      </md-option>
+                      <md-option value="Phytovirus"> 
+                        Phytovirus
+                      </md-option>
+                      <md-option value="Bacteriophage"> 
+                        Bacteriophage
+                      </md-option>
+                    </md-select>
                 </md-field>
               </div>
           
@@ -37,23 +48,21 @@
 
               <div class="md-layout-item md-size-25 md-xsmall-size-100 md-small-size-50 md-medium-size-25">
                 <md-field >
-                  <label>Taxonomy</label>
+                  <label>Taxonomy (any level)</label>
                   <md-input v-model="taxonomy"></md-input>
                 </md-field>
                 </div>
 
               <div class="md-layout-item md-size-25 md-xsmall-size-100 md-small-size-50 md-medium-size-25">
-                <md-field >
-                  <label>Domain</label>
-                  <md-input v-model="description"></md-input>
-                </md-field>
+                <md-autocomplete v-model="description" :md-options="domains" md-dense>
+                  <label>Protein domain</label>
+                </md-autocomplete>
               </div>
 
               <div class="md-layout-item md-size-25 md-xsmall-size-100 md-small-size-50 md-medium-size-25">
-                <md-field >
+                <md-autocomplete v-model="cultivar" :md-options="cultivars" md-dense>
                   <label>Cultivar</label>
-                  <md-input v-model="cultivar"></md-input>
-                </md-field>
+                </md-autocomplete>
               </div>
 
           </div>
@@ -175,6 +184,31 @@ export default {
       start_date: this.$store.state.start_date,
       end_date: this.$store.state.end_date,
       ordering: this.$store.state.ordering,
+      domains:[
+        'pfam00680, RdRP_1',
+        'pfam00978, RdRP_2',
+        'pfam00998, RdRP_3',
+        'pfam02123, RdRP_4',
+        'pfam07925, RdRP_5',
+        'RdRP',
+        'RNA dependent RNA polymerase',
+        'pfam00286, Flexi_CP',
+        'coat protein',
+        'pfam01443, Viral_helicase1',
+        'RNA helicase',
+      ],
+      cultivars:[
+        'Petit Verdot noir',
+        'Shiraz',
+        'Mertlot noir',
+        'Semillon blanc',
+        'Sauvignon blanc',
+        'Sauvignon gris',
+        'Cabernet sauvignon noir',
+        'Cabernet Sauvignon',
+        'Pinot noir',
+        'Fengzao'
+      ]
 
     };
   },

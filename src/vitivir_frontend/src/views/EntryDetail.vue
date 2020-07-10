@@ -38,7 +38,22 @@
                         {{ entry.virus_type}}
                     </div>
                     <div v-if="editMode==true" class="edit">
-                        <md-input class="input" type="text" v-model="entry.virus_type"></md-input>
+                        <!-- <md-input class="input" type="text" v-model="entry.virus_type"></md-input> -->
+                        <md-field >
+                            <label>Virus type</label>
+                            <md-select v-model="entry.virus_type" placeholder="" name="virus_type" id="virus_type">
+                                <md-option value=""></md-option>
+                                <md-option value="Mycovirus" type="text"> 
+                                    Mycovirus
+                                </md-option>
+                                <md-option value="Phytovirus"> 
+                                    Phytovirus
+                                </md-option>
+                                <md-option value="Bacteriophage"> 
+                                    Bacteriophage
+                                </md-option>
+                            </md-select>
+                        </md-field>
                     </div>
                 </md-table-cell> 
              </md-table-row>
@@ -480,7 +495,7 @@ export default {
         updateDetail(){//verified, virus_type, host_organism
             this.$Progress.start()
             this.edited = this.entry;
-            console.log("EDITED", this.edited.verified)
+            console.log("EDITED", this.edited.virus_type)
             let newData = {'verified':this.edited.verified, 'virus_type':this.edited.virus_type, 'host_organism':this.edited.host_organism}
             axios.patch(`${process.env.VUE_APP_API_HOST}/api/data/entries/` + this.$route.params.entry_id + "/", newData,{
                 headers: {
