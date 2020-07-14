@@ -13,6 +13,9 @@ from .serializers import MyUserSerializer, ContactSerializer, RequestAccountSeri
 from .models import MyUser
 from virData_app.views import EntryListView
 
+from virData_app.serializers import EntrySerializer
+from virData_app.models import Entry
+
 from django_filters import rest_framework as filters
 
 from Bio import SeqIO
@@ -70,8 +73,8 @@ class BlastViewSet(viewsets.ViewSet):
         with open(tmp_file_path, 'w') as f:
             f.write(data)
 
-        blast_path = '/var/www/vitiVir/db/blastdb/ncbi-blast-2.10.0+/bin/' + type_of_blast #'/vagrant/db/blastdb/ncbi-blast-2.10.0+/bin/'
-        local_db = '/var/www/vitiVir/db/blastdb/vitiVirSeq.fasta' #'/vagrant/db/blastdb/vitiVirSeq.fasta',  
+        blast_path = '/vagrant/db/blastdb/ncbi-blast-2.10.0+/bin/' + type_of_blast #'/var/www/vitiVir/db/blastdb/ncbi-blast-2.10.0+/bin/' + type_of_blast #'/vagrant/db/blastdb/ncbi-blast-2.10.0+/bin/' + type_of_blast
+        local_db = '/vagrant/db/blastdb/vitiVirSeq.fasta' #'/var/www/vitiVir/db/blastdb/vitiVirSeq.fasta' #'/vagrant/db/blastdb/vitiVirSeq.fasta',  
         
         if type_of_blast == 'blastn':
             blast_cline = NcbiblastnCommandline(
@@ -136,3 +139,73 @@ class RequestAccountView(APIView):
             serializer.send()
             return Response(status=201)
         return Response(serializer.errors, status=400)
+
+
+class GetDBStatsView(APIView):
+    queryset = Entry.objects.all()
+    serializer_class = EntrySerializer
+    permission_classes=[]
+    
+    def get(self, request):
+        total = Entry.objects.count()
+        SRA_query = Entry.objects.filter(sample__contains="SRR").values('sample').distinct()
+        SRA_count = len(SRA_query)
+        INV_query = Entry.objects.filter(sample__contains="Inv").values('sample').distinct()
+        INV_count = len(INV_query)
+
+        local_db = '/vagrant/db/blastdb/vitiVirSeq.fasta' #'/var/www/vitiVir/db/blastdb/vitiVirSeq.fasta' #'/vagrant/db/blastdb/vitiVirSeq.fasta',  
+        number_of_lines = 0
+        file = open(local_db)
+        for line in file:
+            line = line.strip("\n")
+            number_of_lines += 1
+        file.close()
+
+        viral_seq = number_of_lines/2
+
+        taxonomies = Entry.objects.mongo_find({'blastx.taxonomy':{'$regex':''}}) #blastx taxonomy exists
+
+        taxo_list = []
+        for entry in taxonomies: 
+            taxo_list.append(entry["blastx"]["taxonomy"])
+
+        families = {}
+        for i in taxo_list:
+            try:
+                fam = i.split(";")[2]
+                if fam != "Vitaceae": #Exclude vitaceae  
+                    if fam in families.keys():
+                        families[fam] +=1
+                    else:
+                        families[fam]=1
+            except:
+                pass
+
+        #convert to percentage
+        sum_f = sum(families.values())
+        for i in families:
+            families[i] = float(families[i]/sum_f) * 100
+
+
+        #format for bar chart
+        format_families = {"other":0}
+
+        for i in families:
+            if families[i]>2: #if it represents more thant 2%, may need to modify
+                format_families[i]=families[i]
+            else:
+                format_families["other"]+=families[i]
+         
+        families_list = []
+        temp={}
+        for i in format_families:
+            temp["name"]=i
+            temp['y']=format_families[i]
+            families_list.append(temp)
+            temp={}
+
+        print("\nSTATS\ntotal:",total,"\nSRA and inv:",SRA_count, INV_count,"\nSeqs:",viral_seq,"\n",families_list)
+        
+        data = {"total":total,"SRA_count":SRA_count,"INV_count":INV_count,"viral_seq_count":viral_seq,"families":families_list}
+        
+        return Response(data, content_type='text')

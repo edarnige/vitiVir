@@ -89,6 +89,24 @@
         </div>
       </div>
 
+
+      <div class="section">
+        <div class="container">
+          <div class="md-layout">
+            <div class="md-layout-item md-size-66 md-xsmall-size-100 mx-auto">
+              <h2 class="text-center title">Database statistics</h2>
+              <h4 class="text-center description">
+                  {{total_entries}} Entries - {{sra_count}} SRA samples/ {{inv_count}} InViCeb samples - {{seq_count}} viral sequences 
+                  Taxonimic representation: (histogram)
+              </h4>                            
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
       <div class="section section-contacts">
         <div class="container">
           <div class="md-layout">
@@ -135,6 +153,7 @@
           </div>
         </div>
       </div>
+
     </div>
   </div>
 </template>
@@ -162,7 +181,14 @@ export default {
       message: null,
       x: getRandomInt(10),
       y: getRandomInt(10),
-      answer: 0
+      answer: 0,
+
+      total_entries: null,
+      sra_count: null,
+      inv_count: null,
+      seq_count: null,
+
+
     };
   },
 
@@ -196,7 +222,25 @@ export default {
       this.email = '';
       this.message = '';
       this.answer = 0;
+    },
+    getStats(){
+      axios.get(`${process.env.VUE_APP_API_HOST}/stats/`)
+      .then(res=> {
+        console.log(res)
+        this.total_entries = res.data.total
+        this.sra_count = res.data.SRA_count
+        this.inv_count = res.data.INV_count
+        this.seq_count = res.data.viral_seq_count
+
+      })
+      .catch(err => {
+        console.log(err);
+      })
     }
+
+  },
+  created(){
+      this.getStats();
   }
 };
 </script>
