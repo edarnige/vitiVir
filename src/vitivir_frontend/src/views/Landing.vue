@@ -172,7 +172,7 @@
 <script>
 import axios from 'axios';
 import {Chart} from 'highcharts-vue'
-import exportingInit from 'highcharts/modules/exporting'
+//import exportingInit from 'highcharts/modules/exporting'
 
 
 function getRandomInt(max) {
