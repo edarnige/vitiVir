@@ -90,15 +90,26 @@
       </div>
 
 
-      <div class="section">
+      <div class="section section-contacts">
         <div class="container">
           <div class="md-layout">
             <div class="md-layout-item md-size-66 md-xsmall-size-100 mx-auto">
               <h2 class="text-center title">Database statistics</h2>
               <h4 class="text-center description">
-                  {{total_entries}} Entries - {{sra_count}} SRA samples/ {{inv_count}} InViCeb samples - {{seq_count}} viral sequences 
-                  Taxonimic representation: (histogram)
-              </h4>                            
+                Current counts:
+                <div>
+                  <span class="purple">{{total_entries}} </span> total entries 
+                </div>
+                <div>
+                  <span class="purple">{{sra_count}}</span> SRA samples | <span class="purple">{{inv_count}}</span> InViCeb samples 
+                </div>
+                <div>
+                  <span class="purple"> {{seq_count}} </span> viral sequences 
+                </div>
+              </h4>   
+                <div>
+                  <highcharts v-if="chartOptions.series[0].data.length > 0 " class="hc" :options="chartOptions" ref="chart"></highcharts>
+                </div>                         
 
             </div>
           </div>
@@ -160,12 +171,18 @@
 
 <script>
 import axios from 'axios';
+import {Chart} from 'highcharts-vue'
+import exportingInit from 'highcharts/modules/exporting'
+
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 export default {
   bodyClass: "landing-page",
+  components: {
+    highcharts: Chart,
+  },
   props: {
     header: {
       type: String,
@@ -188,6 +205,30 @@ export default {
       inv_count: null,
       seq_count: null,
 
+      chartOptions: {
+        chart: {
+          plotBackgroundColor: null,
+          plotBorderWidth: null,
+          plotShadow: false,
+          type: 'pie'
+        },
+        title:{
+          text: 'Taxonomic families represented in VitiVir'
+        },
+        subtitle: {
+          text: 'From all entries excluding Vitaceae'
+        },
+        tooltip: {
+          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        series: [
+          {
+            name: 'Value',
+            colorByPoint: true,
+            data: []
+          }
+        ]
+      }
 
     };
   },
@@ -231,6 +272,7 @@ export default {
         this.sra_count = res.data.SRA_count
         this.inv_count = res.data.INV_count
         this.seq_count = res.data.viral_seq_count
+        this.chartOptions.series[0].data = res.data.families
 
       })
       .catch(err => {
@@ -284,6 +326,11 @@ img{
 }
 .section-contacts{
   margin-top: -100px;
+}
+.purple{
+  color:#4a148c;
+  font-weight: bold;
+  
 }
 
 </style>

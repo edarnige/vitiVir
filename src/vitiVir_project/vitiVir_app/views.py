@@ -73,8 +73,8 @@ class BlastViewSet(viewsets.ViewSet):
         with open(tmp_file_path, 'w') as f:
             f.write(data)
 
-        blast_path = '/vagrant/db/blastdb/ncbi-blast-2.10.0+/bin/' + type_of_blast #'/var/www/vitiVir/db/blastdb/ncbi-blast-2.10.0+/bin/' + type_of_blast #'/vagrant/db/blastdb/ncbi-blast-2.10.0+/bin/' + type_of_blast
-        local_db = '/vagrant/db/blastdb/vitiVirSeq.fasta' #'/var/www/vitiVir/db/blastdb/vitiVirSeq.fasta' #'/vagrant/db/blastdb/vitiVirSeq.fasta',  
+        blast_path = '/var/www/vitiVir/db/blastdb/ncbi-blast-2.10.0+/bin/' + type_of_blast #'/vagrant/db/blastdb/ncbi-blast-2.10.0+/bin/' + type_of_blast
+        local_db = '/var/www/vitiVir/db/blastdb/vitiVirSeq.fasta' #'/vagrant/db/blastdb/vitiVirSeq.fasta',  
         
         if type_of_blast == 'blastn':
             blast_cline = NcbiblastnCommandline(
@@ -153,7 +153,7 @@ class GetDBStatsView(APIView):
         INV_query = Entry.objects.filter(sample__contains="Inv").values('sample').distinct()
         INV_count = len(INV_query)
 
-        local_db = '/vagrant/db/blastdb/vitiVirSeq.fasta' #'/var/www/vitiVir/db/blastdb/vitiVirSeq.fasta' #'/vagrant/db/blastdb/vitiVirSeq.fasta',  
+        local_db = '/var/www/vitiVir/db/blastdb/vitiVirSeq.fasta' #'/vagrant/db/blastdb/vitiVirSeq.fasta' 
         number_of_lines = 0
         file = open(local_db)
         for line in file:
