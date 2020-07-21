@@ -108,7 +108,10 @@
                 </div>
               </h4>   
                 <div>
-                  <highcharts v-if="chartOptions.series[0].data.length > 0 " class="hc" :options="chartOptions" ref="chart"></highcharts>
+                  <highcharts v-if="chartOptions_fam.series[0].data.length > 0 " class="hc" :options="chartOptions_fam" ref="chart"></highcharts>
+                </div>                         
+                <div>
+                  <highcharts v-if="chartOptions_vir.series[0].data.length > 0 " class="hc" :options="chartOptions_vir" ref="chart"></highcharts>
                 </div>                         
 
             </div>
@@ -172,6 +175,7 @@
 <script>
 import axios from 'axios';
 import {Chart} from 'highcharts-vue'
+//import { chart } from 'highcharts';
 //import exportingInit from 'highcharts/modules/exporting'
 
 
@@ -205,7 +209,7 @@ export default {
       inv_count: null,
       seq_count: null,
 
-      chartOptions: {
+      chartOptions_fam: {
         chart: {
           plotBackgroundColor: null,
           plotBorderWidth: null,
@@ -228,6 +232,47 @@ export default {
             data: []
           }
         ]
+      },
+
+      chartOptions_vir:{
+        chart: {
+          type: 'pie'
+        },
+        title: {
+          text: 'Viruses represented in VitiVir'
+        },
+        subtitle: {
+          text: 'ssRNA or dsRNA genome and corresponding families'
+        },
+        tooltip: {
+          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        series: [{
+          name: 'Genome type',
+          data: [],
+          size: '60%',
+          dataLabels: {
+              formatter: function () {
+                  return this.y > 5 ? this.point.name : null;
+              },
+              color: '#ffffff',
+              distance: -30
+          }
+      }, {
+          name: 'Family',
+          data: [],
+          size: '80%',
+          innerSize: '60%',
+          dataLabels: {
+              formatter: function () {
+                  // display only if larger than 1
+                  return this.y > 1 ? '<b>' + this.point.name + ':</b> ' +
+                      this.y.toFixed(2) + '%' : null;
+              }
+          },
+          id: 'versions'
+    }],
+
       }
 
     };
@@ -268,11 +313,52 @@ export default {
       axios.get(`${process.env.VUE_APP_API_HOST}/stats/`)
       .then(res=> {
         console.log(res)
+
+        //vitivir in numbers
         this.total_entries = res.data.total
         this.sra_count = res.data.SRA_count
         this.inv_count = res.data.INV_count
         this.seq_count = res.data.viral_seq_count
-        this.chartOptions.series[0].data = res.data.families
+
+        //families chart
+        this.chartOptions_fam.series[0].data = res.data.families
+
+        //virus chart
+        let data = res.data.viruses
+        let genome_type_data = [] //browserData
+        let virus_family_data = [] //versionsData
+        let dataLen = data.length
+        let categories = [
+				'ssRNA',
+        'dsRNA',
+        'Other'
+      ]
+
+
+        // Build the data arrays for virus donut chart
+        for (let i = 0; i < dataLen; i += 1) {
+
+            // add genome type data
+            genome_type_data.push({
+                name: categories[i],
+                y: data[i].y,
+                color: data[i].color
+            });
+
+            // add virus family data
+            let drillDataLen = data[i].drilldown.data.length;
+            for (let j = 0; j < drillDataLen; j += 1) {
+                //let brightness = 0.2 - (j / drillDataLen) / 5;
+                virus_family_data.push({
+                    name: data[i].drilldown.categories[j],
+                    y: data[i].drilldown.data[j],
+                    //color: Highcharts.color(data[i].color).brighten(brightness).get() //not working
+                    //color: this.chartOptions_vir.series[0].color
+                });
+            }
+        }
+        this.chartOptions_vir.series[0].data = genome_type_data
+        this.chartOptions_vir.series[1].data = virus_family_data
 
       })
       .catch(err => {

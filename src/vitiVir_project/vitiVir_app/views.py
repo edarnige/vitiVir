@@ -154,6 +154,7 @@ class GetDBStatsView(APIView):
         INV_count = len(INV_query)
 
         local_db = '/var/www/vitiVir/db/blastdb/vitiVirSeq.fasta' #'/vagrant/db/blastdb/vitiVirSeq.fasta' 
+
         number_of_lines = 0
         file = open(local_db)
         for line in file:
@@ -169,6 +170,7 @@ class GetDBStatsView(APIView):
         for entry in taxonomies: 
             taxo_list.append(entry["blastx"]["taxonomy"])
 
+        #Global family overview
         families = {}
         for i in taxo_list:
             try:
@@ -181,13 +183,61 @@ class GetDBStatsView(APIView):
             except:
                 pass
 
+
+
+        #Viruses only
+        ss_viruses = {}
+        ds_viruses = {}
+        other_viruses = {}
+        for i in taxo_list:
+            try:
+                dom = i.split(";")[0]
+                if dom == "Viruses":
+                    vir_fam = i.split(";")[2]
+                    vir_genome = i.split(";")[1]
+                    
+                    if vir_genome == "ssRNA viruses":
+                        if vir_fam in ss_viruses.keys():
+                            ss_viruses[vir_fam] += 1
+                        elif vir_fam !='': #if not blank
+                            ss_viruses[vir_fam] = 1
+
+                    elif vir_genome == "dsRNA viruses":
+                        if vir_fam in ds_viruses.keys():
+                            ds_viruses[vir_fam] += 1
+                        elif vir_fam !='': #if not blank
+                            ds_viruses[vir_fam] = 1
+
+                    else:
+                        if vir_fam in other_viruses.keys():
+                            other_viruses[vir_fam] += 1
+                        elif vir_fam != '':
+                            other_viruses[vir_fam] = 1
+            except:
+                pass
+
+
+
         #convert to percentage
         sum_f = sum(families.values())
         for i in families:
             families[i] = float(families[i]/sum_f) * 100
 
+        sum_ss = sum(ss_viruses.values())
+        for i in ss_viruses:
+            ss_viruses[i] = float(ss_viruses[i]/sum_ss) * 100 
+        sum_ds = sum(ds_viruses.values())
+        for i in ds_viruses:
+            ds_viruses[i] = float(ds_viruses[i]/sum_ds) * 100
+        sum_other = sum(other_viruses.values())
+        for i in other_viruses:
+            other_viruses[i] = float(other_viruses[i]/sum_other) * 100
 
-        #format for bar chart
+        sum_all_viruses = sum_ss+ sum_ds + sum_other
+
+
+
+        #format for pie chart
         format_families = {"other":0}
 
         for i in families:
@@ -204,8 +254,20 @@ class GetDBStatsView(APIView):
             families_list.append(temp)
             temp={}
 
-        print("\nSTATS\ntotal:",total,"\nSRA and inv:",SRA_count, INV_count,"\nSeqs:",viral_seq,"\n",families_list)
+        viruses_list = []
+        ss={'y': (sum_ss/sum_all_viruses), 'drilldown':{"name":"ssRNA","categories":[key for key in ss_viruses.keys()], "data":[value for value in ss_viruses.values()]}}
+        ds={'y': (sum_ds/sum_all_viruses), 'drilldown':{"name":"dsRNA","categories":[key for key in ds_viruses.keys()], "data":[value for value in ds_viruses.values()]}}
+        other={'y': (sum_other/sum_all_viruses), 'drilldown':{"name":"Other","categories":[key for key in other_viruses.keys()], "data":[value for value in other_viruses.values()]}}
+        viruses_list.append(ss)
+        viruses_list.append(ds)
+        viruses_list.append(other)
         
-        data = {"total":total,"SRA_count":SRA_count,"INV_count":INV_count,"viral_seq_count":viral_seq,"families":families_list}
+
+
+        print("\nSTATS\ntotal:",total,"\nSRA and inv:",SRA_count, INV_count,"\nSeqs:",viral_seq,"\n",families_list)
+        print(viruses_list)
+        
+        #data to send
+        data = {"total":total,"SRA_count":SRA_count,"INV_count":INV_count,"viral_seq_count":viral_seq,"families":families_list, "viruses":viruses_list}
         
         return Response(data, content_type='text')
