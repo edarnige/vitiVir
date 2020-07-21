@@ -9,12 +9,17 @@
         <ul>
           <li>
             <a href="https://www6.bordeaux-aquitaine.inrae.fr/bfp">
-              UMR 1332 BFP
+              INRAE UMR 1332 BFP
             </a>
           </li>
           <li>
-            <a href="https:///presentation.creative-tim.com">
-              Something
+            <a href="https://apsjournals.apsnet.org/doi/full/10.1094/PBIOMES-07-19-0037-A">
+              VirAnnot
+            </a>
+          </li>
+          <li>
+            <a href="https://www.plan-deperissement-vigne.fr/recherches/programmes-de-recherche/mycovir">
+              MYCOVIR
             </a>
           </li>
           <li>
