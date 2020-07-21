@@ -110,6 +110,9 @@
             <md-button class="md-primary" @click="search()">
               Search
             </md-button>
+            <md-button class="md-danger" @click="clear()">
+              Clear
+            </md-button>
           </div>
 
 
@@ -344,7 +347,39 @@ export default {
       //Get results based on query
       this.$refs.results.getSearch()
       
+      },
+
+      clear(){
+        //Clear variables
+          this.sample='';
+          this.host='';
+          this.vtype='';
+          this.taxonomy='';
+          this.description='';
+          this.cultivar='';
+          this.verified= '';
+          this.exclude_vitis= '';
+          this.start_date= null;
+          this.end_date= null;
+          this.ordering= '';
+ 
+        //Reset store
+        this.$store.commit('setSearch', '?')
+        this.$store.dispatch('setQParams',{
+          sample:'',
+          host_organism:'',
+          virus_type:'',
+          taxonomy:'',
+          description:'',
+          cultivar:'',
+          verified: '',
+          exclude_vitis: '',
+          start_date: '',
+          end_date: '',
+          ordering: ''
+        }) 
       }
+
 
   },
   
