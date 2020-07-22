@@ -19,7 +19,15 @@
             </md-table-row>
 
             <md-table-row>
-                <md-table-head>Verified</md-table-head>
+                <md-table-head>
+                    Verified
+                    <md-button class="md-simple md-just-icon md-round md-sm">
+                    <i class="far fa-question-circle" id="q">
+                    </i>
+                    <md-tooltip md-direction="right">Reviewed by MYCOVIR project directors</md-tooltip>
+
+                    </md-button>
+                </md-table-head>
                 <md-table-cell>
                     <div v-if="editMode==false" >
                         <i v-if="entry.verified==true" id="check" class="fas fa-check-circle"></i>
@@ -559,6 +567,9 @@ export default {
 }
 #cross{
     color: red;
+}
+#q{
+    margin-top: -20px;
 }
 
 </style>
