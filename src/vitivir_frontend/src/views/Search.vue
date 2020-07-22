@@ -199,16 +199,21 @@ export default {
         'RNA helicase',
       ],
       cultivars:[
+        'Cabernet Sauvignon noir',
+        'Cabernet Sauvignon',
+        'Fengzao',
+        'Kyoho',
+        'Merlot',
+        'Merlot noir', 
+        'Pinot noir',
         'Petit Verdot noir',
-        'Shiraz',
-        'Mertlot noir',
-        'Semillon blanc',
+        'Reisling',       
         'Sauvignon blanc',
         'Sauvignon gris',
-        'Cabernet sauvignon noir',
-        'Cabernet Sauvignon',
-        'Pinot noir',
-        'Fengzao'
+        'Semillon blanc',
+        'Shiraz',
+        'Summer Black',
+        'Tannat',
       ]
 
     };
