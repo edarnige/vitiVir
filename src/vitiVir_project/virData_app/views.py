@@ -21,6 +21,9 @@ from .models import Entry
 
 
 class CustomPaginator(DjangoPaginator):
+    '''
+    Custom paginator gets total entries number even though only 25 are loaded at once
+    '''
     @property
     def count(self):
         return self.object_list.length
@@ -29,11 +32,11 @@ class CustomPaginator(DjangoPaginator):
 class CustomMongoPaginator(pagination.PageNumberPagination):
 
     def paginate_queryset(self, queryset, request, view=None):
-        """
+        '''
         Paginate a queryset if required, either returning a
         page object, or `None` if pagination is not configured for this view.
         https://github.com/encode/django-rest-framework/blob/master/rest_framework/pagination.py
-        """
+        '''
         page_size = self.get_page_size(request)
         if not page_size:
             return None
@@ -61,13 +64,11 @@ class CustomMongoPaginator(pagination.PageNumberPagination):
         ]))
 
     def get_next_link(self):
-
         url = self.request.build_absolute_uri()
         page_number = int(self.request.GET.get('page', 1)) + 1
         return replace_query_param(url, self.page_query_param, page_number)
 
     def get_previous_link(self):
-
         url = self.request.build_absolute_uri()
         page_number = int(self.request.GET.get('page', 1)) - 1
         if page_number == 1:
@@ -76,7 +77,9 @@ class CustomMongoPaginator(pagination.PageNumberPagination):
 
 
 class EntryListView(viewsets.ModelViewSet):
-    ''' Entry API list view '''
+    ''' 
+    Entry API list view
+    '''
     
     queryset = Entry.objects.all()
     serializer_class = EntrySerializer
@@ -85,6 +88,10 @@ class EntryListView(viewsets.ModelViewSet):
     pagination_class= CustomMongoPaginator #pagination.PageNumberPagination
 
     def get_queryset(self):
+        '''
+        Override get_queryset to filter embedded documents
+        '''
+
         fields = ['sample', 'host_organism', 'virus_type', 'taxonomy', 'description', 'cultivar',
             'verified','exclude_vitis', 'start_date', 'end_date', 'ordering']
         mongo_query = []
@@ -94,20 +101,18 @@ class EntryListView(viewsets.ModelViewSet):
         queryset = None
         is_queryset = False
 
-        #IN PROGRESS - get detail without going through all the rest....
+        #Get detail page without going through all the rest of get_queryset
         if 'pk' in self.kwargs:
             print("pk in kwargs")
             pk_entry = self.kwargs['pk']
-            #return Entry.objects.get_object_or_404(pk=pk_entry) 
             return Entry.objects.filter(entry_id=pk_entry) #return all might be faster, to test
-        
 
         if "csv" in self.request.path_info or "fasta" in self.request.path_info:
             make_csv = True
         else:
             make_csv = False
         
-        #Get all fields and values passed from frontend (elif?)
+        #Get all fields and values passed from frontend
         for field in fields:
             if field in self.request.GET:
                 value = self.request.GET.get(field)
@@ -215,7 +220,6 @@ class EntryListView(viewsets.ModelViewSet):
                     print("missing")
 
 
-        #print(mongo_results)
         print("entries",len(entry_ids), datetime.datetime.now())
         print("list done")
         
@@ -249,7 +253,9 @@ class EntryListView(viewsets.ModelViewSet):
 
 
 class EntryListCSVExportView(viewsets.ModelViewSet):
-    '''Make CSV from Entry list results'''
+    '''
+    Make CSV from Entry list results
+    '''
 
     serializer_class = EntrySerializer
     authentication_classes = (TokenAuthentication,)
@@ -262,7 +268,9 @@ class EntryListCSVExportView(viewsets.ModelViewSet):
 
 
 class EntryListFastaExportView(viewsets.ModelViewSet):
-    '''Make CSV from Entry list results'''
+    '''
+    Make fasta from Entry list results
+    '''
 
     serializer_class = EntrySerializer
     authentication_classes = (TokenAuthentication,)

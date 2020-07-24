@@ -1,9 +1,12 @@
-from rest_framework import serializers
+#Entry serializer
 
+from rest_framework import serializers
 from . import models
 
 class BlastrpsSerializer(serializers.ModelSerializer):
-    ''' Serializer for blastrps '''
+    ''' 
+    Serializer for blastrps
+    '''
 
     class Meta:
         model = models.Blastrps
@@ -11,7 +14,9 @@ class BlastrpsSerializer(serializers.ModelSerializer):
 
 
 class BlastxSerializer(serializers.ModelSerializer):
-    ''' Serializer for blastx '''
+    ''' 
+    Serializer for blastx 
+    '''
 
     class Meta:
         model = models.Blastx
@@ -19,7 +24,9 @@ class BlastxSerializer(serializers.ModelSerializer):
 
 
 class SRAMetadataSerializer(serializers.ModelSerializer):
-    ''' Serializer for SRA metadata '''
+    ''' 
+    Serializer for SRA metadata 
+    '''
 
     class Meta:
         model = models.SRAMetadata
@@ -27,7 +34,9 @@ class SRAMetadataSerializer(serializers.ModelSerializer):
 
 
 class INVMetadataSerializer(serializers.ModelSerializer):
-    ''' Serializer for INV metadata '''
+    ''' 
+    Serializer for INV metadata
+    '''
 
     class Meta:
         model = models.INVMetadata
@@ -35,7 +44,9 @@ class INVMetadataSerializer(serializers.ModelSerializer):
 
 
 class EntrySerializer(serializers.ModelSerializer):
-    ''' Serializer for entry objects '''
+    ''' 
+    Serializer for entry objects 
+    '''
     
     blastrps = BlastrpsSerializer()
     blastx = BlastxSerializer()
@@ -49,7 +60,9 @@ class EntrySerializer(serializers.ModelSerializer):
 
 
     def create(self):
-        ''' Create and return a new entry ''' 
+        ''' 
+        Create and return a new entry 
+        ''' 
 
         entry = models.Entry()
         entry.save()

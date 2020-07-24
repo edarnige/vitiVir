@@ -8,7 +8,6 @@ router= routers.DefaultRouter()
 router.register('users/manageusers', UserViewSet)
 router.register('users/login', LoginViewSet, basename='login')
 router.register('api/blast', BlastViewSet, basename='blast')
-#router.register('stats', GetDBStatsView, basename='stats')
 
 urlpatterns = [
     path('', include(router.urls)),

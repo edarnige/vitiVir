@@ -24,16 +24,15 @@ class MyUserManager(BaseUserManager): #inherit from BaseUserManager
     '''
 
     def create_user(self, email, password):
-        ''' Creates a new user profile object '''
+        '''
+        Creates a new user profile object
+        '''
+
         if not email:
             raise ValueError('Users must have an email address')
         
         email = self.normalize_email(email) #lowercase
         user = self.model(email=email)
-
-        # can verify
-        # if email == 'thierry.candresse@inrae.fr' or email == 'armelle.marais-colombel@inrae.fr':
-        #     user.can_verify = True
 
         user.set_password(password)
         user.save(using=self._db) #default db in settings
@@ -41,7 +40,10 @@ class MyUserManager(BaseUserManager): #inherit from BaseUserManager
         return user
 
     def create_superuser(self, email, password):
-        ''' Creates a new superuser '''
+        ''' 
+        Creates a new superuser
+        '''
+
         email = self.normalize_email(email)
         user = self.model(email=email)
 

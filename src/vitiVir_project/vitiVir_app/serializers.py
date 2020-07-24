@@ -1,3 +1,5 @@
+#User, contact, and request account serializers
+
 from django.core.mail import send_mail
 from django.conf import settings
 
@@ -8,7 +10,9 @@ from .models import MyUser
 
 
 class MyUserSerializer(serializers.ModelSerializer):
-    ''' Serializer for user objects '''
+    '''
+    Serializer for user objects
+    '''
 
     class Meta:
         model = MyUser
@@ -25,15 +29,15 @@ class MyUserSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
 
-        #user =MyUser.objects.create(**validated_data)
-
-        #Token.objects.create(user=user)
-        #print(">>>>>>",user.auth_token, dir(user)) #debug
-
         return user
 
 
 class ContactSerializer(serializers.Serializer):
+    '''
+    Serializer for contact form
+    Sends an email to/from VitiVir.db@gmail.com with contact info (copy to admin and user)
+    '''
+
     name = serializers.CharField()
     email = serializers.EmailField()
     message = serializers.CharField()
@@ -48,6 +52,11 @@ class ContactSerializer(serializers.Serializer):
 
 
 class RequestAccountSerializer(serializers.Serializer):
+    '''
+    Serializer to request account
+    Sends an email to VitiVir.db@gmail.com with account request (copy to admin and user)
+    '''
+
     email = serializers.EmailField()
 
     def send(self):
