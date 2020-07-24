@@ -90,8 +90,6 @@ import BlastGraphics from '@/views/components/blast/BlastGraphics.vue';
 import BlastTable from '@/views/components/blast/BlastTable.vue';
 import BlastAlignment from '@/views/components/blast/BlastAlignment.vue';
 
-// import Vue from 'vue';
-
 var blastParser = require('biojs-io-blast');
 
 export default {
@@ -105,7 +103,6 @@ export default {
     db: { type: String, default: null },
     dbType: { type: String, default: null },
     res: { type: String, default: null },
-    //urlResult: { type: String, default: null },
   },
   data: function() {
     return {
@@ -167,22 +164,6 @@ export default {
             .map(q => ({ value: q, text: q }))
         : [];
     },
-    // selectedQuery: {
-    //   get: function() {
-    //     let val = this.queries.length > 0 ? this.queries[0].value : null;
-    //     // this.query = val;
-    //     return val;
-    //   },
-    //   set: function() {},
-    // },
-    // queries: function() {
-    //   return this.jsonData.iterations
-    //     ? this.jsonData.iterations
-    //         .map(it => it['query-def'])
-    //         .filter((v, i, a) => a.indexOf(v) === i)
-    //         .map(q => ({ value: q, text: q }))
-    //     : [];
-    // },
   },
   methods: {
     changeQuery: function(v) {
@@ -197,7 +178,7 @@ export default {
      * and downstream indicated in the form
      */
     getLimitsHsps(a_hsps, len) {
-      // On recupere les froms et les to
+      // get to and from
       let a_froms = a_hsps.map(h => h['hit-from']);
       let a_tos = a_hsps.map(h => h['hit-to']);
 
@@ -221,7 +202,7 @@ export default {
       return a_from_to;
     },
     getFastaSequences() {
-      //write fasta format
+      //write fasta format output
       let str = ''
       if (this.jsonData.iterations && this.selectedQuery !== "") {
         this.jsonData.iterations.forEach(iteration => {
@@ -252,9 +233,6 @@ export default {
     selectAlignment(acc) {
       this.subject = acc;
       this.$refs['modal-align'].show();
-      // Vue.nextTick(() => {
-      //   this.$refs['blast-alignment'].$el.scrollIntoView();
-      // });
     },
   },
 };
