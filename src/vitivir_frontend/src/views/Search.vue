@@ -47,10 +47,9 @@
           <div class="md-layout">
 
               <div class="md-layout-item md-size-25 md-xsmall-size-100 md-small-size-50 md-medium-size-25">
-                <md-field >
+                <md-autocomplete v-model="taxonomy" :md-options="taxo" md-dense>
                   <label>Taxonomy (any level)</label>
-                  <md-input v-model="taxonomy"></md-input>
-                </md-field>
+                </md-autocomplete>
                 </div>
 
               <div class="md-layout-item md-size-25 md-xsmall-size-100 md-small-size-50 md-medium-size-25">
@@ -199,6 +198,7 @@ export default {
         'RNA helicase',
       ],
       cultivars:[
+        'Cabernet Franc',
         'Cabernet Sauvignon noir',
         'Cabernet Sauvignon',
         'Fengzao',
@@ -214,6 +214,14 @@ export default {
         'Shiraz',
         'Summer Black',
         'Tannat',
+      ],
+      taxo:[
+        'Betaflexiviridae',
+        'Closteroviridae',
+        'dsRNA viruses',
+        'ssRNA viruses',
+        'Tymoviridae',
+        'Virus',
       ]
 
     };
