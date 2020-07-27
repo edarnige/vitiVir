@@ -28,7 +28,7 @@ def SRA_rpsblast():
     rps_int = ['query_length', 'startQ', 'endQ', 'frame']
     rps_folat = ['evalue']
 
-    rps_path = os.getcwd() + "/S*pfam.csv" #SRA pfam csvs
+    rps_path = os.getcwd() + "/*pfam.csv" #SRA pfam csvs
 
     for fname in glob.glob(rps_path):
         rps_file = open(fname,'r')
@@ -79,7 +79,7 @@ def SRA_blastx():
     blastx_int = ['nb_hsps', 'query_overlap','nb_reads','query_length','hit_overlap','tax_id']
     blastx_float = ['percent_identity','evalue','score']
 
-    blastx_path = os.getcwd() + "/S*rps2blast.csv"
+    blastx_path = os.getcwd() + "/*rps2blast.csv"
 
     for fname in glob.glob(blastx_path):
         blastx_file = open(fname, 'r')
