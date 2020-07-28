@@ -68,7 +68,7 @@ class SRAMetadata(models.Model):
     LibrarySource = models.CharField(max_length=250)
     LibraryLayout = models.CharField(max_length=250)
     InsertSize = models.IntegerField()
-    InsertDev = models.IntegerField()
+    InsertDev = models.CharField(max_length=250)
     Platform = models.CharField(max_length=250)
     Model = models.CharField(max_length=250)
     SRAStudy = models.CharField(max_length=250)
