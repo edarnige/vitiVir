@@ -14,7 +14,7 @@ from pymongo import MongoClient
 mongo_client = MongoClient(port=27017)
 db = mongo_client.test #test is name of db
 col = db['virData_app_entry'] #collection
-db.virData_app_entry.drop() #only drop if resetting!!!
+#db.virData_app_entry.drop() #only drop if resetting!!!
 
 
 ##########
@@ -114,10 +114,9 @@ def SRA_blastx():
 def SRA_meta():
     meta_header = ['Run','ReleaseDate','LoadDate','spots','bases','spots_with_mates','avgLength','size_MB','AssemblyName',
         'download_path','Experiment','LibraryName','LibraryStrategy','LibrarySelection','LibrarySource','LibraryLayout',
-        'InsertSize','InsertDev','Platform','Model','SRAStudy','BioProject','Study_Pubmed_id','ProjectID','Sample','BioSample',
-        'SampleType','TaxID','ScientificName','SampleName','g1k_pop_code','source','g1k_analysis_group','Subject_ID','Sex',
-        'Disease','Tumor','Affection_Status','Analyte_Type','Histological_Type','Body_Site','CenterName','Submission',
-        'dbgap_study_accession','Consent','RunHash','ReadHash','Cultivar']
+        'InsertSize','InsertDev','Platform','Model','SRAStudy','BioProject','ProjectID','Sample','BioSample',
+        'SampleType','TaxID','ScientificName','SampleName','Tumor','CenterName','Submission','Consent',
+        'RunHash','ReadHash','Cultivar']
     meta_int = ['spots','bases','spots_with_mates','avgLength','size_MB','InsertSize','InsertDev']
 
     meta_path = os.getcwd() + "/SRA_metadata.csv"
@@ -136,7 +135,7 @@ def SRA_meta():
                     meta[field]=int(entry[field])
                 elif field == 'ReleaseDate' and entry[field] != '':
                     date_time_str = entry[field]
-                    #11/24/19 17:44
+                    #11/24/19 17:44 or %Y-%m-%d %H:%M:%S
                     date_time_obj = datetime.datetime.strptime(date_time_str, '%m/%d/%y %H:%M')  
                     meta[field] = date_time_obj
                 elif entry[field] != '' and entry[field] != 'not applicable': #skip sex
@@ -155,14 +154,13 @@ def SRA_meta():
 
 #Check if entry already exists and update instead of create new? 
 #rpsblast must be entered first
-#except not true foe inv... opposite with new format
 
-SRA_rpsblast()
-print('Rps entered')
-SRA_blastx()
-print('Blastx entered')
-SRA_meta()
-print("SRA done")
+# SRA_rpsblast()
+# print('Rps entered')
+# SRA_blastx()
+# print('Blastx entered')
+# SRA_meta()
+# print("SRA done")
 
 
 print("count before removing w/o entries", db.virData_app_entry.find().count())
@@ -170,6 +168,7 @@ print("count before removing w/o entries", db.virData_app_entry.find().count())
 #Remove entries with entry_ids (had diamond, no rps)
 # db.virData_app_entry.remove({'entry_id':{'$exists':'false'}})
 # print("count after removing w/o entries", db.virData_app_entry.find().count())
+# Removing SRA metadata fields not used: db.virData_app_entry.update({}, {$unset: {'sra_metadata.dbgap_study_accession':1}} , {multi: true})
 
 #INDEXING
 # db.virData_app_entry.createIndex({ "blastrps.evalue": 1 })
