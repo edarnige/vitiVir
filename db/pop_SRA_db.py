@@ -117,7 +117,7 @@ def SRA_meta():
         'InsertSize','InsertDev','Platform','Model','SRAStudy','BioProject','ProjectID','Sample','BioSample',
         'SampleType','TaxID','ScientificName','SampleName','Tumor','CenterName','Submission','Consent',
         'RunHash','ReadHash','Cultivar']
-    meta_int = ['spots','bases','spots_with_mates','avgLength','size_MB','InsertSize','InsertDev']
+    meta_int = ['spots','bases','spots_with_mates','avgLength','size_MB','InsertSize']
 
     meta_path = os.getcwd() + "/SRA_metadata.csv"
 
