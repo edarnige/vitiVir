@@ -351,7 +351,7 @@ export default {
                 //let brightness = 0.2 - (j / drillDataLen) / 5;
                 virus_family_data.push({
                     name: data[i].drilldown.categories[j],
-                    y: data[i].drilldown.data[j],
+                    y: data[i].drilldown.data[j]*data[i].y,
                     color: data[i].color + "80"
                     //color: Highcharts.color(data[i].color).brighten(brightness).get() //not working
                     //color: this.chartOptions_vir.series[0].color
