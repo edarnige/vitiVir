@@ -257,7 +257,7 @@ class GetDBStatsView(APIView):
                         elif vir_fam !='': #if not blank
                             ds_viruses[vir_fam] = 1
 
-                    else:
+                    else: #ssDNA
                         if vir_fam in other_viruses.keys():
                             other_viruses[vir_fam] += 1
                         elif vir_fam != '':
@@ -301,9 +301,9 @@ class GetDBStatsView(APIView):
             temp={}
 
         viruses_list = []
-        ss={'y': (sum_ss/sum_all_viruses), 'drilldown':{"name":"ssRNA","categories":[key for key in ss_viruses.keys()], "data":[value for value in ss_viruses.values()]}}
-        ds={'y': (sum_ds/sum_all_viruses), 'drilldown':{"name":"dsRNA","categories":[key for key in ds_viruses.keys()], "data":[value for value in ds_viruses.values()]}}
-        other={'y': (sum_other/sum_all_viruses), 'drilldown':{"name":"Other","categories":[key for key in other_viruses.keys()], "data":[value for value in other_viruses.values()]}}
+        ss={'y': (sum_ss/sum_all_viruses), 'color':'#90ed7d', 'drilldown':{"name":"ssRNA","categories":[key for key in ss_viruses.keys()], "data":[value for value in ss_viruses.values()]}}
+        ds={'y': (sum_ds/sum_all_viruses), 'color':'#7cb6ec', 'drilldown':{"name":"dsRNA","categories":[key for key in ds_viruses.keys()], "data":[value for value in ds_viruses.values()]}}
+        other={'y': (sum_other/sum_all_viruses),'color':'#f45b5c', 'drilldown':{"name":"Other","categories":[key for key in other_viruses.keys()], "data":[value for value in other_viruses.values()]}}
         viruses_list.append(ss)
         viruses_list.append(ds)
         viruses_list.append(other)
