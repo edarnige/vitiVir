@@ -165,7 +165,7 @@ def SRA_meta():
 
 print("count before removing w/o entries", db.virData_app_entry.find().count())
 
-#Remove entries with entry_ids (had diamond, no rps)
+#Remove entries with entry_ids (had diamond, no rps), will get evalue error!
 # db.virData_app_entry.remove({'entry_id':{'$exists':'false'}})
 # print("count after removing w/o entries", db.virData_app_entry.find().count())
 # Removing SRA metadata fields not used: db.virData_app_entry.update({}, {$unset: {'sra_metadata.dbgap_study_accession':1}} , {multi: true})

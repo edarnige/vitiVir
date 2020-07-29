@@ -12,7 +12,7 @@ import datetime
 from pymongo import MongoClient
 
 mongo_client = MongoClient(port=27017)
-db = mongo_client.test #vitivir is name of db
+db = mongo_client.test #test is name of db
 col = db['virData_app_entry'] #collection
 #db.virData_app_entry.drop() #only drop if resetting!!!
 
@@ -35,7 +35,7 @@ def INV_rpsblast():
 
     for fname in glob.glob(rps_path):
         rps_file = open(fname,'r')
-        rps_reader = csv.DictReader(rps_file, fieldnames=rps_header, delimiter=',') 
+        rps_reader = csv.DictReader(rps_file, fieldnames=rps_header, delimiter='\t') 
         next(rps_reader) #skip header
 
         for entry in rps_reader:
@@ -43,11 +43,12 @@ def INV_rpsblast():
             blastrps={}
             
             entry_id = uuid.uuid4() #PK for entry!!!
-            sample = entry['query_id'].split('_')[0] + '_' + entry['project'] #sample to tie metadata to 
             
             hit = entry['query_length'] #store no hit val
             
             if hit != 'no_hit':
+                sample = entry['query_id'].split('_')[0] + '_' + entry['project'] #sample to tie metadata to 
+
                 #Fields not embedded
                 row['entry_id']=entry_id
                 row['sample'] = sample
@@ -82,11 +83,11 @@ def INV_blastx():
     blastx_int = ['nb_hsps', 'query_overlap','nb_reads','query_length','hit_overlap','tax_id']
     blastx_float = ['percent_identity','evalue','score']
 
-    blastx_path = os.getcwd() + "/I*nr.csv"
+    blastx_path = os.getcwd() + "/I*rps2blast.csv"
 
     for fname in glob.glob(blastx_path):
         blastx_file = open(fname, 'r')
-        blastx_reader = csv.DictReader(blastx_file, fieldnames=blastx_header, delimiter=",")
+        blastx_reader = csv.DictReader(blastx_file, fieldnames=blastx_header, delimiter="\t")
         next(blastx_reader)
 
         for entry in blastx_reader:
@@ -105,7 +106,6 @@ def INV_blastx():
             blastx['algo']=entry['algo']
 
             db.virData_app_entry.update_many({'query_id': qid},{'$set':{'blastx':blastx}}, upsert=True) #multiple rps can have same query_id
-
         blastx_file.close()
 
 
@@ -147,15 +147,15 @@ def INV_meta():
 #except not true foe inv... opposite with new format
 
 
-INV_rpsblast()
-print("INV rps done")
-INV_blastx()
-print("INV blastx done")
-INV_meta()
-print("INV meta done")
-print("INV done")
+# INV_rpsblast()
+# print("INV rps done")
+# INV_blastx()
+# print("INV blastx done")
+# INV_meta()
+# print("INV meta done")
+# print("INV done")
 
-print("count before removing w/o entries", db.virData_app_entry.find().count())
+# print("count before removing w/o entries", db.virData_app_entry.find().count())
 
 #Remove entries with entry_ids (had diamond, no rps)
 # db.virData_app_entry.remove({'entry_id':{'$exists':'false'}})
