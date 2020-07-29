@@ -242,7 +242,7 @@ export default {
           text: 'Viruses represented in VitiVir'
         },
         subtitle: {
-          text: 'ssRNA, dsRNA, or orther genome type and corresponding families'
+          text: 'ssRNA, dsRNA, or orther genome types and corresponding families'
         },
         tooltip: {
           pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
