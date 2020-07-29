@@ -14,7 +14,7 @@
       </b-col>
       <b-col md="6" lg="3">
         <b-form-group type="number" label-size="sm" label="E-value" label-for="evalueInput">
-          <b-form-input id="evalueInput" v-model="evalue" size="sm" required></b-form-input>
+          <b-form-input id="evalueInput" v-model="evalue" placeholder="1e-10" size="sm" required></b-form-input>
         </b-form-group>
       </b-col>
     </b-row>
