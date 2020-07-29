@@ -284,13 +284,13 @@ class GetDBStatsView(APIView):
         sum_all_viruses = sum_ss+ sum_ds + sum_other
 
         #Format data for pie chart
-        format_families = {"other":0}
+        format_families = {"other (<1%)":0}
 
         for i in families:
-            if families[i]>2: #if it represents more thant 2%, may need to modify
+            if families[i]>1: #if it represents more thant 1%, may need to modify
                 format_families[i]=families[i]
             else:
-                format_families["other"]+=families[i]
+                format_families["other (<1%)"]+=families[i]
          
         families_list = []
         temp={}

@@ -37,8 +37,8 @@
                 is a collaboration between multiple research units of the INRAE 
                 and the IFV. The objective of project MYCOVIR is to determine the diversity and 
                 interactions of viral and fungal communities associated with grapevine trunk diseases.
-                In a similar light, the InViCeb project aims to take virologic inventory of Bordeaux grape varieties.
-                Grapevine associated raw RNA-seq data from NCBI's publically available SRA as well as data from project InViCeb 
+                In a similar light, the InViCeB project aims to take virologic inventory of Bordeaux grape varieties.
+                Grapevine associated raw RNA-seq data from NCBI's publically available SRA as well as data from project InViCeB 
                 were analyzed via the 
                 <a href="https://apsjournals.apsnet.org/doi/full/10.1094/PBIOMES-07-19-0037-A">
                   VirAnnot pipeline</a>, 
@@ -101,7 +101,7 @@
                   <span class="purple">{{total_entries}} </span> total entries 
                 </div>
                 <div>
-                  <span class="purple">{{sra_count}}</span> SRA samples | <span class="purple">{{inv_count}}</span> InViCeb samples 
+                  <span class="purple">{{sra_count}}</span> SRA samples | <span class="purple">{{inv_count}}</span> InViCeB samples 
                 </div>
                 <div>
                   <span class="purple"> {{seq_count}} </span> viral sequences 
@@ -242,7 +242,7 @@ export default {
           text: 'Viruses represented in VitiVir'
         },
         subtitle: {
-          text: 'ssRNA or dsRNA genome and corresponding families'
+          text: 'ssRNA, dsRNA, or orther genome type and corresponding families'
         },
         tooltip: {
           pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -253,7 +253,7 @@ export default {
           size: '60%',
           dataLabels: {
               formatter: function () {
-                  return this.y > 5 ? this.point.name : null;
+                  return this.y > 1 ? this.point.name : null;
               },
               color: '#ffffff',
               distance: -30
@@ -266,7 +266,7 @@ export default {
           dataLabels: {
               formatter: function () {
                   // display only if larger than 1
-                  return this.y > 1 ? '<b>' + this.point.name + ':</b> ' +
+                  return this.y > 0 ? '<b>' + this.point.name + ':</b> ' +
                       this.y.toFixed(2) + '%' : null;
               }
           },
@@ -331,7 +331,7 @@ export default {
         let categories = [
 				'ssRNA',
         'dsRNA',
-        'Other'
+        'Other (ssDNA, retro-transcribing, etc.)'
       ]
 
 
