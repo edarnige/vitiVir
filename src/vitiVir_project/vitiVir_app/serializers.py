@@ -47,7 +47,7 @@ class ContactSerializer(serializers.Serializer):
             "Contact from VitiVir", 
             'Message sent to VitiVir from '+self.validated_data['name']+':\n'+self.validated_data['message'], 
             settings.EMAIL_HOST_USER, #from host
-            [settings.EMAIL_HOST_USER, self.validated_data['email'], 'eden.darnige@inrae.fr'] #to host, client, and my work email   #marie.lefebvre@inrae.fr
+            [settings.EMAIL_HOST_USER, self.validated_data['email'], 'marie.lefebvre@inrae.fr', 'eden.darnige@inrae.fr'] #to host, client, and work emails
         )
 
 
@@ -64,5 +64,5 @@ class RequestAccountSerializer(serializers.Serializer):
             "VitiVir Account Request", 
             "An account request has been made for "+self.validated_data['email'], 
             settings.EMAIL_HOST_USER, #from host
-            [settings.EMAIL_HOST_USER, self.validated_data['email'], 'eden.darnige@inrae.fr'] #to host, client, and my work email   #marie.lefebvre@inrae.fr
+            [settings.EMAIL_HOST_USER, self.validated_data['email'], 'marie.lefebvre@inrae.fr', 'eden.darnige@inrae.fr'] #to host, client, and work emails
         )
