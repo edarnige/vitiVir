@@ -42,7 +42,9 @@ Each step of the pipeline is launched in the command line. In the VirAnnot repos
 10. virAnnot.py -m map.txt -p parameters.yaml -s step.yaml -n Rps2blast
 11. virAnnot.py -m map.txt -p parameters.yaml -s step.yaml -n Blast2ecsv_nr
 ```
-It is important to check the output after each step to detect errors. One RPS-BLASTCSVandone BLASTXCSVfor each sample will be produced at the end of the pipeline
+It is important to check the output after each step to detect errors. One RPS-BLASTCSVandone BLASTXCSVfor each sample will be produced at the end of the pipeline.
+
+An example of the correct format of SRA results are included in this repository as SRR10518967\_idba.scaffold.bltx.rps2blast.csv and SRR10518967\_idba.scaffold.rps.pfam.csv.
 
 ### I.II Retrieving metadata
 
