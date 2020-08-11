@@ -245,7 +245,7 @@ class GetDBStatsView(APIView):
                     vir_fam = i.split(";")[2]
                     vir_genome = i.split(";")[1]
                     
-                    if vir_genome == "ssRNA viruses":
+                    if vir_genome == "ssRNA viruses" or vir_genome == "Riboviria":
                         if vir_fam in ss_viruses.keys():
                             ss_viruses[vir_fam] += 1
                         elif vir_fam !='': #if not blank
