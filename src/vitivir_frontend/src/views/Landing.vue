@@ -208,6 +208,7 @@ export default {
       sra_count: null,
       inv_count: null,
       seq_count: null,
+      beta_percent: null,
 
       chartOptions_fam: {
         chart: {
@@ -242,7 +243,7 @@ export default {
           text: 'Viruses represented in VitiVir'
         },
         subtitle: {
-          text: 'ssRNA, dsRNA, or other genome types and corresponding families'
+          text: '' //replaced below
         },
         tooltip: {
           pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -265,7 +266,7 @@ export default {
           innerSize: '60%',
           dataLabels: {
               formatter: function () {
-                  // display only if larger than 1
+                  // display only if larger than 0
                   return this.y > 0 ? '<b>' + this.point.name + ':</b> ' +
                       this.y.toFixed(2) + '%' : null;
               }
@@ -319,14 +320,15 @@ export default {
         this.sra_count = res.data.SRA_count
         this.inv_count = res.data.INV_count
         this.seq_count = res.data.viral_seq_count
+        this.beta_percent = res.data.beta_percent
 
         //families chart
         this.chartOptions_fam.series[0].data = res.data.families
 
         //virus chart
         let data = res.data.viruses
-        let genome_type_data = [] //browserData
-        let virus_family_data = [] //versionsData
+        let genome_type_data = [] 
+        let virus_family_data = []
         let dataLen = data.length
         let categories = [
 				'ssRNA',
@@ -353,13 +355,13 @@ export default {
                     name: data[i].drilldown.categories[j],
                     y: data[i].drilldown.data[j]*data[i].y,
                     color: data[i].color + "80"
-                    //color: Highcharts.color(data[i].color).brighten(brightness).get() //not working
-                    //color: this.chartOptions_vir.series[0].color
                 });
             }
         }
         this.chartOptions_vir.series[0].data = genome_type_data
         this.chartOptions_vir.series[1].data = virus_family_data
+        this.chartOptions_vir.subtitle.text = 'ssRNA, dsRNA, or other genome types and corresponding families \n(excluding '
+          +this.beta_percent+'% of viral entries corresponding to the ubiquitous ssRNA Betaflexiviridae family)'
 
       })
       .catch(err => {

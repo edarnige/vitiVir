@@ -238,18 +238,24 @@ class GetDBStatsView(APIView):
         ss_viruses = {}
         ds_viruses = {}
         other_viruses = {}
+        count_with_beta = 0
+        total_beta = 0
+
         for i in taxo_list:
             try:
                 dom = i.split(";")[0]
                 if dom == "Viruses":
+                    count_with_beta+=1
                     vir_fam = i.split(";")[2]
                     vir_genome = i.split(";")[1]
                     
                     if vir_genome == "ssRNA viruses" or vir_genome == "Riboviria":
                         if vir_fam in ss_viruses.keys():
                             ss_viruses[vir_fam] += 1
-                        elif vir_fam !='': #if not blank
+                        elif vir_fam !='' and vir_fam !='Betaflexiviridae': #if not blank or beta
                             ss_viruses[vir_fam] = 1
+                        elif vir_fam == 'Betaflexiviridae':
+                            total_beta += 1
 
                     elif vir_genome == "dsRNA viruses":
                         if vir_fam in ds_viruses.keys():
@@ -302,17 +308,18 @@ class GetDBStatsView(APIView):
 
         viruses_list = []
         ss={'y': (sum_ss/sum_all_viruses), 'color':'#90ed7d', 'drilldown':{"name":"ssRNA","categories":[key for key in ss_viruses.keys()], "data":[value for value in ss_viruses.values()]}}
-        ds={'y': (sum_ds/sum_all_viruses), 'color':'#7cb6ec', 'drilldown':{"name":"dsRNA","categories":[key for key in ds_viruses.keys()], "data":[value for value in ds_viruses.values()]}}
+        ds={'y': 0.01, 'color':'#7cb6ec', 'drilldown':{"name":"dsRNA","categories":["test"], "data":[0.1]}}
         other={'y': (sum_other/sum_all_viruses),'color':'#f45b5c', 'drilldown':{"name":"Other","categories":[key for key in other_viruses.keys()], "data":[value for value in other_viruses.values()]}}
         viruses_list.append(ss)
         viruses_list.append(ds)
         viruses_list.append(other)
 
+        beta_percent = round(total_beta/count_with_beta * 100)
 
         print("\nSTATS\ntotal:",total,"\nSRA and inv:",SRA_count, INV_count,"\nSeqs:",viral_seq,"\n",families_list)
         print(viruses_list)
         
         #Data to send to front-end
-        data = {"total":total,"SRA_count":SRA_count,"INV_count":INV_count,"viral_seq_count":viral_seq,"families":families_list, "viruses":viruses_list}
+        data = {"total":total,"SRA_count":SRA_count,"INV_count":INV_count,"viral_seq_count":viral_seq,"families":families_list, "viruses":viruses_list, "beta_percent": beta_percent}
         
         return Response(data, content_type='text')
