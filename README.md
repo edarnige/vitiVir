@@ -1,3 +1,8 @@
+
+---
+## The VitiVir database was developped as part of the INRAE project MYCOVIR with the goal of identifying and discovering grapevine associated phytoviruses and mycoviruses. The following instructions can be used to set up the VitiVir database locally. 
+---
+
 # VitiVir local setup
 
 Clone repository
@@ -29,8 +34,12 @@ Within the vagrant ssh
 ```
 
 ### Use venv:
+to work with venv_viti
 ```diff
 + workon venv_viti
+```
+to deactivate the virtuan environment
+```diff
 + deactivate
 ```
 
@@ -46,8 +55,6 @@ Activate venv
 Within the vagrant ssh
 In Vagrant, locking isn't supported when syncing files, so npm install fails without symlinking node_modules outside of the synced folder. The name of this directory MUST be node_modules. See [here]( http://perrymitchell.net/article/npm-symlinks-through-vagrant-windows/) for more information. 
 ```diff
-+ cd /path/to/vitiVir
-+ vagrant ssh
 + mkdir ~/node_modules
 + cd /vagrant/src/vitivir_frontend
 + rm -rf node_modules package-lock.json
@@ -84,44 +91,36 @@ In a new terminal, execute:
 ```
 
 Start mongod\
-In a new terminal, execute:
+
 ```diff
-+ cd /path/to/vitiVir
-+ vagrant ssh
 + mongod
 ```
-or 
+or start mongod in the background using: 
 ```
 + sudo service mongod start
 ```
-to run in the background
 
 Mongo shell\
-In a new terminal, execute:
+Run to execute queries in MongoDB:
 ```diff
-+ cd /path/to/vitiVir
-+ vagrant ssh
 + mongo
 ```
 
 ## Running the servers
 ### Django
-First time setup - migrate db and create superuser
+First time setup - migrate db and create superuser 
 ```diff
 + cd /path/to/vitiVir
 + vagrant ssh
 + cd /vagrant/src/vitiVir_project
++ workon venv_viti
 + python manage.py makemigrations
 + python manage.py migrate
 + pyton manage.py createsuperuser
 ```
 
-Run server
-In a new terminal with the venv activated, execute:
+Then run the server with:
 ```diff
-+ cd /path/to/vitiVir
-+ vagrant ssh
-+ cd /vagrant/src/vitiVir_project
 + python manage.py runserver 0.0.0.0:9000
 ```
 On your local browser, go to [http://0.0.0.0:9000/](http://0.0.0.0:9000/)
@@ -146,7 +145,7 @@ In a new terminal with the venv activated, execute:
 ```
 Inside .env, add your backend path (where Django is running). Example:
 ```
-VUE_APP_    API_HOST='http://localhost:9000'
+VUE_APP_API_HOST='http://localhost:9000'
 ```
 
 
