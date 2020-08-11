@@ -106,6 +106,8 @@ Run to execute queries in MongoDB:
 + mongo
 ```
 
+For instructions on how to populate the database, see the README.md in the db/ directory.
+
 ## Running the servers
 ### Django
 First time setup - migrate db and create superuser 
