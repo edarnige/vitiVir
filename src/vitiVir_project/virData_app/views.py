@@ -111,7 +111,6 @@ class EntryListView(viewsets.ModelViewSet):
 
         #Get detail page without going through all the rest of get_queryset
         if 'pk' in self.kwargs:
-            print("pk in kwargs")
             pk_entry = self.kwargs['pk']
             return Entry.objects.filter(entry_id=pk_entry) #return all might be faster, to test
 
@@ -176,25 +175,22 @@ class EntryListView(viewsets.ModelViewSet):
 
         #Which type of mongo query    
         if mongo_query and order:
-            print("mongo query and order", datetime.datetime.now())
+            #print("mongo query and order", datetime.datetime.now())
             mongo_results = Entry.objects.mongo_find({'$and': mongo_query}).sort(order)
             count = mongo_results.count()
         elif mongo_query and not order:
-            print("mongo query and no order", datetime.datetime.now())
+            #print("mongo query and no order", datetime.datetime.now())
             mongo_results = Entry.objects.mongo_find({'$and': mongo_query})
             count = mongo_results.count()
         elif not mongo_query and order:
-            print("no mongo query and yes order", datetime.datetime.now())
+            #print("no mongo query and yes order", datetime.datetime.now())
             mongo_results = Entry.objects.mongo_find().sort(order)
             count = mongo_results.count()
         else:
-            print("no mongo query no order", datetime.datetime.now())
+            #print("no mongo query no order", datetime.datetime.now())
             queryset = Entry.objects.all()
             count = queryset.count()
             is_queryset = True
-
-        print("count ", count,  datetime.datetime.now())
-        print("make list")
         
         #Make a list of entry ids from mongodb query to make queryset
         page_size = 25
@@ -211,36 +207,34 @@ class EntryListView(viewsets.ModelViewSet):
                 try: #there are some inviceb with no rps, temp fix to overcome missing entry_ids
                     entry_ids.append(entry['entry_id']) #cursor
                 except:
-                    print("missing")
+                    #print("missing")
+                    pass
             if is_queryset:
                 chunk = queryset[start:end]
                 for entry in chunk:
                     try:
                         entry_ids.append(entry.entry_id)  #queryset
                     except:
-                        print("missing")
+                        #print("missing")
+                        pass
 
         if make_csv == True:
             for entry in mongo_results:
                 try: #there are some inviceb with no rps, temp fix to overcome missing entry_ids
                     entry_ids.append(entry['entry_id']) #cursor
                 except:
-                    print("missing")
+                    #print("missing")
+                    pass
 
-
-        print("entries",len(entry_ids), datetime.datetime.now())
-        print("list done")
         
         #second query and sorting
         if entry_ids:
             queryset = Entry.objects.filter(entry_id__in = entry_ids)
             if order: #to remove csv order: and make_csv==False
-                print("ordering...")
                 queryset= L(sorted(queryset, key=lambda i: entry_ids.index(i.pk)))
         if not entry_ids and mongo_query: #if there are no results when filtering
             queryset=L([])
 
-        print("queryset ready",  datetime.datetime.now())
         queryset.length = count
         return queryset
 

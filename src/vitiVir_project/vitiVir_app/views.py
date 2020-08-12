@@ -129,8 +129,7 @@ class BlastViewSet(viewsets.ViewSet):
                 out=tmp_out_file_path)
             blast_cline
             stdout, stderr = blast_cline()
-        else:
-            print("program type invalid")
+
         
         with open(tmp_out_file_path) as f:
             out = f.read()
