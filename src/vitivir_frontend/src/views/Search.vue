@@ -311,7 +311,7 @@ export default {
         }
       })
       .then(res => {
-        console.log(res)
+        //console.log(res)
         let fasta_format = ""
         let acc_list = [] //avoid redundancy 
         for (let obj of res.data){
@@ -319,7 +319,6 @@ export default {
             if(obj.blastx.sequence){
               if(acc_list.includes(obj.blastx.accession) == false ){ //1x per accession
                 acc_list.push(obj.blastx.accession);
-                //console.log(acc_list);
                 fasta_format += ">" + obj.blastx.accession + "|" + obj.blastx.description + "|" + 
                 obj.query_id + "|" + obj.entry_id + "\n" + obj.blastx.sequence + "\n";
               }
@@ -356,7 +355,7 @@ export default {
           '-' + this.start_date.getDate() 
       } 
       if (this.end_date){
-        console.log("end date is not undefined",this.end_date)
+        //console.log("end date is not undefined",this.end_date)
         this.end_date = new Date(this.end_date)
         formated_end_date = this.end_date.getFullYear() + 
           '-' + (this.end_date.getMonth()+1) +
@@ -405,9 +404,7 @@ export default {
       }
 
       //Store query
-      console.log("stored SQ", this.$store.state.search_q)
       this.$store.commit('setSearch', search_q)
-      console.log("SQ",search_q)
 
       //Get results based on query
       this.$refs.results.getSearch()

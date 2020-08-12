@@ -160,22 +160,13 @@ AGTTTATTAAGGTTAACATGAATGAGATCATGGG
     },
     onSubmit(event) {
 
-        console.log(process.env.VUE_APP_API_HOST, process.env) //testing environment
       event.preventDefault();
 
       let blastForm = this.$refs['blast-form'].form;
 
       if (this.$refs['blast-form'].isValid()) {
         let finalForm = Object.assign({}, blastForm);
-        // finalForm.login = this.$store.getters.getLogin;
-        // finalForm.token = this.$store.getters.getToken;
 
-        /*let loader = this.$loading.show({
-          // Optional parameters
-          container: null,
-          canCancel: false,
-          loader: 'dots',
-        });*/
         axios.post(`${process.env.VUE_APP_API_HOST}/api/blast/`, finalForm,{//`${process.env.VUE_APP_API_HOST}/api/blast/`
             headers: {
                 'Authorization': 'Token ' + this.$store.state.token
@@ -186,7 +177,7 @@ AGTTTATTAAGGTTAACATGAATGAGATCATGGG
           
           resp => {
             const xml = resp.data;
-            console.log(xml)
+            //console.log(xml)
             const success = true;
             
             if (success === false) {
@@ -215,7 +206,6 @@ AGTTTATTAAGGTTAACATGAATGAGATCATGGG
       }
     },
     onReset() {
-        console.log("resetingg")
       //event.preventDefault(); //prevents reset?? 
       this.showExample = false;
       this.form = Object.assign({}, this.form, { //not displayed...

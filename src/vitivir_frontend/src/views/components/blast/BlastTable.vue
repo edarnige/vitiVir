@@ -191,25 +191,12 @@ export default {
         this.$refs['blast-table'].selectedRows.map(x => x.vitivir_id) //accession
       );
     },
-    launchAction: function(params) { //to detail
-      console.log("to launch", params.id)
-      //this.$emit('launchAction', evt);
-      const entry_id = params.id//accession.split("_",2) //array of 2
+    launchAction: function(params) { //to detail page
+      const entry_id = params.id
       let route = this.$router.resolve({path: '/search/'+entry_id});
-      console.log(route)
       window.open(route.href)
     },
-    // toDetail: function(params) {
-    //   console.log("to detail")
-    //   const entry_id = params.row.accession.split("_",1) 
-    //   console.log(entry_id)
-    //   let route = this.$router.resolve({path: '/search/'+entry_id});
-    //   console.log(route)
-    //   window.open(route.href)
-    //   //this.$router.push({name: 'entrydetail', params: {entry_id}})
-    // },
     onEyeClick: function(params) {
-      console.log("to rowclick (alignment)")
       this.$emit('onRowClick', params.row.accession);
     },
     downloadAsCsv: function() {

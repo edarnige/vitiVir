@@ -117,7 +117,6 @@ export default {
 
   computed: {
     showBoundForm() {
-      console.log('change dbType :' + this.dbType);
       return this.dbType == 'genomic';
     },
     lbState() {

@@ -82,12 +82,10 @@ export default {
       })
       .then(res => {
         let token = res.data.token;
-        console.log("logged in", res);
         this.$store.commit('setToken',token) //change token value
         this.getUser(this.email)
         this.$router.push('/search');
-        console.log(this.$store.state.token)
-        //axios.defaults.headers.common['Authorization'] = `Token ${token}`;
+        //console.log(this.$store.state.token)
       })
       .catch(err => {
         alert("Unable to login with these credentials")
@@ -99,7 +97,6 @@ export default {
     getUser(email){
       axios.get(`${process.env.VUE_APP_API_HOST}/users/manageusers/`+"?email="+email)
       .then(res=> {
-        console.log(res.data.results[0].email,res.data.results[0].can_verify)
         let can_verify = res.data.results[0].can_verify
         this.$store.commit('setVerify', can_verify)
       })

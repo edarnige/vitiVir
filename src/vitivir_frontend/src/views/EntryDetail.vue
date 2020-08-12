@@ -488,7 +488,6 @@ export default {
             .then(res => {
                 this.$Progress.finish()
                 this.entry = res.data
-                console.log(this.entry)
                 if(this.entry.sra_metadata != null){
                     this.type = 'sra'
                 }else if(this.entry.inv_metadata != null){
@@ -504,13 +503,11 @@ export default {
         editDetail(){
             this.editMode = true;
             this.beforeEditCache = Object.assign({}, this.entry); //{verified:entry.verified, virus_type:entry.virus_type, host_type:entry.host_type}
-            console.log("CACHE",this.beforeEditCache.verified)
         },
 
         updateDetail(){//verified, virus_type, host_organism
             this.$Progress.start()
             this.edited = this.entry;
-            console.log("EDITED", this.edited.virus_type)
             let newData = {'verified':this.edited.verified, 'virus_type':this.edited.virus_type, 'host_organism':this.edited.host_organism}
             axios.patch(`${process.env.VUE_APP_API_HOST}/api/data/entries/` + this.$route.params.entry_id + "/", newData,{
                 headers: {
@@ -533,7 +530,6 @@ export default {
             this.editMode = false 
             //this.entry = this.beforeEditCache
             Object.assign(this.entry, this.beforeEditCache);
-            console.log("CANCELLED", this.entry.verified)
             this.beforeEditCache = null;
         },
 
