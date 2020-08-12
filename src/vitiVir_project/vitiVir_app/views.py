@@ -190,8 +190,17 @@ class GetDBStatsView(APIView):
     
     def get(self, request):
         '''
-        Get all required data: total entries, samples included, numebr of viral sequences
-        and data for pie/donut charts
+        Get all required data: total entries, samples included, proportion of Betaflexiviridae, 
+        number of viral sequences and data for pie/donut charts.
+
+        Information is updated with each refresh of the home page.
+        The amount of total samples, SRA samples, and InViCeB samples are counted.
+        The number of viral sequences in VitiVirSeq is obtained from the fasta file in the local db.
+        Mongo query to extract all taxonomies into a list.
+        From this list, family types are counted for the family pie chart.
+        Again from the taxonomy list, only viral families and domains (excluding abundant Betaflexiviridae) are 
+        counted for the virus donut chart. Betaflexiviridae occurrences are counted to calculate the
+        total proportion they represent that is to be excluded from the donut chart. 
         '''
 
         total = Entry.objects.count()
@@ -199,6 +208,9 @@ class GetDBStatsView(APIView):
         SRA_count = len(SRA_query)
         INV_query = Entry.objects.filter(sample__contains="Inv").values('sample').distinct()
         INV_count = len(INV_query)
+
+
+        #Count viral sequences (half the length of the VitiVirSeq fasta file)
 
         local_db = '/var/www/vitiVir/db/blastdb/vitiVirSeq.fasta'
         # Development mode:
@@ -315,9 +327,6 @@ class GetDBStatsView(APIView):
         viruses_list.append(other)
 
         beta_percent = round(total_beta/count_with_beta * 100)
-
-        print("\nSTATS\ntotal:",total,"\nSRA and inv:",SRA_count, INV_count,"\nSeqs:",viral_seq,"\n",families_list)
-        print(viruses_list)
         
         #Data to send to front-end
         data = {"total":total,"SRA_count":SRA_count,"INV_count":INV_count,"viral_seq_count":viral_seq,"families":families_list, "viruses":viruses_list, "beta_percent": beta_percent}

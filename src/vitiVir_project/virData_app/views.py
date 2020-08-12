@@ -90,6 +90,14 @@ class EntryListView(viewsets.ModelViewSet):
     def get_queryset(self):
         '''
         Override get_queryset to filter embedded documents
+
+        If the primary key is sent, return informaton for one entry for the detail page.
+        Otherwise, create a Mongo query from the parameters passed. 
+        Get only 25 results (one page) at a time for faster loading, unless it 
+        is a CSV or fasta file download request. Extract a list of
+        entry ids from the Mongo query.
+        A second SQL query is required from this list of entry ids since Django 
+        cannot filter by embedded documents. Returns queryset object collection.
         '''
 
         fields = ['sample', 'host_organism', 'virus_type', 'taxonomy', 'description', 'cultivar',
@@ -238,7 +246,11 @@ class EntryListView(viewsets.ModelViewSet):
 
 
     def partial_update(self, request, *args, **kwargs):
-        ''' Patch many based on sample or query_id '''
+        ''' 
+        Patch many based on sample or query_id from 
+        "Edit" on detail page
+        '''
+
         instance = self.queryset.get(pk=kwargs.get('pk'))
         query_id = instance.query_id #contig for verified and virus type
         sample = instance.sample #sample for host org
