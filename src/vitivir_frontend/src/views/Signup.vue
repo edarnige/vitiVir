@@ -83,11 +83,11 @@ export default {
           password: this.password,
         })
         .then(res => {
-          
+          console.log(res)
           //Send email to request account, suepruser must switch is_active on 
           axios.post(`${process.env.VUE_APP_API_HOST}/api/request_account/`, data)
           .then(res=>{
-            //console.log(res)
+            console.log(res)
             alert('Request sent');
           })
 
