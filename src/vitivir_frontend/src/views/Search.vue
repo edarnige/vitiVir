@@ -1,3 +1,10 @@
+<!--
+Eden Darnige
+2020
+
+Search form and results. The results list is generated in ./components/ListEntries.vue. 
+-->
+
 <template>
   <div class="wrapper" v-if="$store.state.token">
     <div class="section section-basic">  

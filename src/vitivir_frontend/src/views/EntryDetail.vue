@@ -1,3 +1,10 @@
+<!--
+Eden Darnige
+2020
+
+Detail view displays all information for one entry when selected from the Search view.
+-->
+
 <template>
   <div class="wrapper">
       <div class="section section-basic">  

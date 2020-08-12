@@ -1,3 +1,12 @@
+<!--
+Eden Darnige
+Adapted from Ludovic Cotrett
+2020
+
+Blast view displays form and results from a Blast search.
+Linked to all components found in ./components/blast/
+-->
+
 <template>
 <div class="wrapper">
   <div>

@@ -1,3 +1,11 @@
+<!--
+Eden Darnige
+2020
+
+An account request from this form is sent to VitiVir.db@gmail.com. 
+Request must be approved in the Django admin.
+-->
+
 <template>
   <div class="wrapper">
     <div class="section page-header header-filter" :style="headerStyle">

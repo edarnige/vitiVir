@@ -1,3 +1,10 @@
+<!--
+Eden Darnige
+2020
+
+Home page with VitiVir description, statistics, and contact form.
+-->
+
 <template>
   <div class="wrapper">
     <parallax class="section page-header header-filter" :style="headerStyle">

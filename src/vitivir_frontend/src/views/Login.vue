@@ -1,3 +1,10 @@
+<!--
+Eden Darnige
+2020
+
+Login page to get token to access search and Blast functions.
+-->
+
 <template>
   <div class="wrapper">
     <div class="section page-header header-filter" :style="headerStyle">
