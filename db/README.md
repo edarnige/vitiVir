@@ -60,7 +60,17 @@ SRR10518887
 ### I.III Populating the VitiVir database
 With all of the BLASTX, RPS-BLAST, and metadata CSVs located in one folder, the **pop\_SRA\_db.py** script can be executed in order to populate the VitiVir database with new entries. This script must be executed in a folder containing the new CSVs to be entered. It is wise to test the entry of new data in a test database as to be sure to not pollute the existing entries. 
 
+In addition, you must redo the indexing to maintain the order-by fields. This can be done using the following commands in the mongo shell:
+```
+db.virData_app_entry.createIndex({ "blastrps.evalue": 1 })
+db.virData_app_entry.createIndex({ "blastx.query_length": -1 })
+db.virData_app_entry.createIndex({ "blastx.percent_identity": -1 })
+```
 
+It may also be necessary to remove empty entries:
+```
+db.virData_app_entry.remove({'entry_id':{$exists:false}})
+```
 
 
 ### I.IV Updating VitiVirSeq BLAST database
