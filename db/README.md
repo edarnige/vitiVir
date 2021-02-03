@@ -68,7 +68,7 @@ In the blastdb/ directory, make sure you have the correct version of NCBI toolki
 
 Since new viral sequences have likely been added, the VitiVirSeq BLAST database must also be updated. Therfore, the old database must be destroyed. All vitiVirSeq.fasta\* files must be deleted. Be careful not to delete the NCBI toolkit. Then, the **ExportSeq.js** script can be launched to extract all viralsequences in fasta format. This will generate a vitiVirSeq.fasta file from which a BLASTdatabase can be constructed using the following command:
 ```
-./ncbi-blast-2.10.0+/bin/makeblastdb -in vitiVirSeq.fasta -parse_seqids-blastdb_version 5 -title "vitiVirSeq" -dbtype nucl
+./ncbi-blast-2.10.0+/bin/makeblastdb -in vitiVirSeq.fasta -parse_seqids -blastdb_version 5 -title "vitiVirSeq" -dbtype nucl
 ```
 Remove the first few lines of the fasta file if it contains the MongoDB description in order for the above command to function.
 
