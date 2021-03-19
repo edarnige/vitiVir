@@ -4,7 +4,7 @@ dataclasses==0.7
 Django==2.2.11
 django-cors-headers==3.2.1
 django-filter==2.2.0
-djangorestframework==3.11.0
+djangorestframework==3.11.2
 djangorestframework-csv==2.1.0
 djangorestframework-filters==1.0.0.dev0
 djangotoolbox==1.8.0
