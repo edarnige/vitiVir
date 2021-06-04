@@ -1,7 +1,7 @@
 biopython==1.77
 bson==0.5.8
 dataclasses==0.7
-Django==2.2.11
+Django==2.2.21
 django-cors-headers==3.2.1
 django-filter==2.2.0
 djangorestframework==3.11.0
