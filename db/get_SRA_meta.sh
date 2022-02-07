@@ -24,14 +24,14 @@ for sample in ${samples[@]}; do
     #Write header once
     if [ $header -eq 1 ] 
     then
-        cols=$(esearch -db sra -q $searchQ | efetch -format runinfo | sed -n 1p)
+        cols=$(esearch -db sra -query $searchQ | efetch -format runinfo | sed -n 1p)
         echo $cols,Cultivar > SRA_metadata.csv
         header=0
     fi 
 
     #Fill in with data
-    meta_data=$(esearch -db sra -q $searchQ | efetch -format runinfo | sed -e 1d | egrep -v "^$")
-    (esearch -db sra -q $searchQ | efetch -format native) > temp.xml
+    meta_data=$(esearch -db sra -query $searchQ | efetch -format runinfo | sed -e 1d | egrep -v "^$")
+    (esearch -db sra -query $searchQ | efetch -format native) > temp.xml
     #Cultivar comes from a different place
     cultivar=$(xmlstarlet sel -t -v '//EXPERIMENT_PACKAGE_SET/EXPERIMENT_PACKAGE/SAMPLE/SAMPLE_ATTRIBUTES/SAMPLE_ATTRIBUTE[TAG="cultivar"]/VALUE' -nl temp.xml)
     echo $meta_data,$cultivar >> SRA_metadata.csv
