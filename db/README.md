@@ -58,7 +58,8 @@ SRR10518887
 ```
 
 ### I.III Populating the VitiVir database
-With all of the BLASTX, RPS-BLAST, and metadata CSVs located in one folder, the **pop\_SRA\_db.py** script can be executed in order to populate the VitiVir database with new entries. This script must be executed in a folder containing the new CSVs to be entered. It is wise to test the entry of new data in a test database as to be sure to not pollute the existing entries. 
+With all of the BLASTX, RPS-BLAST, and metadata CSVs located in one folder, the **pop\_SRA\_db.py** script can be executed in order to populate the VitiVir database with new entries. This script must be executed in a folder containing the new CSVs to be entered. It is wise to test the entry of new data in a test database as to be sure to not pollute the existing entries.
+Check out that the two columns with date in your csv ahve the right format ```%m/%d/%y %H:%M```.
 
 In addition, you must redo the indexing to maintain the order-by fields. This can be done using the following commands in the mongo shell:
 ```
@@ -78,8 +79,13 @@ In the blastdb/ directory, make sure you have the correct version of NCBI toolki
 
 Since new viral sequences have likely been added, the VitiVirSeq BLAST database must also be updated. Therfore, the old database must be destroyed. All vitiVirSeq.fasta\* files must be deleted. Be careful not to delete the NCBI toolkit. Then, the **ExportSeq.js** script can be launched to extract all viralsequences in fasta format. This will generate a vitiVirSeq.fasta file from which a BLASTdatabase can be constructed using the following command:
 ```
+mongo test ../ExportSeq.js > vitiVirSeq.fasta
+
 ./ncbi-blast-2.10.0+/bin/makeblastdb -in vitiVirSeq.fasta -parse_seqids -blastdb_version 5 -title "vitiVirSeq" -dbtype nucl
 ```
 Remove the first few lines of the fasta file if it contains the MongoDB description in order for the above command to function.
 
-
+You may have to retsart your system:
+```
+sudo systemctl restart httpd
+```
